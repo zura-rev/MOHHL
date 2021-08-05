@@ -32,8 +32,8 @@ namespace HL.Core.Application.Features.Calls.Queries
 
         public Task<IEnumerable<GetCallDto>> Handle(GetExecutableCallsRequest request, CancellationToken cancellationToken)
         {
-            var callList = unit.CallRepository.GetExecutableCalls(request.User);
-            return Task.FromResult(mapper.Map<IEnumerable<GetCallDto>>(callList));
+            //var callList = unit.CallRepository.GetExecutableCalls(request.User);
+            return null;//Task.FromResult(mapper.Map<IEnumerable<GetCallDto>>(callList));
         }
     }
 

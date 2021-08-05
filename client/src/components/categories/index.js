@@ -35,20 +35,19 @@ export function reducer(state = initialState, action) {
 
 export const Categories = observer(() => {
   const { loading, request } = useHttp()
-  const { token } = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
   const { categoriesState } = useContext(StoreContext)
   const [show, setShow] = useState(false)
   const [check, setCheck] = useState(true)
   const [validated, setValidated] = useState(false)
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  const { categories, parentCategories, groupedCategories, setCategories } =
-    categoriesState
+  const { categories, parentCategories, groupedCategories, setCategories } = categoriesState
 
   const fetchCategories = useCallback(async () => {
     try {
       const response = await request(`/api/categories`, 'GET', null, {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${user.token}`,
       })
       setCategories(response && response.data)
     } catch (error) { }
@@ -90,7 +89,7 @@ export const Categories = observer(() => {
           'POST',
           { ...state },
           {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${user.token}`,
           }
         )
         const res = categories.concat(response.data)

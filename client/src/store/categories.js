@@ -4,6 +4,7 @@ export class CategoriesState {
   _categories = []
   _groupedCategories = []
   _parentCategories = []
+  
   constructor() {
     makeAutoObservable(this)
   }

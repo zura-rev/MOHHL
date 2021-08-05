@@ -38,9 +38,8 @@ namespace HL.Infrastructure.Persistence.Implementations.Repositories
                          (string.IsNullOrWhiteSpace(privateNumber) || x.PrivateNumber == privateNumber) &&
                          (string.IsNullOrWhiteSpace(callAuthor) || x.CallAuthor == callAuthor) &&
                          (string.IsNullOrWhiteSpace(phone) || x.Phone == phone) &&
-                         (string.IsNullOrWhiteSpace(note) || x.Note.Contains(note)) &&
                          (categoryId == null || x.Category.Id == categoryId) &&
-                           (string.IsNullOrWhiteSpace(note) || x.Note.Contains(note)))
+                         (string.IsNullOrWhiteSpace(note) || x.Note.Contains(note)))
                      .OrderByDescending(x => x.Id);
 
                 return res;
@@ -52,23 +51,23 @@ namespace HL.Infrastructure.Persistence.Implementations.Repositories
             }
         }
 
-        IEnumerable<Call> ICallRepository.GetExecutableCalls(string user)
-        {
-            try
-            {
-                var res = context.Calls
-               .Include(x => x.Category)
-               .Include(x => x.Performers)
-               .ThenInclude(x => x.User)
-               .Where(x => x.User.UserName == user && x.CallStatus != 1)
-                .OrderByDescending(x => x.Id);
-                return res;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
+        //IEnumerable<Call> ICallRepository.GetExecutableCalls(string user)
+        //{
+        //    try
+        //    {
+        //        var res = context.Calls
+        //       .Include(x => x.Category)
+        //       .Include(x => x.Performers)
+        //       .ThenInclude(x => x.User)
+        //       .Where(x => x.User.UserName == user && x.CallStatus != 1)
+        //        .OrderByDescending(x => x.Id);
+        //        return res;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
 
         IEnumerable<Call> ICallRepository.GetMatchCalls(string phone, string privateNumber)
         {

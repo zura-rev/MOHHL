@@ -8,6 +8,7 @@ namespace HL.Core.Application.Interfaces
         public IPositionRepository PositionRepository { get; }
         public IEmployeeRepository EmployeeRepository { get; }
         public ICallRepository CallRepository { get; }
+        public IPerformerRepository PerformerRepository { get; }
         public ICategoryRepository CategoryRepository { get; }
         public IResourceRepository ResourceRepository { get; }
         public IUserRepository UserRepository { get; }

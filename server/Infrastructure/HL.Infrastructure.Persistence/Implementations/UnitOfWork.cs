@@ -12,7 +12,7 @@ namespace HL.Infrastructure.Persistence.Implementations
 
         private ICategoryRepository categoryRepository;
         private ICallRepository callRepository;
-
+        private IPerformerRepository performerRepository;
         private IResourceRepository resourceRepository;
         private IUserRepository userRepository;
 
@@ -33,6 +33,8 @@ namespace HL.Infrastructure.Persistence.Implementations
                 return callRepository == null ? new CallRepository(context) : callRepository;
             }
         }
+
+        public IPerformerRepository PerformerRepository => performerRepository ??= new PerformerRepository(context);
         public ICategoryRepository CategoryRepository => categoryRepository ??= new CategoryRepository(context);
 
 

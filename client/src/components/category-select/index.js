@@ -35,14 +35,14 @@ export const CategorySelect = observer(
   ({ required, onChange, name, value }) => {
     //console.log('value', value)
     const { loading, request } = useHttp()
-    const { token } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
     const { categoriesState } = useContext(StoreContext)
     const { groupedCategories, setCategories } = categoriesState
 
     const fetchCategories = React.useCallback(async () => {
       try {
         const response = await request(`/api/Categories`, 'GET', null, {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${user.token}`,
         })
         setCategories(response && response.data)
       } catch (error) {

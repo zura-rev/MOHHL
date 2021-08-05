@@ -14,7 +14,7 @@ using HL.Presentation.WebApi.Extensions.Services;
 namespace HL.Presentation.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class CallsController : ControllerBase
     {
@@ -57,15 +57,15 @@ namespace HL.Presentation.WebApi.Controllers
             return await mediator.Send(request);
         }
 
-        [HttpGet("executable")]
-        public async Task<ActionResult<IEnumerable<GetCallDto>>> Get([FromQuery] string user)
-        {
-            if (string.IsNullOrEmpty(user))
-                throw new BadRequestException("მომხმარებელი ვერ მოიძებნა!");
+        //[HttpGet("executable")]
+        //public async Task<ActionResult<IEnumerable<GetCallDto>>> Get([FromQuery] string user)
+        //{
+        //    if (string.IsNullOrEmpty(user))
+        //        throw new BadRequestException("მომხმარებელი ვერ მოიძებნა!");
 
-            var request = new GetExecutableCallsRequest(user);
-            return Ok(await mediator.Send(request));
-        }
+        //    var request = new GetExecutableCallsRequest(user);
+        //    return Ok(await mediator.Send(request));
+        //}
 
         [HttpGet("matchcalls")]
         public async Task<ActionResult<IEnumerable<GetCallDto>>> Get([FromQuery] string phone, [FromQuery] string privateNumber)

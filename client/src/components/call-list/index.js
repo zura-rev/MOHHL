@@ -12,7 +12,8 @@ import classNames from 'classnames'
 import { callList, noRecord } from './style.module.css'
 
 export const CallList = observer(() => {
-  const { token } = useContext(AuthContext)
+
+  const { user } = useContext(AuthContext)
   const { callsState, filterState } = useContext(StoreContext)
   const history = useHistory()
   const message = useMessage()
@@ -64,7 +65,7 @@ export const CallList = observer(() => {
         data,
         headers: { totalcount, totalpages, pagesize, pageindex, hasnextpage },
       } = await request(url, 'GET', null, {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${user.token}`,
       })
       setCalls(data)
       setTotalCount(totalcount)
@@ -87,6 +88,7 @@ export const CallList = observer(() => {
   if (!calls.length) {
     return <div className={noRecord}>ჩანაწერი ვერ მოიძებნა!</div>
   }
+  
   const getCall = (id) => {
     history.push(`/calls/${id}`)
   }

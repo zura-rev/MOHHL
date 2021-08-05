@@ -12,8 +12,6 @@ namespace HL.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Calls", "dbo");
             //builder.Ignore(x => x.Applications);
-
-
             builder.Property(x => x.Id);
             builder.Property(x => x.CallAuthor).HasMaxLength(20).IsRequired();
             builder.Property(x => x.PrivateNumber).HasMaxLength(50).IsRequired();

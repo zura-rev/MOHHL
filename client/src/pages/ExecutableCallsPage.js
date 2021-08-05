@@ -1,9 +1,8 @@
 import React from 'react'
+import { ExecutableCalls } from '../components/executable-calls'
 
 export function ExecutableCallsPage() {
     return (
-        <h1>
-            ExecutableCalls
-        </h1>
+        <ExecutableCalls />
     )
 }

@@ -14,6 +14,7 @@ namespace HL.Core.Application.Mappings
         public AutoMapperProfile()
         {
             CreateMap<Call, GetCallDto>();
+            CreateMap<Performer, GetPerformerDto>();
             CreateMap<Category, GetCategoryDto>();
             CreateMap<User,GetUserDto>();
             CreateMap(typeof(Pagination<>), typeof(GetPaginationDto<>));
