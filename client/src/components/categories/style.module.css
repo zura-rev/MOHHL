@@ -1,0 +1,13 @@
+.accordionHeader button {
+  font-size: 13px;
+  padding: 7px 10px;
+  font-weight: 600;
+}
+
+.accordionHeader button::after {
+  background-size: 15px;
+}
+
+.accordionHeader button::before {
+  background-size: 15px;
+}

@@ -1,0 +1,13 @@
+.callList {
+  margin-top: 100px;
+}
+
+.noRecord {
+  margin-top: 100px;
+  text-align: center;
+  border: 1px solid #eb9191;
+  padding: 10px;
+  border-radius: 5px;
+  background: #f1b9b9;
+  color: #383838;
+}
