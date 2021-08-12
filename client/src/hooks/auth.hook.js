@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import jwt_decode from 'jwt-decode'
-
+import { useLocalStorage } from './localStorage.hook'
 const storageName = 'userData'
 
 export const useAuth = () => {
 
-  const userData = JSON.parse(localStorage.getItem(storageName))
-  const [user, setUser] = useState(userData)
+  //const userData = JSON.parse(localStorage.getItem(storageName))
+  const [user, setUser] = useLocalStorage(storageName)
+  //const [user, setUser] = useState(userData)
 
   const login = (token, userId) => {
 
@@ -20,18 +21,18 @@ export const useAuth = () => {
       resources,
     } = decode
 
-    localStorage.setItem(
-      storageName,
-      JSON.stringify({
-        userId,
-        userName,
-        firstName,
-        lastName,
-        privateNumber,
-        resources,
-        token
-      })
-    )
+    // localStorage.setItem(
+    //   storageName,
+    //   JSON.stringify({
+    //     userId,
+    //     userName,
+    //     firstName,
+    //     lastName,
+    //     privateNumber,
+    //     resources,
+    //     token
+    //   })
+    // )
 
     setUser({
       userId,

@@ -2,7 +2,7 @@ import React, { createContext } from 'react'
 import { FilterState } from '../store/filter'
 import { CallsState } from '../store/calls'
 import { CategoriesState } from '../store/categories'
-import { PerformersState } from '../store/performers'
+import { TasksState } from '../store/tasks'
 
 export const StoreContext = createContext(null)
 
@@ -14,7 +14,7 @@ export const StoreProvider = ({ children }) => {
         callsState: new CallsState(),
         filterState: new FilterState(),
         categoriesState: new CategoriesState(),
-        performerState: new PerformersState(),
+        tasksState: new TasksState(),
       }}
     >
       {children}

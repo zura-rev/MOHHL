@@ -8,8 +8,8 @@ const filterState = {
   note: '',
 }
 
-export class PerformersState {
-  _performers = []
+export class TasksState {
+  _tasks = []
   _totalCount = null
   _totalPages = null
   _pageIndex = 1
@@ -22,8 +22,8 @@ export class PerformersState {
     makeAutoObservable(this)
   }
 
-  setPerformers = (performers) => {
-    this._performers = performers
+  setTasks = (tasks) => {
+    this._tasks = tasks
   }
 
   setTotalCount = (totalCount) => {
@@ -58,8 +58,8 @@ export class PerformersState {
     this._submit = value
   }
 
-  get performers() {
-    return this._performers
+  get tasks() {
+    return this._tasks
   }
 
   get totalCount() {

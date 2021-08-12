@@ -17,8 +17,8 @@ namespace HL.Infrastructure.Persistence.Implementations.Repositories
             try
             {
                 var res = context.Performers
+                    .Include(x => x.Call).ThenInclude(x=>x.Category)
                     .Include(x => x.Call).ThenInclude(x=>x.User)
-                    //.Include(x => x.User)
                     .Where(x => x.UserType == 2 &&
                          (id == 0 || x.Id == id) &&
                          //(x.CreateDate > fromDate && x.CreateDate < toDate.AddDays(1)) &&

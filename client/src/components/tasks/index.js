@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback, useContext } from 'react'
 import { observer } from 'mobx-react-lite'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { AuthContext } from '../../context/AuthProvider'
 import { StoreContext } from '../../context/StoreProvider'
@@ -9,18 +10,20 @@ import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMessage } from '../../hooks/message.hook'
 import classNames from 'classnames'
+import { taskItem } from './style.module.css'
 
-export const ExecutableCalls = observer(() => {
+export const Tasks = observer(() => {
 
+    const taskItemClasses = classNames('card-body d-flex justify-content-between', taskItem)
     const { user } = useContext(AuthContext)
-    const { performerState } = useContext(StoreContext)
+    const { tasksState } = useContext(StoreContext)
 
     const {
-        performers,
+        tasks,
         filter,
         submit,
         setSubmit,
-        setPerformers,
+        setTasks,
         setTotalCount,
         setTotalPages,
         setPageIndex,
@@ -28,9 +31,7 @@ export const ExecutableCalls = observer(() => {
         setHasNextPage,
         pageIndex,
         pageSize
-    } = performerState
-
-
+    } = tasksState
 
     const { loading, request } = useHttp()
 
@@ -49,7 +50,7 @@ export const ExecutableCalls = observer(() => {
             } = await request(url, 'GET', null, {
                 Authorization: `Bearer ${user.token}`,
             })
-            setPerformers(data)
+            setTasks(data)
             setTotalCount(totalcount)
             setTotalPages(totalpages)
             setPageIndex(pageindex)
@@ -67,15 +68,26 @@ export const ExecutableCalls = observer(() => {
         return <Loader />
     }
 
-    if (!performers.length) {
+    if (!tasks.length) {
         return <div>ჩანაწერი ვერ მოიძებნა!</div>
     }
 
     return (
-        <div className='card'>
+        <>
             {
-                performers && performers.map(p => <div>{p.callId}</div>)
+                tasks && tasks.map(task => <div key={task.id} className='card mb-2'>
+                    <Link to={`/calls/${task.callId}`} className={taskItemClasses}>
+                        <ul>
+                            <li><strong>N</strong>:{task.callId}</li>
+                            <li><strong>სტატუსი</strong>:{task.status}</li>
+                            <li><strong>თარიღი</strong>:{moment(task.call.createDate).format('LLLL')}</li>
+                            <li><strong>მოქალაქე</strong>: {task.call.callAuthor}</li>
+                            <li><strong>კარეგორია</strong>: {task.call.category.categoryName}</li>
+                        </ul>
+                        <div>{task.call.user.firstName}  {task.call.user.lastName}</div>
+                    </Link>
+                </div>)
             }
-        </div>
+        </>
     )
 })

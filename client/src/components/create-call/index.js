@@ -29,7 +29,7 @@ function reducer(state, action) {
 }
 
 export function CreateCall() {
-  const { token } = useContext(AuthContext)
+  const { user:{token} } = useContext(AuthContext)
   const { callsState } = useContext(StoreContext)
   const history = useHistory()
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -37,14 +37,6 @@ export function CreateCall() {
   const message = useMessage()
   const { setMatchCalls } = callsState
   const [validated, setValidated] = useState(false)
-
-  const [radioValue, setRadioValue] = useState('1');
-
-  const radios = [
-    { name: 'შესრულებული', value: '1' },
-    { name: 'გასარკვევი', value: '2' },
-    { name: 'საჩქარო', value: '3' },
-  ];
 
   const mystyles = classNames('p-3', 'mr-2', 'card', 'col-md-6', createCallFrom)
 

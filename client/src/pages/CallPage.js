@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, useParams, useRouteMatch } from 'react-router-dom'
 import { useHttp } from '../hooks/http.hook'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faPrint, faCheck, faChevronLeft, faTimes } from '@fortawesome/fontawesome-free-solid'
@@ -7,9 +7,8 @@ import { AuthContext } from '../context/AuthProvider'
 import { Loader } from '../components/loader'
 import { CallCard } from '../components/call-card'
 
-
 export const CallPage = () => {
-  const { token } = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
   const { request, loading } = useHttp()
   const [call, setCall] = useState(null)
   const callId = useParams().id
@@ -18,11 +17,11 @@ export const CallPage = () => {
   const getCall = useCallback(async () => {
     try {
       const { data } = await request(`/api/calls/${callId}`, 'GET', null, {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${user.token}`,
       })
       setCall(data)
     } catch (error) { }
-  }, [token, callId, request])
+  }, [user, callId, request])
 
   useEffect(() => {
     getCall()
@@ -38,7 +37,7 @@ export const CallPage = () => {
         <div className='col-md-4'>
           <button
             className='btn btn-sm btn-outline-dark'
-            onClick={() => history.push('/calls')}
+            onClick={() => history.goBack()}
           >
             <FontAwesomeIcon icon={faChevronLeft} className='me-1' />
             უკან
