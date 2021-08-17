@@ -10,29 +10,22 @@ import { CategorySelect } from '../category-select'
 import classNames from 'classnames'
 import { createCallFrom } from './style.module.css'
 import { faSave } from '@fortawesome/fontawesome-free-solid'
-
-const initialState = {
-  privateNumber: '',
-  callAuthor: '',
-  category: null,
-  phone: '',
-  note: '',
-  callStatus: null,
-}
-
-function reducer(state, action) {
-  const { type, payload } = action
-  switch (type) {
-    case 'change':
-      return { ...state, ...payload }
-  }
-}
+//import { createCallReducer, initialState } from '../../reducers/createCallReducer'
+import { useCreateCallReducer } from '../../reducers/createCallReducer'
 
 export function CreateCall() {
-  const { user:{token} } = useContext(AuthContext)
+  const { user: { token } } = useContext(AuthContext)
   const { callsState } = useContext(StoreContext)
   const history = useHistory()
-  const [state, dispatch] = useReducer(reducer, initialState)
+  //const [state, dispatch] = useReducer(createCallReducer, initialState)
+  const [state, dispatch] = useCreateCallReducer({
+    privateNumber: '',
+    callAuthor: '',
+    category: null,
+    phone: '',
+    note: '',
+    callStatus: null,
+  })
   const { request, error, clearError } = useHttp()
   const message = useMessage()
   const { setMatchCalls } = callsState
@@ -68,13 +61,9 @@ export function CreateCall() {
     changeDispatch(event.target.name, event.target.value)
   }
 
-  const handleSelectChange = (selected, nameOfComponent) => {
-    changeDispatch(nameOfComponent.name, { id: selected.value })
-  }
-
   const changeDispatch = (name, value) => {
     dispatch({
-      type: 'change',
+      type: 'CHANGE',
       payload: { ...state, [name]: value },
     })
   }
@@ -131,6 +120,7 @@ export function CreateCall() {
                 <strong>პირადი ნომერი</strong>
               </Form.Label>
               <Form.Control
+                required
                 type='text'
                 placeholder='პირადი ნომერი'
                 id='privateNumber'
@@ -146,6 +136,7 @@ export function CreateCall() {
                 <strong>სახელი, გვარი</strong>
               </Form.Label>
               <Form.Control
+                required
                 type='text'
                 placeholder='სახელი, გვარი'
                 id='callAuthor'
@@ -163,7 +154,9 @@ export function CreateCall() {
               <CategorySelect
                 required
                 name='category'
-                onChange={handleSelectChange}
+                onChange={(selected, nameOfComponent) => {
+                  changeDispatch(nameOfComponent.name, { id: selected.value })
+                }}
               />
             </Form.Group>
 
@@ -185,6 +178,7 @@ export function CreateCall() {
                 <option value='3'>საჩქარო</option>
               </Form.Select>
             </Form.Group>
+
             <Form.Group className='mb-4'>
               <Form.Label>
                 <strong>აღწერა</strong>
@@ -209,7 +203,6 @@ export function CreateCall() {
                 შენახვა
               </Button>
             </div>
-
           </Form>
         </div>
       </div>

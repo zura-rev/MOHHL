@@ -28,9 +28,10 @@ export const Paging = observer(() => {
           <b>რაოდენობა</b> {totalCount} <b>/ გვერდი</b> {totalPages}
         </div>
         <select
-          className='form-control'
+          className='form-select'
           value={pageSize}
           onChange={(event) => setPageSize(event.target.value)}
+          //onChange={(event) => setPager({ ...pager, pageSize: event.target.value })}
           style={{ width: '60px' }}
         >
           <option value='5'>5</option>
@@ -39,17 +40,16 @@ export const Paging = observer(() => {
           <option value='50'>50</option>
           <option value='100'>100</option>
         </select>
-        <div className='input-group-prepend'>
-          {pageIndex > 1 ? (
-            <button
-              className='btn btn-outline-secondary '
-              type='button'
-              onClick={() => setPageIndex(Number(pageIndex) - 1)}
-            >
-              <FontAwesomeIcon icon={faBackward} />
-            </button>
-          ) : null}
-        </div>
+        {pageIndex > 1 ? (
+          <button
+            className='btn btn-outline-secondary '
+            type='button'
+            onClick={() => setPageIndex(Number(pageIndex) - 1)}
+          //onClick={() => setPager({ ...pager, pageIndex: Number(pageIndex) - 1 })}
+          >
+            <FontAwesomeIcon icon={faBackward} />
+          </button>
+        ) : null}
         <span
           className='form-control'
           style={{ width: '50px', textAlign: 'center' }}
@@ -57,15 +57,16 @@ export const Paging = observer(() => {
           {pageIndex}
         </span>
         {hasNextPage === 'True' ? (
-          <div className='input-group-append'>
-            <button
-              className='btn btn-outline-secondary'
-              type='button'
-              onClick={() => setPageIndex(Number(pageIndex) + 1)}
-            >
-              <FontAwesomeIcon icon={faForward} />
-            </button>
-          </div>
+          // <div className='input-group-append'>
+          <button
+            className='btn btn-outline-secondary'
+            type='button'
+            onClick={() => setPageIndex(Number(pageIndex) + 1)}
+          //onClick={() => setPager({ ...pager, pageIndex: Number(pageIndex) + 1 })}
+          >
+            <FontAwesomeIcon icon={faForward} />
+          </button>
+          // </div>
         ) : null}
       </div>
       <button className='btn btn-sm btn-outline-primary mt-3'>

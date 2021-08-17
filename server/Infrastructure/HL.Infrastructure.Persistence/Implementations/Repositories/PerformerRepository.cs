@@ -10,7 +10,6 @@ namespace HL.Infrastructure.Persistence.Implementations.Repositories
     public class PerformerRepository : Repository<Performer>, IPerformerRepository
     {
         public PerformerRepository(DataContext context) : base(context) { }
-
         IQueryable<Performer> IPerformerRepository.Filter(int id, int callId, int userId, int userType, 
             int status, string note, DateTime performDate)
         {

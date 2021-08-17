@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useEffect, useContext, useCallback } from 'react'
 import Select from 'react-select'
 import { useHttp } from '../../hooks/http.hook'
-import { AuthContext} from '../../context/AuthProvider'
+import { AuthContext } from '../../context/AuthProvider'
 import { StoreContext } from '../../context/StoreProvider'
 import { observer } from 'mobx-react-lite'
 
@@ -32,14 +32,23 @@ const formatGroupLabel = (data) => (
 )
 
 export const CategorySelect = observer(
-  ({ required, onChange, name, value }) => {
-    //console.log('value', value)
+  ({ name, onChange, required }) => {
     const { loading, request } = useHttp()
     const { user } = useContext(AuthContext)
     const { categoriesState } = useContext(StoreContext)
     const { groupedCategories, setCategories } = categoriesState
 
-    const fetchCategories = React.useCallback(async () => {
+    // if (!value && required) {
+    //   console.log('value', value)
+    // }
+
+    const handleChange = (selected, nameOfComponent) => {
+      console.log('selected', selected)
+      console.log('nameOfComponent', nameOfComponent)
+      onChange(selected, nameOfComponent)
+    }
+
+    const fetchCategories = useCallback(async () => {
       try {
         const response = await request(`/api/Categories`, 'GET', null, {
           Authorization: `Bearer ${user.token}`,
@@ -50,22 +59,21 @@ export const CategorySelect = observer(
       }
     }, [])
 
-    React.useEffect(() => {
+    useEffect(() => {
       fetchCategories()
     }, [])
 
     return (
-      <Select
-        options={groupedCategories}
-        formatGroupLabel={formatGroupLabel}
-        placeholder='აირჩიეთ კატეგორია ...'
-        name={name}
-        onChange={onChange}
-        required={required}
-        //isClearable={true}
-        isSearchable={true}
-        value={value}
-      />
+      <>
+        <Select
+          formatGroupLabel={formatGroupLabel}
+          options={groupedCategories}
+          placeholder='აირჩიეთ კატეგორია ...'
+          name={name}
+          onChange={handleChange}
+          isSearchable={true}
+        />
+      </>
     )
   }
 )

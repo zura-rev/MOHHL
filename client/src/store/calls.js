@@ -1,5 +1,4 @@
 import { makeAutoObservable } from 'mobx'
-
 export class CallsState {
   _calls = []
   _totalCount = null
@@ -15,6 +14,14 @@ export class CallsState {
 
   setCalls = (calls) => {
     this._calls = calls
+  }
+
+  // setPager = (pager) => {
+  //   this._pager = pager
+  // }
+
+  setMatchCalls = (matchCalls) => {
+    this._matchCalls = matchCalls
   }
 
   setTotalCount = (totalCount) => {
@@ -37,12 +44,16 @@ export class CallsState {
     this._hasNextPage = hasNextPage
   }
 
-  setMatchCalls = (matchCalls) => {
-    this._matchCalls = matchCalls
-  }
-
   get calls() {
     return this._calls
+  }
+
+  get pager() {
+    return this._pager
+  }
+
+  get matchCalls() {
+    return this._matchCalls
   }
 
   get totalCount() {
@@ -64,8 +75,5 @@ export class CallsState {
   get hasNextPage() {
     return this._hasNextPage
   }
-
-  get matchCalls() {
-    return this._matchCalls
-  }
 }
+
