@@ -4,7 +4,8 @@ export class CategoriesState {
   _categories = []
   _groupedCategories = []
   _parentCategories = []
-  
+  _selectedCategory = null
+
   constructor() {
     makeAutoObservable(this)
   }
@@ -41,6 +42,10 @@ export class CategoriesState {
     }))
   }
 
+  // setSelectedCategory = (category) => {
+  //   this._selectedCategory = category
+  // }
+
   get categories() {
     return this._categories
   }
@@ -52,6 +57,10 @@ export class CategoriesState {
   get parentCategories() {
     return this._parentCategories
   }
+
+  // get selectedCategory() {
+  //   return this._selectedCategory
+  // }
 }
 
 

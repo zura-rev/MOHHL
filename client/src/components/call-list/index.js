@@ -70,6 +70,7 @@ export const CallList = observer(() => {
     } = await request(url, 'GET', null, { Authorization: `Bearer ${user.token}` })
 
     //const p = { totalCount: totalcount, totalPages: totalpages, pageSize: pagesize, pageIndex: pageindex, hasNextPage: hasnextpage }
+    
     setCalls(data)
     setSubmit(false)
     setTotalCount(Number(totalcount))
@@ -81,7 +82,7 @@ export const CallList = observer(() => {
   }, [pageIndex, pageSize, submit])
 
   useEffect(() => {
-    console.log('useEffect')
+    //console.log('useEffect')
     fetchCalls()
   }, [pageIndex, pageSize, submit])
 
@@ -108,7 +109,7 @@ export const CallList = observer(() => {
             <th>ტელეფონი</th>
             <th>თარიღი</th>
             <th>კატეგორია</th>
-            <th>სტატუსი</th>
+            <th>ზარის ტიპი</th>
             <th>ოპერატორი</th>
           </tr>
         </thead>
@@ -133,11 +134,9 @@ export const CallList = observer(() => {
               <td>{moment(call.createDate).format('LLLL')}</td>
               <td>{call.category?.categoryName}</td>
               <td>
-                {call.callStatus === 1
-                  ? 'დასრულებული'
-                  : call.callStatus === 2
-                    ? 'გასარკვევი'
-                    : 'სასწრაფო'}
+                {call.callType === 1
+                  ? 'კონსულტაცია'
+                  : 'ბარათი'}
               </td>
               <td>
                 {call.user.firstName} {call.user.lastName}

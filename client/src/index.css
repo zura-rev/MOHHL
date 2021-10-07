@@ -14,7 +14,6 @@ body {
 .form-control,
 .form-select {
   font-size: 13px !important;
-  padding: 9px !important;
 }
 
 .logo {
@@ -45,6 +44,7 @@ body {
 
 .login .card {
   background-color: #f9f9f9;
+  padding: 10px;
 }
 
 .action-bar {

@@ -35,8 +35,8 @@ export const CallCard = ({ call }) => {
                   <td>{call.category.categoryName}</td>
                 </tr>
                 <tr>
-                  <th>სტატუსი  </th>
-                  <td>{call.callStatus}</td>
+                  <th>ზარის ტიპი</th>
+                  <td>{call.callType}</td>
                 </tr>
                 <tr>
                   <th>აღწერა: </th>
@@ -61,12 +61,12 @@ export const CallCard = ({ call }) => {
                 </tr>
               </thead>
               <tbody>
-                {call.performers.map((performer) => (
-                  <tr key={performer.id}>
-                    <td>{performer.user.firstName}</td>
-                    <td>{performer.user.lastName}</td>
+                {call.cards.map((card) => (
+                  <tr key={card.id}>
+                    <td>{card.user.firstName}</td>
+                    <td>{card.user.lastName}</td>
                     <td>
-                      {performer.userType === 1 ? 'ოპერატორი' : 'სუპერვაიზერი'}
+                      {card.userType === 1 ? 'ოპერატორი' : 'სუპერვაიზერი'}
                     </td>
                   </tr>
                 ))}

@@ -37,6 +37,15 @@
   z-index: 10001;
 }
 
+.searchPanel input {
+  padding: 9px;
+}
+
+.dateControl {
+  padding: 9px !important;
+  /* margin-left: 5px; */
+}
+
 .searchBadge {
   border-radius: 30px;
   background-color: #eaeaea;

@@ -24,7 +24,7 @@ export function CreateCall() {
     category: null,
     phone: '',
     note: '',
-    callStatus: null,
+    callType: null,
   })
   const { request, error, clearError } = useHttp()
   const message = useMessage()
@@ -162,20 +162,19 @@ export function CreateCall() {
 
             <Form.Group className='mb-3'>
               <Form.Label>
-                <strong>სტატუსი</strong>
+                <strong>ზარის ტიპი</strong>
               </Form.Label>
               <Form.Select
                 required
                 as='select'
-                id='callStatus'
-                name='callStatus'
-                value={state.callStatus || ''}
+                id='callType'
+                name='callType'
+                value={state.callType || ''}
                 onChange={handleChange}
               >
                 <option value=''>აირჩეთ ...</option>
-                <option value='1'>შესრულებული</option>
-                <option value='2'>გასარკვევი</option>
-                <option value='3'>საჩქარო</option>
+                <option value='1'>კონსულტაცია</option>
+                <option value='2'>ბარათი</option>
               </Form.Select>
             </Form.Group>
 

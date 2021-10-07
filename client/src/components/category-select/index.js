@@ -32,19 +32,16 @@ const formatGroupLabel = (data) => (
 )
 
 export const CategorySelect = observer(
-  ({ name, onChange, required }) => {
+  ({ name, onChange, required, value }) => {
     const { loading, request } = useHttp()
     const { user } = useContext(AuthContext)
-    const { categoriesState } = useContext(StoreContext)
-    const { groupedCategories, setCategories } = categoriesState
+    const { categoriesState: { groupedCategories, setCategories } } = useContext(StoreContext)
 
     // if (!value && required) {
     //   console.log('value', value)
     // }
 
     const handleChange = (selected, nameOfComponent) => {
-      console.log('selected', selected)
-      console.log('nameOfComponent', nameOfComponent)
       onChange(selected, nameOfComponent)
     }
 
@@ -72,6 +69,7 @@ export const CategorySelect = observer(
           name={name}
           onChange={handleChange}
           isSearchable={true}
+          value={value}
         />
       </>
     )

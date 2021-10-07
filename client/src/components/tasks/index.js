@@ -35,7 +35,7 @@ export const Tasks = observer(() => {
 
     const { loading, request } = useHttp()
 
-    const url = `/api/performers?pageIndex=${pageIndex}&pageSize=${pageSize}
+    const url = `/api/card?pageIndex=${pageIndex}&pageSize=${pageSize}
         ${filter.id ? `&id=${filter.id}` : ''}
         ${filter.callId ? `&callId=${filter.callId}` : ''}
         ${filter.userId ? `&userId=${filter.userId}` : ''}

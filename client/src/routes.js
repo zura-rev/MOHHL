@@ -8,13 +8,13 @@ import { faCheck, faBars, faUsersCog, faPlus, } from '@fortawesome/fontawesome-f
 import { faHeadset } from '@fortawesome/free-solid-svg-icons'
 
 
-export const user = {
-  firstName: "ზურაბ",
-  lastName: "რევაზიშვილი",
-  privateNumber: "00000000001",
-  resources: "ROLE.ADMIN",
-  userName: "admin"
-}
+// export const user = {
+//   firstName: "ზურაბ",
+//   lastName: "რევაზიშვილი",
+//   privateNumber: "00000000001",
+//   resources: "ROLE.ADMIN",
+//   userName: "admin"
+// }
 
 export const routes = [
   {

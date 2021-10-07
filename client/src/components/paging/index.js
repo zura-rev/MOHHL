@@ -18,11 +18,11 @@ export const Paging = observer(() => {
   } = callsState
 
   return (
-    <div className='d-flex justify-content-between'>
+    <div className='d-flex justify-content-between '>
       <div
-        className='input-group input-group-sm'
+        className='input-group input-group-sm mt-3'
         disabled
-        style={{ width: '470px', zIndex: 0, marginTop: '15px' }}
+        style={{ width: '470px', zIndex: 0 }}
       >
         <div className='form-control text-center' style={{ width: '270px' }}>
           <b>რაოდენობა</b> {totalCount} <b>/ გვერდი</b> {totalPages}
@@ -69,10 +69,12 @@ export const Paging = observer(() => {
           // </div>
         ) : null}
       </div>
-      <button className='btn btn-sm btn-outline-primary mt-3'>
-        <FontAwesomeIcon icon={faFileExcel} className='me-1' />
-        ექსელი
-      </button>
+      <div>
+        <button className='btn btn-sm btn-outline-primary mt-3'>
+          <FontAwesomeIcon icon={faFileExcel} className='me-1' />
+          ექსელი
+        </button>
+      </div>
     </div>
   )
 })

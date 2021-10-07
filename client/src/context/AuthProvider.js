@@ -4,6 +4,7 @@ export const AuthContext = createContext(null)
 
 export const AuthProvider = ({ children }) => {
   const { login, logout, user } = useAuth()
+  console.log('_user', user)
   return (
     <AuthContext.Provider
       value={{

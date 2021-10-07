@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import { format } from 'date-fns'
@@ -15,9 +15,24 @@ import {
   removeFilterItem,
   searchTitle,
   searchValues,
+  dateControl
 } from './style.module.css'
 
 registerLocale('ka', ka)
+
+
+
+const labelKa = {
+  fromDate: 'თარიღიდან',
+  toDate: 'თარიღამდე',
+  privateNumber: 'პირადი N',
+  callAuthor: 'ზარის ავტორი',
+  callNumber: 'ზარის ნომერი',
+  phone: 'ტელეფონი',
+  category: 'კატეგორია',
+  note: 'ზარის შინაარსი',
+}
+
 
 export const Search = observer(() => {
 
@@ -38,7 +53,6 @@ export const Search = observer(() => {
   }
 
   const filterArray = Object.entries(filter).filter((item) => item[1] !== '')
-
 
   const close = () => {
     // clearFilter()
@@ -67,12 +81,19 @@ export const Search = observer(() => {
   const createSearchBadge = (item, index) => {
     let label = item[0]
     let value = item[1]
+
     if (label === 'fromDate' || label === 'toDate') {
       value = format(new Date(value), 'dd/MM/yyyy')
     }
+
+    if (label === 'category') {
+      console.log('___', item[1])
+      value = item[1].label
+    }
+
     return (
       <span key={index} className={searchBadge}>
-        <label>{label}</label> = <span>{value.toString()}</span>
+        <label>{labelKa[label]}</label> = <span>{value.toString()}</span>
         <FontAwesomeIcon
           icon={faTimes}
           color='red'
@@ -113,7 +134,7 @@ export const Search = observer(() => {
                     selected={filter.fromDate}
                     value={filter.fromDate}
                     name='fromDate'
-                    className='form-control'
+                    className={dateControl}
                     onChange={(date) =>
                       changeFilter({ ...filter, ['fromDate']: date })
                     }
@@ -128,7 +149,7 @@ export const Search = observer(() => {
                     selected={filter.toDate}
                     value={filter.toDate}
                     name='toDate'
-                    className='form-control'
+                    className={dateControl}
                     onChange={(date) =>
                       changeFilter({ ...filter, ['toDate']: date })
                     }
@@ -139,7 +160,7 @@ export const Search = observer(() => {
                 <input
                   id='callNumber'
                   className='form-control'
-                  type='text'
+                  type='number'
                   name='callNumber'
                   value={filter.callNumber}
                   onChange={handleFilterChange}
