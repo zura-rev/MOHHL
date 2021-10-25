@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import { format } from 'date-fns'
@@ -20,8 +20,6 @@ import {
 
 registerLocale('ka', ka)
 
-
-
 const labelKa = {
   fromDate: 'თარიღიდან',
   toDate: 'თარიღამდე',
@@ -33,11 +31,10 @@ const labelKa = {
   note: 'ზარის შინაარსი',
 }
 
+export const Filter = observer(() => {
 
-export const Search = observer(() => {
-
-  const { filterState } = useContext(StoreContext)
-  const { filter, changeFilter, setSubmit, clearFilter } = filterState
+  const { callsState } = useContext(StoreContext)
+  const { filter, changeFilter, setSubmit, clearFilter } = callsState
   const [showSearchBar, setShowSearchBar] = useState(false)
 
   const handleFilterChange = (event) => {
@@ -252,8 +249,6 @@ export const Search = observer(() => {
           </div>
         </div>
       ) : null}
-
-      {/*<ActionButtons />*/}
     </>
   )
 })

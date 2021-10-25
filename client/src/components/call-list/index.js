@@ -16,26 +16,11 @@ import { callList, noRecord } from './style.module.css'
 export const CallList = observer(() => {
 
   const { user } = useContext(AuthContext)
-  const { callsState, filterState } = useContext(StoreContext)
+  const { callsState } = useContext(StoreContext)
   const history = useHistory()
   const message = useMessage()
 
   const myclass = classNames(callList)
-
-  const {
-    filter: {
-      fromDate,
-      toDate,
-      privateNumber,
-      callAuthor,
-      callNumber,
-      category,
-      phone,
-      note,
-    },
-    submit,
-    setSubmit,
-  } = filterState
 
   const {
     calls,
@@ -47,21 +32,22 @@ export const CallList = observer(() => {
     setPageIndex,
     setPageSize,
     setHasNextPage,
-    //pager,
-    //setPager,
+    filter,
+    submit,
+    setSubmit,
   } = callsState
 
   const { loading, request } = useHttp()
 
   const url = `/api/calls?pageIndex=${pageIndex}&pageSize=${pageSize}
-      ${callNumber ? `&id=${callNumber}` : ''}
-      ${phone ? `&phone=${phone}` : ''}
-      ${privateNumber ? `&privateNumber=${privateNumber}` : ''}
-      ${callAuthor ? `&callAuthor=${callAuthor}` : ''}
-      ${category ? `&categoryId=${category.id}` : ''}
-      ${note ? `&note=${note}` : ''}
-      ${fromDate ? `&fromDate=${moment(fromDate).format('YYYY-MM-DD')}` : ''}
-      ${toDate ? `&toDate=${moment(toDate).format('YYYY-MM-DD')}` : ''}`
+      ${filter.callNumber ? `&id=${filter.callNumber}` : ''}
+      ${filter.phone ? `&phone=${filter.phone}` : ''}
+      ${filter.privateNumber ? `&privateNumber=${filter.privateNumber}` : ''}
+      ${filter.callAuthor ? `&callAuthor=${filter.callAuthor}` : ''}
+      ${filter.category ? `&categoryId=${filter.category.id}` : ''}
+      ${filter.note ? `&note=${filter.note}` : ''}
+      ${filter.fromDate ? `&fromDate=${moment(filter.fromDate).format('YYYY-MM-DD')}` : ''}
+      ${filter.toDate ? `&toDate=${moment(filter.toDate).format('YYYY-MM-DD')}` : ''}`
 
   const fetchCalls = useCallback(async () => {
     const {
@@ -106,7 +92,6 @@ export const CallList = observer(() => {
     }
     return null
   }
-  //console.log('_call_', calls)
   return (
     <div className={myclass}>
       <table className='table table-hover'>

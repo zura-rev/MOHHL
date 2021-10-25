@@ -5,9 +5,7 @@ import { AuthPage } from './pages/AuthPage'
 import { Layout } from './layout'
 import { AuthContext } from './context/AuthProvider'
 
-
 function PrivateRoute({ user, ...route }) {
-  //console.log('route', route)
   if (route.permissons.includes(user.resources)) {
     return (
       <Route

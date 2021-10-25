@@ -1,14 +1,12 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackward, faForward, faFileExcel } from '@fortawesome/fontawesome-free-solid'
 import { observer } from 'mobx-react-lite'
-//import { StoreContext } from '../../context/StoreProvider'
 
 
 export const Paging = observer(({
   pagerProps,
 }) => {
-  // const { callsState } = useContext(StoreContext)
   const {
     totalCount,
     totalPages,

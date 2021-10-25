@@ -1,5 +1,18 @@
 import { makeAutoObservable } from 'mobx'
+
+const filterState = {
+  fromDate: '',
+  toDate: '',
+  privateNumber: '',
+  callAuthor: '',
+  callNumber: '',
+  phone: '',
+  category: '',
+  note: '',
+}
+
 export class CallsState {
+
   _calls = []
   _totalCount = null
   _totalPages = null
@@ -7,6 +20,8 @@ export class CallsState {
   _pageSize = 10
   _hasNextPage = false
   _matchCalls = []
+  _filter = filterState
+  _submit = false
 
   constructor() {
     makeAutoObservable(this)
@@ -15,10 +30,6 @@ export class CallsState {
   setCalls = (calls) => {
     this._calls = calls
   }
-
-  // setPager = (pager) => {
-  //   this._pager = pager
-  // }
 
   setMatchCalls = (matchCalls) => {
     this._matchCalls = matchCalls
@@ -75,5 +86,27 @@ export class CallsState {
   get hasNextPage() {
     return this._hasNextPage
   }
+
+
+  changeFilter = (filter) => {
+    this._filter = filter
+  }
+
+  clearFilter = () => {
+    this._filter = filterState
+  }
+
+  setSubmit = (value) => {
+    this._submit = value
+  }
+
+  get filter() {
+    return this._filter
+  }
+
+  get submit() {
+    return this._submit
+  }
+
 }
 

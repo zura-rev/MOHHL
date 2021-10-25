@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { CallList } from '../components/call-list'
-import { Link } from 'react-router-dom'
-import { Search } from '../components/search-bar'
+import { Filter } from '../components/filter'
 import { Paging } from '../components/paging'
 import { StoreContext } from '../context/StoreProvider'
 
@@ -21,7 +20,7 @@ export const CallsPage = () => {
           padding: '15px',
         }}
       >
-        <Search />
+        <Filter />
         <Paging pagerProps={callsState} />
       </div>
       <CallList />
