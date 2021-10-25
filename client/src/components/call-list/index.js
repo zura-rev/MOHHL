@@ -70,7 +70,7 @@ export const CallList = observer(() => {
     } = await request(url, 'GET', null, { Authorization: `Bearer ${user.token}` })
 
     //const p = { totalCount: totalcount, totalPages: totalpages, pageSize: pagesize, pageIndex: pageindex, hasNextPage: hasnextpage }
-    
+
     setCalls(data)
     setSubmit(false)
     setTotalCount(Number(totalcount))
@@ -82,7 +82,6 @@ export const CallList = observer(() => {
   }, [pageIndex, pageSize, submit])
 
   useEffect(() => {
-    //console.log('useEffect')
     fetchCalls()
   }, [pageIndex, pageSize, submit])
 
@@ -98,6 +97,16 @@ export const CallList = observer(() => {
     history.push(`/calls/${id}`)
   }
 
+  const getCallStatus = (call) => {
+    if (call.callType === 2) {
+      return <FontAwesomeIcon
+        icon='flag'
+        color={call?.card?.status === 0 ? 'red' : 'green'}
+      />
+    }
+    return null
+  }
+  //console.log('_call_', calls)
   return (
     <div className={myclass}>
       <table className='table table-hover'>
@@ -117,16 +126,7 @@ export const CallList = observer(() => {
           {calls.map((call) => (
             <tr key={call.id} onClick={() => getCall(call.id)}>
               <td>
-                <FontAwesomeIcon
-                  icon='flag'
-                  color={
-                    call.callStatus === 1
-                      ? 'green'
-                      : call.callStatus === 2
-                        ? '#CCCC00'
-                        : 'red'
-                  }
-                />
+                {getCallStatus(call)}
               </td>
               <td>{call.privateNumber}</td>
               <td>{call.callAuthor}</td>

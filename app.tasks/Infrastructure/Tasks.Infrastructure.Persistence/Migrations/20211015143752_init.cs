@@ -17,10 +17,7 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ParentId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ParentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,10 +51,7 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                     PrivateNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -78,9 +72,7 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                     Note = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CallType = table.Column<int>(type: "int", maxLength: 100, nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,7 +89,7 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                         principalSchema: "dbo",
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -133,12 +125,12 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CallId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: true),
                     UserType = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     PerformDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CallId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -149,7 +141,7 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                         principalSchema: "dbo",
                         principalTable: "Calls",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cards_Users_UserId",
                         column: x => x.UserId,
@@ -173,12 +165,12 @@ namespace Tasks.Infrastructure.Persistence.Migrations
             migrationBuilder.InsertData(
                 schema: "dbo",
                 table: "Users",
-                columns: new[] { "Id", "DateCreated", "DateDeleted", "Description", "FirstName", "LastName", "Password", "PrivateNumber", "UserId", "UserName" },
+                columns: new[] { "Id", "Description", "FirstName", "LastName", "Password", "PrivateNumber", "UserName" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 9, 14, 23, 16, 50, 813, DateTimeKind.Local).AddTicks(3824), null, "ადმინისტრატორი", "ზურაბ", "რევაზიშვილი", "135991F75307D7442CEB1F1A39504AB0", "00000000001", 0, "admin" },
-                    { 2, new DateTime(2021, 9, 14, 23, 16, 50, 814, DateTimeKind.Local).AddTicks(7428), null, "სუპერვაიზერი", "მარიკა", "ზარნაძე", "90EA53D8F91C21B9A364DBAD988C4C98", "00000000002", 0, "super" },
-                    { 3, new DateTime(2021, 9, 14, 23, 16, 50, 814, DateTimeKind.Local).AddTicks(7507), null, "ოპერატორი", "ნინო", "მოდებაძე", "E04CF44BD1C6B27DE5C79FB2012A01F2", "00000000003", 0, "oper" }
+                    { 1, "ადმინისტრატორი", "ზურაბ", "რევაზიშვილი", "2D08086927F4D87A31154AAF0BA2E067", "00000000001", "admin" },
+                    { 2, "სუპერვაიზერი", "მარიკა", "ზარნაძე", "90EA53D8F91C21B9A364DBAD988C4C98", "00000000002", "super" },
+                    { 3, "ოპერატორი", "ნინო", "მოდებაძე", "E04CF44BD1C6B27DE5C79FB2012A01F2", "00000000003", "oper" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -196,7 +188,8 @@ namespace Tasks.Infrastructure.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Cards_CallId",
                 table: "Cards",
-                column: "CallId");
+                column: "CallId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cards_UserId",

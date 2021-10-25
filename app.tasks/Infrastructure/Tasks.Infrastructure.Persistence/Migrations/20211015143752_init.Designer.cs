@@ -10,7 +10,7 @@ using Tasks.Infrastructure.Persistence;
 namespace Tasks.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210914191651_init")]
+    [Migration("20211015143752_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,12 +58,6 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateDeleted")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Note")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -79,7 +73,7 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -98,7 +92,7 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CallId")
+                    b.Property<int>("CallId")
                         .HasColumnType("int");
 
                     b.Property<string>("Note")
@@ -118,7 +112,8 @@ namespace Tasks.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CallId");
+                    b.HasIndex("CallId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -135,16 +130,7 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateDeleted")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -199,12 +185,6 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateDeleted")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
@@ -227,9 +207,6 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -249,37 +226,31 @@ namespace Tasks.Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2021, 9, 14, 23, 16, 50, 813, DateTimeKind.Local).AddTicks(3824),
                             Description = "ადმინისტრატორი",
                             FirstName = "ზურაბ",
                             LastName = "რევაზიშვილი",
-                            Password = "135991F75307D7442CEB1F1A39504AB0",
+                            Password = "2D08086927F4D87A31154AAF0BA2E067",
                             PrivateNumber = "00000000001",
-                            UserId = 0,
                             UserName = "admin"
                         },
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2021, 9, 14, 23, 16, 50, 814, DateTimeKind.Local).AddTicks(7428),
                             Description = "სუპერვაიზერი",
                             FirstName = "მარიკა",
                             LastName = "ზარნაძე",
                             Password = "90EA53D8F91C21B9A364DBAD988C4C98",
                             PrivateNumber = "00000000002",
-                            UserId = 0,
                             UserName = "super"
                         },
                         new
                         {
                             Id = 3,
-                            DateCreated = new DateTime(2021, 9, 14, 23, 16, 50, 814, DateTimeKind.Local).AddTicks(7507),
                             Description = "ოპერატორი",
                             FirstName = "ნინო",
                             LastName = "მოდებაძე",
                             Password = "E04CF44BD1C6B27DE5C79FB2012A01F2",
                             PrivateNumber = "00000000003",
-                            UserId = 0,
                             UserName = "oper"
                         });
                 });
@@ -307,9 +278,7 @@ namespace Tasks.Infrastructure.Persistence.Migrations
 
                     b.HasOne("Tasks.Core.Domain.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
 
@@ -319,8 +288,10 @@ namespace Tasks.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Tasks.Core.Domain.Models.Card", b =>
                 {
                     b.HasOne("Tasks.Core.Domain.Models.Call", "Call")
-                        .WithMany("Cards")
-                        .HasForeignKey("CallId");
+                        .WithOne("Card")
+                        .HasForeignKey("Tasks.Core.Domain.Models.Card", "CallId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Tasks.Core.Domain.Models.User", "User")
                         .WithMany()
@@ -333,7 +304,7 @@ namespace Tasks.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Tasks.Core.Domain.Models.Call", b =>
                 {
-                    b.Navigation("Cards");
+                    b.Navigation("Card");
                 });
 #pragma warning restore 612, 618
         }

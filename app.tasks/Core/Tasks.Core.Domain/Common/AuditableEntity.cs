@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tasks.Core.Domain.Models
+namespace Tasks.Core.Domain.Common
 {
     public abstract class AuditableEntity
     {

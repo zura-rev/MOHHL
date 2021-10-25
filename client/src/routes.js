@@ -60,13 +60,13 @@ export const routes = [
     icon: faBars,
     permissons: ['ROLE.ADMIN']
   },
-  {
-    id: 6,
-    path: '/settings',
-    component: SettingsPage,
-    exact: 'exact',
-    name: 'თვისებები',
-    icon: faUsersCog,
-    permissons: ['ROLE.ADMIN']
-  },
+  // {
+  //   id: 6,
+  //   path: '/settings',
+  //   component: SettingsPage,
+  //   exact: 'exact',
+  //   name: 'თვისებები',
+  //   icon: faUsersCog,
+  //   permissons: ['ROLE.ADMIN']
+  // },
 ]

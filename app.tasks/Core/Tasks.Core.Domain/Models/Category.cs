@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Tasks.Core.Domain.Models
 {
-    public class Category: AuditableEntity
+    public class Category //: AuditableEntity
     {
         public int Id { get; set; }
         public string CategoryName { get; set; }

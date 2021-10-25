@@ -44,7 +44,6 @@ namespace Tasks.Infrastructure.Persistence.Implementations
             return await context.Set<TEntity>().Where(predicate).ToListAsync();
         }
 
-
         public virtual void Update(TEntity entity)
         {
             context.Set<TEntity>().Update(entity);

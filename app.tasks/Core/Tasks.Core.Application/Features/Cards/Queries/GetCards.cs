@@ -11,13 +11,14 @@ using AutoMapper;
 using CleanSolution.Core.Application.DTOs;
 using System.Linq;
 using System.Collections.Generic;
+using Tasks.Core.Application.Interfaces.Contracts;
 
 namespace Tasks.Core.Application.Features.Calls.Queries
 {
     public class GetCardRequest : IRequest<GetPaginationDto<GetCardDto>>
     {
-        public int pageIndex { get; set; }
-        public int pageSize { get; set; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
 
         public int Id { get; set; }
         public int CallId { get; set; }
@@ -33,25 +34,32 @@ namespace Tasks.Core.Application.Features.Calls.Queries
     {
         private readonly IUnitOfWork unit;
         private readonly IMapper mapper;
-        public GetCardHandler(IUnitOfWork unit, IMapper mapper)
+        private readonly ICurrentUserService user;
+
+        public GetCardHandler(IUnitOfWork unit, IMapper mapper, ICurrentUserService user)
         {
             this.unit = unit;
             this.mapper = mapper;
+            this.user = user;
         }
 
         public async Task<GetPaginationDto<GetCardDto>> Handle(GetCardRequest request, CancellationToken cancellationToken)
         {
+
+            var userInfo = unit.UserRepository.GetUserById(user.AccountId);
+            var has = userInfo.Resources.Any(x=>x.Name == "ROLE.ADMIN");
+
             var cards = unit.CardRepository.Filter(
                 request.Id,
                 request.CallId,
-                request.UserId,
+                has? 0: user.AccountId,
                 request.UserType,
                 request.Status,
                 request.Note,
                 request.PerformDate
             );
 
-            var performerList = await Pagination<Card>.CreateAsync(cards, request.pageIndex, request.pageSize);
+            var performerList = await Pagination<Card>.CreateAsync(cards, request.PageIndex, request.PageSize);
             var result = mapper.Map<GetPaginationDto<GetCardDto>>(performerList);
             return result;
         }
@@ -61,8 +69,8 @@ namespace Tasks.Core.Application.Features.Calls.Queries
     {
         public GetCardValidator()
         {
-            RuleFor(x => x.pageIndex).GreaterThanOrEqualTo(1).WithMessage("მიუთითეთ გვერდის ნომერი");
-            RuleFor(x => x.pageSize).GreaterThan(0).WithMessage("მიუთითეთ გვერდის ზომა");
+            RuleFor(x => x.PageIndex).GreaterThanOrEqualTo(1).WithMessage("მიუთითეთ გვერდის ნომერი");
+            RuleFor(x => x.PageSize).GreaterThan(0).WithMessage("მიუთითეთ გვერდის ზომა");
         }
     }
 }

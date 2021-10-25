@@ -3,9 +3,10 @@ import moment from 'moment'
 import 'moment/locale/ka'
 
 export const CallCard = ({ call }) => {
+  //console.log('call', call)
   return (
     <div className='row'>
-      <div className='col'>
+      <div className='col-6'>
         <div className='card'>
           <div className='card-body'>
             <h5>
@@ -36,45 +37,57 @@ export const CallCard = ({ call }) => {
                 </tr>
                 <tr>
                   <th>ზარის ტიპი</th>
-                  <td>{call.callType}</td>
+                  <td>{call.callType === 1 ? 'კონსულტაცია' : 'ბარათი'}</td>
                 </tr>
                 <tr>
-                  <th>აღწერა: </th>
+                  <th>აღწერა </th>
                   <td>{call.note}</td>
                 </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div className='col'>
-        <div className='card'>
-          <div className='card-body'>
-            <h5>შემსრულებლები</h5>
-            <hr />
-            <table className='table'>
-              <thead>
                 <tr>
-                  <th>სახელი</th>
-                  <th>გვარი</th>
-                  <th>პოზიცია</th>
+                  <th>ოპერატორი </th>
+                  <td>
+                    {call.user.firstName} {call.user.lastName}
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {call.cards.map((card) => (
-                  <tr key={card.id}>
-                    <td>{card.user.firstName}</td>
-                    <td>{card.user.lastName}</td>
-                    <td>
-                      {card.userType === 1 ? 'ოპერატორი' : 'სუპერვაიზერი'}
-                    </td>
-                  </tr>
-                ))}
               </tbody>
             </table>
           </div>
         </div>
       </div>
-    </div>
-  )
+      {
+        call.card ?
+          <div className='col-6'>
+            <div className='card'>
+              <div className='card-body'>
+                <h5>სუპერვაიზერი</h5>
+                <hr />
+                <table className='table'>
+                  <tbody>
+                    <tr>
+                      <th>სახელი</th>
+                      <td>{call.card.user.firstName}</td>
+                    </tr>
+                    <tr>
+                      <th>გვარი</th>
+                      <td>{call.card.user.lastName}</td>
+                    </tr>
+                    <tr>
+                      <th>სტატუსი</th>
+                      <td><h6 style={{ marginBottom: 0 }}>{call.card.status === 1 ? <span className='badge rounded-pill bg-success'>დასრულებული</span> : <span className='badge rounded-pill bg-danger'>დამუშავების პროცესში</span>}</h6></td>
+                    </tr>
+                    <tr>
+                      <th>შესრულების თარიღი</th>
+                      <td>{call.card.performDate ? moment(call.card.performDate).format('LLLL') : '-'}</td>
+                    </tr>
+                    <tr>
+                      <th>აღწერა</th>
+                      <td>{call.card.note ?? '-'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div> : null
+      }
+    </div>)
 }

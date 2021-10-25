@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Tasks.Presentation.WebApi.Extensions.Services;
 using System.Linq;
+using Tasks.Core.Application.Interfaces.Contracts;
 
 namespace Tasks.Presentation.WebApi.Extensions.Middlewares
 {
@@ -15,14 +16,14 @@ namespace Tasks.Presentation.WebApi.Extensions.Middlewares
             this.next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context, ActiveObjectsService usersCaching)
+        public async Task InvokeAsync(HttpContext context, IActiveObjectsService usersCaching)
         {
             //HandleUserCache(context, usersCaching);
             await Task.Run(() => HandleUserCache(context, usersCaching));
             await next(context);
         }
 
-        private void HandleUserCache(HttpContext context, ActiveObjectsService usersCaching)
+        private void HandleUserCache(HttpContext context, IActiveObjectsService usersCaching)
         {
             //string userName = context.User?.FindFirstValue("UserName");
             //usersCaching.AddOrProlong(userName);

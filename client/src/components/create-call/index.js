@@ -25,6 +25,7 @@ export function CreateCall() {
     phone: '',
     note: '',
     callType: null,
+    //userId: 1
   })
   const { request, error, clearError } = useHttp()
   const message = useMessage()

@@ -15,8 +15,11 @@ namespace Tasks.Infrastructure.Persistence.Implementations.Repositories
             try
             {
                 var res = context.Cards
-                    .Include(x => x.Call).ThenInclude(x=>x.Category)
-                    .Include(x => x.Call).ThenInclude(x=>x.User)
+                    .Include(x=>x.User)
+                    .Include(x => x.Call)
+                    .ThenInclude(x=>x.Category)
+                    .Include(x => x.Call)
+                    .ThenInclude(x=>x.User)
                     .Where(x => x.UserType == 2 &&
                          (id == 0 || x.Id == id) &&
                          //(x.CreateDate > fromDate && x.CreateDate < toDate.AddDays(1)) &&
@@ -27,7 +30,6 @@ namespace Tasks.Infrastructure.Persistence.Implementations.Repositories
                          (string.IsNullOrWhiteSpace(note) || x.Note.Contains(note)))
                      .OrderByDescending(x => x.Id);
                 return res;
-
             }
             catch (Exception ex)
             {
@@ -35,59 +37,22 @@ namespace Tasks.Infrastructure.Persistence.Implementations.Repositories
             }
         }
 
-        //IEnumerable<Call> ICallRepository.GetExecutableCalls(string user)
-        //{
-        //    try
-        //    {
-        //        var res = context.Calls
-        //       .Include(x => x.Category)
-        //       .Include(x => x.Performers)
-        //       .ThenInclude(x => x.User)
-        //       .Where(x => x.User.UserName == user && x.CallStatus != 1)
-        //        .OrderByDescending(x => x.Id);
-        //        return res;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        //IEnumerable<Call> ICallRepository.GetMatchCalls(string phone, string privateNumber)
-        //{
-        //    try
-        //    {
-        //            var res = context.Calls
-        //           .Include(x => x.Category)
-        //           .Include(x => x.Performers)
-        //           .ThenInclude(x=>x.User)
-        //           .Where(x =>
-        //                (string.IsNullOrWhiteSpace(phone) || x.Phone == phone) &&
-        //                (string.IsNullOrWhiteSpace(privateNumber) || x.PrivateNumber == privateNumber))
-        //            .OrderByDescending(x => x.Id);
-        //            return res;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        //Call ICallRepository.GetById(int id)
-        //{
-        //    return context.Calls
-        //        .Include(x => x.Category)
-        //        .Include(x => x.Performers)
-        //        .ThenInclude(x => x.User)
-        //        .FirstOrDefault(x => x.Id == id);
-        //}
-
-        //int ICallRepository.CreateCall(Call call)
-        //{
-        //    context.Calls.Add(call);
-        //    context.SaveChanges();
-        //    return call.Id;
-        //}
-
+        Card ICardRepository.UpdateCard(int id, string note) 
+        {
+            try
+            {
+                var card = context.Cards.FirstOrDefault(x => x.CallId==id);
+                card.Status = 1;
+                card.PerformDate = DateTime.Now;
+                card.Note = note;
+                context.SaveChanges();
+                return card;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        
     }
 }

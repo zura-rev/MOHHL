@@ -30,8 +30,9 @@ namespace Tasks.Infrastructure.Persistence.Implementations.Repositories
             {
                 var res = context.Calls
                     .Include(x => x.Category)
-                    .Include(x => x.Cards)
                     .Include(x => x.User)
+                    .Include(x => x.Card)
+                    .ThenInclude(x => x.User)
                     .Where(x =>
                          (id == 0 || x.Id == id) &&
                          (x.CreateDate > fromDate && x.CreateDate < toDate.AddDays(1)) &&
@@ -51,32 +52,14 @@ namespace Tasks.Infrastructure.Persistence.Implementations.Repositories
             }
         }
 
-        //IEnumerable<Call> ICallRepository.GetExecutableCalls(string user)
-        //{
-        //    try
-        //    {
-        //        var res = context.Calls
-        //       .Include(x => x.Category)
-        //       .Include(x => x.Performers)
-        //       .ThenInclude(x => x.User)
-        //       .Where(x => x.User.UserName == user && x.CallStatus != 1)
-        //        .OrderByDescending(x => x.Id);
-        //        return res;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
-
         IEnumerable<Call> ICallRepository.GetMatchCalls(string phone, string privateNumber)
         {
             try
             {
                     var res = context.Calls
                    .Include(x => x.Category)
-                   .Include(x => x.Cards)
-                   .ThenInclude(x=>x.User)
+                   .Include(x => x.Card)
+                   .Include(x=>x.User)
                    .Where(x =>
                         (string.IsNullOrWhiteSpace(phone) || x.Phone == phone) &&
                         (string.IsNullOrWhiteSpace(privateNumber) || x.PrivateNumber == privateNumber))
@@ -93,7 +76,8 @@ namespace Tasks.Infrastructure.Persistence.Implementations.Repositories
         {
             return context.Calls
                 .Include(x => x.Category)
-                .Include(x => x.Cards)
+                .Include(x=>x.User)
+                .Include(x => x.Card)
                 .ThenInclude(x => x.User)
                 .FirstOrDefault(x => x.Id == id);
         }

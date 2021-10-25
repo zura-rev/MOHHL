@@ -87,7 +87,7 @@ export const Search = observer(() => {
     }
 
     if (label === 'category') {
-      console.log('___', item[1])
+      //console.log('___', item[1])
       value = item[1].label
     }
 
@@ -113,8 +113,8 @@ export const Search = observer(() => {
         onClick={() => setShowSearchBar(!showSearchBar)}
       >
         <div className={searchTitle}>
-          <FontAwesomeIcon icon={faSearch} className='mr-2' />
-          ძებნა
+          <FontAwesomeIcon icon={faSearch} className='pr-2' />
+          ფილტრი
         </div>
         <div className={searchValues}>
           {filterArray.map((item, index) => createSearchBadge(item, index))}

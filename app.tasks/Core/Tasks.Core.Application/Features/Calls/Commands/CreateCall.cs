@@ -6,8 +6,6 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
 using Tasks.Core.Application.Interfaces.Contracts;
 
 namespace Tasks.Core.Application.Features.Calls.Commands
@@ -21,47 +19,28 @@ namespace Tasks.Core.Application.Features.Calls.Commands
         public Category Category { get; set; }
         public string Note { get; set; }
         public int CallType { get; set; }
-        //public int UserId { get; set; }
-        public IList<string> Supervaisers { get; set; }
+        public string Supervaiser { get; set; }
     }
 
     public class CreateCallHandler : IRequestHandler<CreateCallRequest, int>
     {
         private readonly IUnitOfWork unit;
         private readonly ICurrentUserService user;
-        public CreateCallHandler(IUnitOfWork unit, IMapper mapper, ICurrentUserService user)
+        private readonly IActiveObjectsService usersCaching;
+        public CreateCallHandler(IUnitOfWork unit, IMapper mapper, ICurrentUserService user, IActiveObjectsService usersCaching)
         {
             this.unit = unit;
             this.user = user;
+            this.usersCaching = usersCaching;
         }
 
         public Task<int> Handle(CreateCallRequest request, CancellationToken cancellationToken)
         {
             var category = unit.CategoryRepository.Read(request.Category.Id);
-            string userName = request.Supervaisers.FirstOrDefault();
+            
+            var currentUser = unit.UserRepository.GetUserById(user.AccountId);
 
-            var cards = new List<Card>();
-
-            cards.Add(new Card
-            {
-                User = unit.UserRepository.GetUserById(user.AccountId),
-                Status = 1,
-                UserType = 1
-            });
-
-            var supervisor = unit.UserRepository.GetUserByUserName(userName);
-
-            if (request.CallType > 1 && supervisor != null)
-            {
-                cards.Add(new Card
-                {
-                    User = supervisor,
-                    Status = 1,
-                    UserType = 2
-                });
-            }
-
-            int id = unit.CallRepository.CreateCall(new Call
+            var call = new Call
             {
                 Id = request.Id,
                 CallAuthor = request.CallAuthor,
@@ -71,8 +50,25 @@ namespace Tasks.Core.Application.Features.Calls.Commands
                 Note = request.Note,
                 CreateDate = DateTime.Now,
                 CallType = request.CallType,
-                Cards = cards
-            });
+                User = currentUser
+            };
+
+            if (request.CallType == 2)// && supervaiser != null)
+            {
+                var candidate = usersCaching.GetCandidate();
+                //request.Supervaiser = candidate;
+                var supervaiser = unit.UserRepository.GetUserByUserName(candidate);
+                usersCaching.IncrementTask(candidate);
+
+                call.Card = new Card
+                {
+                    User = supervaiser,
+                    Status = 0,
+                    UserType = 2
+                };                
+            }
+
+            int id = unit.CallRepository.CreateCall(call);
 
             return Task.FromResult(id);
         }

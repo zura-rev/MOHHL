@@ -14,7 +14,7 @@ import { taskItem } from './style.module.css'
 
 export const Tasks = observer(() => {
 
-    const taskItemClasses = classNames('card-body d-flex justify-content-between', taskItem)
+    const taskItemClasses = classNames('card-body', taskItem)
     const { user } = useContext(AuthContext)
     const { tasksState } = useContext(StoreContext)
 
@@ -34,6 +34,8 @@ export const Tasks = observer(() => {
     } = tasksState
 
     const { loading, request } = useHttp()
+
+    //console.log('userId', filter.userId)
 
     const url = `/api/card?pageIndex=${pageIndex}&pageSize=${pageSize}
         ${filter.id ? `&id=${filter.id}` : ''}
@@ -77,14 +79,40 @@ export const Tasks = observer(() => {
             {
                 tasks && tasks.map(task => <div key={task.id} className='card mb-2'>
                     <Link to={`/calls/${task.callId}`} className={taskItemClasses}>
-                        <ul>
-                            <li><strong>N</strong>:{task.callId}</li>
-                            <li><strong>სტატუსი</strong>:{task.status}</li>
-                            <li><strong>თარიღი</strong>:{moment(task.call.createDate).format('LLLL')}</li>
-                            <li><strong>მოქალაქე</strong>: {task.call.callAuthor}</li>
-                            <li><strong>კარეგორია</strong>: {task.call.category.categoryName}</li>
-                        </ul>
-                        <div>{task.call.user.firstName}  {task.call.user.lastName}</div>
+                        <div className='d-flex justify-content-between'>
+                            <div className='d-flex justify-content-start'>
+                                <div className='pe-3'><h4>{task.callId}</h4></div>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th>თარიღი</th>
+                                            <td>  {moment(task.call.createDate).format('LLLL')}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>მოქალაქე</th>
+                                            <td>  {task.call.callAuthor}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>კარეგორია</th>
+                                            <td>  {task.call.category.categoryName}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>ოპერატორი</th>
+                                            <td>  {task.call.user.firstName}  {task.call.user.lastName}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className='flex-column align-items-end'>
+                                <div className='text-end'>{task?.call?.card?.user?.firstName}  {task?.call?.card?.user?.lastName}</div>
+                                <div className='mt-5'>
+                                    <h6 style={{ marginBottom: 0 }}>{task.status === 1 ?
+                                        <span className='badge rounded-pill bg-success'>დასრულებული</span> :
+                                        <span className='badge rounded-pill bg-danger'>დამუშავების პროცესში</span>}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
                     </Link>
                 </div>)
             }

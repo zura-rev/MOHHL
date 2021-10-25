@@ -14,7 +14,7 @@ using Tasks.Core.Application.DTOs;
 namespace Tasks.Presentation.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class CategoriesController : ControllerBase
     {

@@ -7,8 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Tasks.Core.Application.DTOs;
 using Tasks.Core.Application.Features.Users.Commands;
 using Tasks.Presentation.Extensions.Services;
-using Tasks.Presentation.WebApi.Extensions.Services;
 using System.Collections.Generic;
+using Tasks.Core.Domain.Common;
+using Tasks.Core.Application.Interfaces.Contracts;
 
 namespace Tasks.Presentation.WebApi.Controllers
 {
@@ -18,17 +19,17 @@ namespace Tasks.Presentation.WebApi.Controllers
     {
 
         private readonly IMediator mediator;
-        private readonly ActiveObjectsService usersCaching;
+        private readonly IActiveObjectsService usersCaching;
 
-        public AccountsController(IMediator mediator, ActiveObjectsService usersCaching)
+        public AccountsController(IMediator mediator, IActiveObjectsService usersCaching)
         {
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             this.usersCaching = usersCaching;
         }
 
 
-        [HttpGet]
-        public IEnumerable<string> GetActiveSupervisorUsers()
+        [HttpGet("activeSupervaisers")]
+        public IEnumerable<Supervaiser> GetActiveSupervaisers()
         {
             return usersCaching.GetActiveRecords();
         }

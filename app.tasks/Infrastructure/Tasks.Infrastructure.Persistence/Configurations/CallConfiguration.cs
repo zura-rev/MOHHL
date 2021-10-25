@@ -55,12 +55,15 @@ namespace Tasks.Infrastructure.Persistence.Configurations
             //    .HasForeignKey<Call>("OperId");
 
             //builder.HasOne(d => d.Supervaiser)
-             //   .WithOne()
-             //   .HasForeignKey<Call>("SupervaiserId");
-                //.HasConstraintName("FK(SupervaiserId->User.Id)");
+            //   .WithOne()
+            //   .HasForeignKey<Call>("SupervaiserId");
+            //.HasConstraintName("FK(SupervaiserId->User.Id)");
             #endregion
 
             //builder.HasQueryFilter(x => !x.DateDeleted.HasValue && x.DateConfirmed.HasValue);
+            //builder.HasOne(x => x.Card)
+            //    .WithOne(x => x.Call)
+            //    .HasConstraintName("CallId");
         }
     }
 }

@@ -13,7 +13,7 @@ export class TasksState {
   _totalCount = null
   _totalPages = null
   _pageIndex = 1
-  _pageSize = 10
+  _pageSize = 5
   _hasNextPage = false
   _filter = filterState
   _submit = false

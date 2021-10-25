@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Tasks } from '../components/tasks'
+import { Paging } from '../components/paging'
+import { StoreContext } from '../context/StoreProvider'
 
 export function TasksPage() {
+    const { tasksState } = useContext(StoreContext)
     return (
-        <Tasks />
-    )
-}
+        <>
+            <Paging pagerProps={tasksState} />
+            <br />
+            <Tasks />
+        </>
+        )
+    }

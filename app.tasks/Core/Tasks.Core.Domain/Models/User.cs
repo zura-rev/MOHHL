@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tasks.Core.Domain.Models
 {
-    public class User: AuditableEntity
+    public class User //: AuditableEntity
     {
         public int Id { get; set; }
         public string UserName { get; set; }

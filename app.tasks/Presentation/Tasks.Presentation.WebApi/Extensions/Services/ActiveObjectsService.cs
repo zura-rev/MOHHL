@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tasks.Core.Application.Interfaces.Contracts;
+using Tasks.Core.Domain.Common;
 
 namespace Tasks.Presentation.WebApi.Extensions.Services
 {
-
-    public class ActiveObjectsService
+    public class ActiveObjectsService: IActiveObjectsService
     {
         private readonly object synchronize = new();
         /// <summary>
@@ -15,49 +16,80 @@ namespace Tasks.Presentation.WebApi.Extensions.Services
         /// <summary>
         /// ობიექტები მათი სიცოცხლის ხანგრძლივობით
         /// </summary>
-        private readonly IDictionary<string, DateTime> _activeObjects;
+        private IList<Supervaiser> _activeObjects;
         /// <summary>
         /// ვადის გასვლის დრო
         /// </summary>
         private DateTime ExpirationTime() => DateTime.Now.AddSeconds(_expirationInterval);
 
-        public ActiveObjectsService(long expirationInterval = 60)
+        public ActiveObjectsService(long expirationInterval = 3600)
         {
             this._expirationInterval = expirationInterval;
-            this._activeObjects = new Dictionary<string, DateTime>();
+            this._activeObjects = new List<Supervaiser>();
         }
 
-        // action and middleware
+        //action and middleware
         public void AddOrProlong(string name)
         {
             if (!string.IsNullOrWhiteSpace(name))
             {
                 lock (synchronize)
                 {
-                    if (_activeObjects.ContainsKey(name)) _activeObjects[name] = ExpirationTime();
-                    else _activeObjects.TryAdd(name, ExpirationTime());
+                    var activeObject = _activeObjects.FirstOrDefault(x => x.Name == name);
+
+                    if (activeObject != null)
+                    {
+                        activeObject.Expiration = ExpirationTime();
+                    }
+                    else
+                    {
+                        _activeObjects.Add(new Supervaiser
+                        {
+                            Name = name,
+                            Count = 0,
+                            Expiration = ExpirationTime()
+                        });
+                    }
                 }
             }
         }
 
-        // action
+        //action
         public void Remove(string name)
         {
             if (!string.IsNullOrWhiteSpace(name))
-                lock (synchronize) _activeObjects.Remove(name);
+            {
+                var activeObject = _activeObjects.FirstOrDefault(x => x.Name == name);
+                lock (synchronize) _activeObjects.Remove(activeObject);
+            }
+               
         }
 
-        // action
-        public IList<string> GetActiveRecords()
+        //action
+        public IList<Supervaiser> GetActiveRecords()
         {
-            return _activeObjects.Where(x => x.Value > DateTime.Now).Select(x => x.Key).ToList();
+            return _activeObjects.Where(x => x.Expiration > DateTime.Now).ToList();
+        }
+
+        //action
+        public string GetCandidate()
+        {
+            var res =  _activeObjects.OrderBy(x => x.Count).First();
+            return res.Name;
+        }
+
+        //action
+        public void IncrementTask(string name)
+        {
+            var activeObject = _activeObjects.FirstOrDefault(x => x.Name == name);
+            activeObject.Count = activeObject.Count + 1;
         }
 
     }
 
-
     //public class ActiveObjectsService
     //{
+    //    private readonly object synchronize = new();
     //    /// <summary>
     //    /// ონლაინში დარჩენის დრო
     //    /// </summary>
@@ -77,13 +109,19 @@ namespace Tasks.Presentation.WebApi.Extensions.Services
     //        this._activeObjects = new Dictionary<string, DateTime>();
     //    }
 
-    //    // action
-    //    public void Add(string name)
+    //    // action and middleware
+    //    public void AddOrProlong(string name)
     //    {
     //        if (!string.IsNullOrWhiteSpace(name))
     //        {
-    //            if (_activeObjects.ContainsKey(name)) _activeObjects[name] = ExpirationTime();
-    //            else _activeObjects.TryAdd(name, ExpirationTime());
+    //            lock (synchronize)
+    //            {
+    //                if (_activeObjects.ContainsKey(name))
+    //                { 
+    //                    _activeObjects[name] = ExpirationTime(); 
+    //                }
+    //                else _activeObjects.TryAdd(name, ExpirationTime());
+    //            }
     //        }
     //    }
 
@@ -91,7 +129,7 @@ namespace Tasks.Presentation.WebApi.Extensions.Services
     //    public void Remove(string name)
     //    {
     //        if (!string.IsNullOrWhiteSpace(name))
-    //            _activeObjects.Remove(name);
+    //            lock (synchronize) _activeObjects.Remove(name);
     //    }
 
     //    // action
@@ -100,11 +138,6 @@ namespace Tasks.Presentation.WebApi.Extensions.Services
     //        return _activeObjects.Where(x => x.Value > DateTime.Now).Select(x => x.Key).ToList();
     //    }
 
-    //    // middleware
-    //    public void Prolong(string name)
-    //    {
-    //        if (!string.IsNullOrWhiteSpace(name) && _activeObjects.ContainsKey(name))
-    //            _activeObjects[name] = ExpirationTime();
-    //    }
     //}
+
 }

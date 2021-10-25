@@ -2,11 +2,13 @@ import React, { useContext } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackward, faForward, faFileExcel } from '@fortawesome/fontawesome-free-solid'
 import { observer } from 'mobx-react-lite'
-import { StoreContext } from '../../context/StoreProvider'
+//import { StoreContext } from '../../context/StoreProvider'
 
 
-export const Paging = observer(() => {
-  const { callsState } = useContext(StoreContext)
+export const Paging = observer(({
+  pagerProps,
+}) => {
+  // const { callsState } = useContext(StoreContext)
   const {
     totalCount,
     totalPages,
@@ -15,7 +17,7 @@ export const Paging = observer(() => {
     pageSize,
     setPageSize,
     setPageIndex,
-  } = callsState
+  } = pagerProps
 
   return (
     <div className='d-flex justify-content-between '>

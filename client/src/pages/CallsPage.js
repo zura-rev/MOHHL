@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { CallList } from '../components/call-list'
 import { Link } from 'react-router-dom'
 import { Search } from '../components/search-bar'
 import { Paging } from '../components/paging'
+import { StoreContext } from '../context/StoreProvider'
 
 
 export const CallsPage = () => {
+  const { callsState } = useContext(StoreContext)
   return (
     <>
       <div
@@ -20,7 +22,7 @@ export const CallsPage = () => {
         }}
       >
         <Search />
-        <Paging />
+        <Paging pagerProps={callsState} />
       </div>
       <CallList />
     </>

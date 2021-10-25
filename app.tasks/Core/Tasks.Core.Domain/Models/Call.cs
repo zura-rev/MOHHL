@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tasks.Core.Domain.Models
 {
-    public class Call : AuditableEntity
+    public class Call //: AuditableEntity
     {
         public int Id { get; set; }
         public string CallAuthor { get; set; }
@@ -13,7 +13,7 @@ namespace Tasks.Core.Domain.Models
         public string Note { get; set; }
         public DateTime CreateDate { get; set; }
         public int CallType { get; set; }
-        public IList<Card> Cards { get;set;}
         public User User { get; set; }
+        public Card Card { get; set; }
     }
 }

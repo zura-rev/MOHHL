@@ -1,5 +1,6 @@
 ﻿using Tasks.Core.Domain.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Tasks.Core.Application.DTOs
 {
@@ -15,5 +16,6 @@ namespace Tasks.Core.Application.DTOs
         public DateTime CreateDate { get; set; }
         public User User { get; set; }
         public string Supervaiser { get; set; }
+        public Card Card { get; set; }
     }
 }
