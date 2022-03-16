@@ -45,7 +45,6 @@ export const Paging = observer(({
             className='btn btn-outline-secondary '
             type='button'
             onClick={() => setPageIndex(Number(pageIndex) - 1)}
-          //onClick={() => setPager({ ...pager, pageIndex: Number(pageIndex) - 1 })}
           >
             <FontAwesomeIcon icon={faBackward} />
           </button>
@@ -56,17 +55,14 @@ export const Paging = observer(({
         >
           {pageIndex}
         </span>
-        {hasNextPage === 'True' ? (
-          // <div className='input-group-append'>
+        {hasNextPage ? (
           <button
             className='btn btn-outline-secondary'
             type='button'
             onClick={() => setPageIndex(Number(pageIndex) + 1)}
-          //onClick={() => setPager({ ...pager, pageIndex: Number(pageIndex) + 1 })}
           >
             <FontAwesomeIcon icon={faForward} />
           </button>
-          // </div>
         ) : null}
       </div>
       <div>
@@ -78,3 +74,5 @@ export const Paging = observer(({
     </div>
   )
 })
+
+

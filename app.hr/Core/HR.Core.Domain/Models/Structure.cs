@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HR.Core.Domain.Models
+﻿namespace HR.Core.Domain.Models
 {
     public class Structure : AuditableEntity
     {
         public int Id { get; set; }
-        public int StructureName { get; set; }
-        public int ParentId { get; set; }
+        public Section Section { get; set; }
+        public Position Position { get; set; }
+        public double DefaultSalary { get; set; }
+        public int Count { get; set; }
     }
 }

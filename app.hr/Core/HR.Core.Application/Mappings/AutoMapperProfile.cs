@@ -20,8 +20,8 @@ namespace HR.Core.Application.Mappings
 
             CreateMap<SetEmployeeDto, Employee>();
             CreateMap<Employee, GetEmployeeDto>()
-                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == Gender.Male ? "კაცი" : "ქალი"))
-                .ForMember(dest => dest.Age, opt => opt.MapFrom(src => DateTime.Now.Year - src.BirthDate.Year));
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == Gender.Male ? "კაცი" : "ქალი"));
+                //.ForMember(dest => dest.Age, opt => opt.MapFrom(src => DateTime.Now.Year - src.BirthDate.Year));
 
         }
     }

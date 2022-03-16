@@ -1,11 +1,9 @@
 ﻿using HR.Core.Domain.Enums;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HR.Core.Domain.Models
 {
-    public class Employee: AuditableEntity
+    public class Employee : AuditableEntity
     {
         public int Id { get; set; }
         public string PrivateNumber { get; set; }
@@ -13,6 +11,6 @@ namespace HR.Core.Domain.Models
         public string LastName { get; set; }
         public Gender Gender { get; set; }
         public DateTime BirthDate { get; set; }
-        public Position Position { get; set; }
+        public string Image { get; set; }
     }
 }

@@ -4,8 +4,8 @@ namespace HR.Core.Application.DTOs
 {
     public class GetPositionDto
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public double Salary { get; set; }
+        public int Id { get; set; }
+        public string PositionName { get; set; }
+        public int SortId { get; set; }
     }
 }

@@ -11,3 +11,26 @@
 .taskItem ul {
   list-style: none;
 }
+
+.taskList {
+  margin-top: 110px;
+}
+
+.border {
+  border-left: 3px solid #bdbdbd;
+  padding-right: 20px;
+}
+.numberArea {
+  min-width: 50px;
+  font-size: 18px;
+}
+
+.noRecord {
+  margin-top: 100px;
+  text-align: center;
+  border: 1px solid #eb9191;
+  padding: 10px;
+  border-radius: 5px;
+  background: #f1b9b9;
+  color: #383838;
+}

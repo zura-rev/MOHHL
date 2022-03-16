@@ -1,9 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Users } from '../components/users'
+import { Filter } from '../components/filter'
+import { Paging } from '../components/paging'
+import { StoreContext } from '../context/StoreProvider'
+import { filterControls } from '../store/users'
 
 export function SettingsPage() {
-    return (
-        <h1>
-            Settings
-        </h1>
+    const { usersState } = useContext(StoreContext)
+    return (<>
+        <div className='top-header'>
+            <Filter filterProps={usersState} filterControls={filterControls} />
+            <Paging pagerProps={usersState} />
+        </div>
+        <Users />
+    </>
     )
 }

@@ -4,12 +4,11 @@ namespace HR.Core.Application.DTOs
 {
     public class GetEmployeeDto
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string PrivateNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Gender { get; set; }
-        public int Age { get; set; }
-        public GetPositionDto Position { get; set; }
+        public DateTime BirthDate { get; set; }
     }
 }

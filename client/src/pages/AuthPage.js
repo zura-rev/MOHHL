@@ -3,14 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useHttp } from '../hooks/http.hook'
 import { useMessage } from '../hooks/message.hook'
 import { AuthContext } from '../context/AuthProvider'
-import { faSignInAlt } from '@fortawesome/fontawesome-free-solid'
+import { faSignInAlt, faUser, faKey } from '@fortawesome/fontawesome-free-solid'
 
 export const AuthPage = () => {
   const { login } = useContext(AuthContext)
   const message = useMessage()
   const { loading, request, error, clearError } = useHttp()
-
-  //console.log('login')
 
   const [form, setForm] = useState({
     userName: '',
@@ -29,7 +27,7 @@ export const AuthPage = () => {
 
   const loginHandler = async () => {
     try {
-      const { headers, data } = await request('/api/Accounts/logIn', 'POST', {
+      const { headers, data } = await request(`/api/Accounts/logIn`, 'POST', {
         ...form,
       })
       login(headers.accesstoken, data.id)
@@ -42,8 +40,11 @@ export const AuthPage = () => {
         <div className='card-body'>
           <h3 className='text-center'>ავტორიზაცია</h3>
           <hr />
-          <div className='form-group pt-3 pb-3'>
+          <div className='input-group pt-3 pb-3'>
             {/* <label htmlFor='userName'>მომხმარებელი</label> */}
+            <span className="input-group-text" id="basic-addon1">
+              <FontAwesomeIcon icon={faUser} />
+            </span>
             <input
               placeholder='მომხმარებელი'
               id='userName'
@@ -54,7 +55,10 @@ export const AuthPage = () => {
               onChange={changeHandler}
             />
           </div>
-          <div className='form-group pt-3 pb-3'>
+          <div className='input-group pt-3 pb-3'>
+            <span className="input-group-text" id="basic-addon1">
+              <FontAwesomeIcon icon={faKey} />
+            </span>
             {/* <label htmlFor='email'>პაროლი</label> */}
             <input
               placeholder='პაროლი'

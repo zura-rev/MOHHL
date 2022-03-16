@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMessage } from '../../hooks/message.hook'
 import classNames from 'classnames'
 import { callList, noRecord } from './style.module.css'
-
+import { url } from '../../constants'
 
 
 export const CallList = observer(() => {
@@ -39,7 +39,7 @@ export const CallList = observer(() => {
 
   const { loading, request } = useHttp()
 
-  const url = `/api/calls?pageIndex=${pageIndex}&pageSize=${pageSize}
+  const uri = `/api/calls?pageIndex=${pageIndex}&pageSize=${pageSize}
       ${filter.callNumber ? `&id=${filter.callNumber}` : ''}
       ${filter.phone ? `&phone=${filter.phone}` : ''}
       ${filter.privateNumber ? `&privateNumber=${filter.privateNumber}` : ''}
@@ -53,9 +53,7 @@ export const CallList = observer(() => {
     const {
       data,
       headers: { totalcount, totalpages, pagesize, pageindex, hasnextpage },
-    } = await request(url, 'GET', null, { Authorization: `Bearer ${user.token}` })
-
-    //const p = { totalCount: totalcount, totalPages: totalpages, pageSize: pagesize, pageIndex: pageindex, hasNextPage: hasnextpage }
+    } = await request(uri, 'GET', null, { Authorization: `Bearer ${user.token}` })
 
     setCalls(data)
     setSubmit(false)
@@ -80,24 +78,26 @@ export const CallList = observer(() => {
   }
 
   const getCall = (id) => {
-    history.push(`/calls/${id}`)
+    history.push(`${url}/calls/${id}`)
   }
 
   const getCallStatus = (call) => {
     if (call.callType === 2) {
       return <FontAwesomeIcon
         icon='flag'
-        color={call?.card?.status === 0 ? 'red' : 'green'}
+        color={call?.card?.status === -1 ? 'red' : 'green'}
       />
     }
     return null
   }
+  
   return (
     <div className={myclass}>
       <table className='table table-hover'>
         <thead>
           <tr>
             <th></th>
+            <th>Id</th>
             <th>პირადი ნომერი</th>
             <th>სახელი, გვარი</th>
             <th>ტელეფონი</th>
@@ -108,11 +108,12 @@ export const CallList = observer(() => {
           </tr>
         </thead>
         <tbody>
-          {calls.map((call) => (
+          {calls && calls.map((call) => (
             <tr key={call.id} onClick={() => getCall(call.id)}>
               <td>
                 {getCallStatus(call)}
               </td>
+              <td>{call.id}</td>
               <td>{call.privateNumber}</td>
               <td>{call.callAuthor}</td>
               <td>{call.phone}</td>

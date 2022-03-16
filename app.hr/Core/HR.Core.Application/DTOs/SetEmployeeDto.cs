@@ -1,7 +1,5 @@
 ﻿using HR.Core.Domain.Enums;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HR.Core.Application.DTOs
 {

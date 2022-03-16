@@ -1,10 +1,13 @@
 import { useState, useCallback, useContext } from 'react'
 import { AuthContext } from '../context/AuthProvider'
 import axios from 'axios'
+import { apiurl } from '../constants'
+
 
 export const useHttp = () => {
+
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState('')
   const { logout } = useContext(AuthContext)
 
   const request = useCallback(
@@ -16,19 +19,21 @@ export const useHttp = () => {
       try {
         const response = await axios({
           method,
-          url,
+          url: `${apiurl}${url}`,
           headers,
           data: { ...body },
         })
-        setLoading(false)
         return response
       } catch (err) {
+        console.log('err', err)
         if (err.response.status === 401) {
           logout()
         }
         if (err.response.status === 400) {
           setError(Object.values(err.response.data.errors).join(' '))
         }
+      } finally {
+        setLoading(false)
       }
     },
     []

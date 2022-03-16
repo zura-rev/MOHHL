@@ -5,8 +5,42 @@ const filterState = {
   callId: '',
   userId: '',
   status: '',
+  category: '',
   note: '',
 }
+
+export const filterControls = [
+  {
+    field: 'id',
+    type: 'TEXT',
+    placeholder: 'ბარათის ნომერი'
+  },
+  {
+    field: 'callId',
+    type: 'TEXT',
+    placeholder: 'ზარის ნომერი'
+  },
+  {
+    field: 'userId',
+    type: 'TEXT',
+    placeholder: 'მომხმარებელი'
+  },
+  {
+    field: 'status',
+    type: 'TEXT',
+    placeholder: 'სტატუსი'
+  },
+  {
+    field: 'category',
+    type: 'SELECT',
+    placeholder: 'კატეგორია'
+  },
+  {
+    field: 'note',
+    type: 'TEXT',
+    placeholder: 'შინაარსი'
+  }
+]
 
 export class TasksState {
   _tasks = []
@@ -43,7 +77,7 @@ export class TasksState {
   }
 
   setHasNextPage = (hasNextPage) => {
-    this._hasNextPage = hasNextPage
+    this._hasNextPage = (hasNextPage === 'True')
   }
 
   changeFilter = (filter) => {

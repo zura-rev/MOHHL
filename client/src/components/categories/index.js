@@ -12,8 +12,9 @@ import { StoreContext } from '../../context/StoreProvider'
 import { observer } from 'mobx-react-lite'
 import { Accordion, ListGroup, Button, Modal, Form } from 'react-bootstrap'
 import { Loader } from '../loader'
-import { accordionHeader } from './style.module.css'
-import { faPlus } from '@fortawesome/fontawesome-free-solid'
+import { accordionHeader, noRecord } from './style.module.css'
+import { faPlus, faSave } from '@fortawesome/fontawesome-free-solid'
+
 
 const initialState = {
   id: 0,
@@ -85,7 +86,7 @@ export const Categories = observer(() => {
     } else {
       try {
         const response = await request(
-          '/api/categories',
+          `/api/categories`,
           'POST',
           { ...state },
           {
@@ -106,23 +107,26 @@ export const Categories = observer(() => {
   return (
     <>
       <Button size='sm' variant='outline-primary' onClick={handleShow}>
-        <FontAwesomeIcon icon={faPlus} className='me-1' />
-        კატეგორიის დამატება
+        <FontAwesomeIcon icon={faPlus} />
       </Button>
       <hr />
-      <Accordion>
-        {groupedCategories.map((item, i) => {
-          return <Accordion.Item eventKey={item.label} key={item.label}>
-            <Accordion.Header as='div' bsPrefix={accordionHeader}>{item.label}</Accordion.Header>
-            <Accordion.Body>
-              <ListGroup variant="flush">
-                {item.options &&
-                  item.options.map((c) => <ListGroup.Item key={c.label}>{c.label}</ListGroup.Item>)}
-              </ListGroup>
-            </Accordion.Body>
-          </Accordion.Item>
-        })}
-      </Accordion>
+      {!groupedCategories.length ? <div className={noRecord}>ჩანაწერი ვერ მოიძებნა!</div> :
+        <Accordion>
+          {groupedCategories.map((item, i) => {
+            return (item.options && item.options.lenght === 0) ?
+              <div className='card card-danger'>ჩანაწერი ვერ მოიძებნა</div> :
+              <Accordion.Item eventKey={item.label} key={item.label}>
+                <Accordion.Header as='div' bsPrefix={accordionHeader}>{item.label}</Accordion.Header>
+                <Accordion.Body>
+                  <ListGroup variant="flush">
+                    {
+                      item.options.map((c) => <ListGroup.Item key={c.label}>{c.label}</ListGroup.Item>)
+                    }
+                  </ListGroup>
+                </Accordion.Body>
+              </Accordion.Item>
+          })}
+        </Accordion>}
       <Modal show={show} onHide={handleClose}>
         <Form onSubmit={handleSave} noValidate validated={validated}>
           <Modal.Header closeButton>
@@ -182,10 +186,8 @@ export const Categories = observer(() => {
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant='secondary' size='sm' onClick={handleClose}>
-              დახურვა
-            </Button>
             <Button type='submit' variant='primary' size='sm'>
+              <FontAwesomeIcon icon={faSave} className='me-2' />
               შენახვა
             </Button>
           </Modal.Footer>

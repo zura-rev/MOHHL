@@ -5,15 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Features\Employees\**" />
-    <Compile Remove="Features\Positions\Queries\**" />
-    <EmbeddedResource Remove="Features\Employees\**" />
-    <EmbeddedResource Remove="Features\Positions\Queries\**" />
-    <None Remove="Features\Employees\**" />
-    <None Remove="Features\Positions\Queries\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.2.3" />
     <PackageReference Include="MediatR" Version="9.0.0" />
@@ -30,6 +21,11 @@
 
   <ItemGroup>
     <Folder Include="Enums\" />
+    <Folder Include="Features\Positions\Commands\" />
+    <Folder Include="Features\Sections\Commands\" />
+    <Folder Include="Features\Orders\Commands\" />
+    <Folder Include="Features\OrderTypes\Commands\" />
+    <Folder Include="Features\Structures\Commands\" />
   </ItemGroup>
 
 </Project>

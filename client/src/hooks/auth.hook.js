@@ -7,7 +7,7 @@ export const useAuth = () => {
 
   //const userData = JSON.parse(localStorage.getItem(storageName))
   const [user, setUser] = useLocalStorage(storageName)
-  console.log('user', user)
+  //console.log('user', user)
   //const [user, setUser] = useState(userData)
 
   const login = (token, userId) => {
@@ -22,19 +22,6 @@ export const useAuth = () => {
       resources,
     } = decode
 
-    // localStorage.setItem(
-    //   storageName,
-    //   JSON.stringify({
-    //     userId,
-    //     userName,
-    //     firstName,
-    //     lastName,
-    //     privateNumber,
-    //     resources,
-    //     token
-    //   })
-    // )
-
     setUser({
       userId,
       userName,
@@ -44,7 +31,6 @@ export const useAuth = () => {
       resources,
       token
     })
-
   }
 
   const logout = () => {

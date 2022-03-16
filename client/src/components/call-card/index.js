@@ -3,7 +3,6 @@ import moment from 'moment'
 import 'moment/locale/ka'
 
 export const CallCard = ({ call }) => {
-  //console.log('call', call)
   return (
     <div className='row'>
       <div className='col-6'>

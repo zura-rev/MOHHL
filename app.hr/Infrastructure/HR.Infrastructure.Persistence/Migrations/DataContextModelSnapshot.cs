@@ -41,11 +41,11 @@ namespace HR.Infrastructure.Persistence.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PositionId")
-                        .HasColumnType("int");
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PrivateNumber")
                         .HasColumnType("nvarchar(max)");
@@ -55,9 +55,76 @@ namespace HR.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PositionId");
+                    b.ToTable("Employees");
+                });
 
-                    b.ToTable("Employes");
+            modelBuilder.Entity("HR.Core.Domain.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateDeleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("OrderTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("RealSalary")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("StructureId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("OrderTypeId");
+
+                    b.HasIndex("StructureId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("HR.Core.Domain.Models.OrderType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateDeleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderTypes");
                 });
 
             modelBuilder.Entity("HR.Core.Domain.Models.Position", b =>
@@ -76,8 +143,8 @@ namespace HR.Infrastructure.Persistence.Migrations
                     b.Property<string>("PositionName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Salary")
-                        .HasColumnType("float");
+                    b.Property<int>("SortId")
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -87,7 +154,7 @@ namespace HR.Infrastructure.Persistence.Migrations
                     b.ToTable("Positions");
                 });
 
-            modelBuilder.Entity("HR.Core.Domain.Models.Structure", b =>
+            modelBuilder.Entity("HR.Core.Domain.Models.Section", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,23 +170,26 @@ namespace HR.Infrastructure.Persistence.Migrations
                     b.Property<int>("ParentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StructureName")
-                        .HasColumnType("int");
+                    b.Property<string>("SectionName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Structure");
+                    b.ToTable("Sections");
                 });
 
-            modelBuilder.Entity("HR.Core.Domain.Models.Vacancy", b =>
+            modelBuilder.Entity("HR.Core.Domain.Models.Structure", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -127,13 +197,13 @@ namespace HR.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("DateDeleted")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("EmployeeId")
-                        .HasColumnType("int");
+                    b.Property<double>("DefaultSalary")
+                        .HasColumnType("float");
 
                     b.Property<int?>("PositionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StructureId")
+                    b.Property<int?>("SectionId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -141,33 +211,22 @@ namespace HR.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
-
                     b.HasIndex("PositionId");
 
-                    b.HasIndex("StructureId");
+                    b.HasIndex("SectionId");
 
-                    b.ToTable("Vacancy");
+                    b.ToTable("Structures");
                 });
 
-            modelBuilder.Entity("HR.Core.Domain.Models.Employee", b =>
-                {
-                    b.HasOne("HR.Core.Domain.Models.Position", "Position")
-                        .WithMany()
-                        .HasForeignKey("PositionId");
-
-                    b.Navigation("Position");
-                });
-
-            modelBuilder.Entity("HR.Core.Domain.Models.Vacancy", b =>
+            modelBuilder.Entity("HR.Core.Domain.Models.Order", b =>
                 {
                     b.HasOne("HR.Core.Domain.Models.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");
 
-                    b.HasOne("HR.Core.Domain.Models.Position", "Position")
+                    b.HasOne("HR.Core.Domain.Models.OrderType", "OrderType")
                         .WithMany()
-                        .HasForeignKey("PositionId");
+                        .HasForeignKey("OrderTypeId");
 
                     b.HasOne("HR.Core.Domain.Models.Structure", "Structure")
                         .WithMany()
@@ -175,9 +234,24 @@ namespace HR.Infrastructure.Persistence.Migrations
 
                     b.Navigation("Employee");
 
-                    b.Navigation("Position");
+                    b.Navigation("OrderType");
 
                     b.Navigation("Structure");
+                });
+
+            modelBuilder.Entity("HR.Core.Domain.Models.Structure", b =>
+                {
+                    b.HasOne("HR.Core.Domain.Models.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionId");
+
+                    b.HasOne("HR.Core.Domain.Models.Section", "Section")
+                        .WithMany()
+                        .HasForeignKey("SectionId");
+
+                    b.Navigation("Position");
+
+                    b.Navigation("Section");
                 });
 #pragma warning restore 612, 618
         }

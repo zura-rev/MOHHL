@@ -11,10 +11,14 @@ namespace HR.Infrastructure.Persistence
     public class DataContext : DbContext
     {
 
-        public DbSet<Employee> Employes { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         public DbSet<Position> Positions { get; set; }
-        public DbSet<Structure> Structure { get; set; }
-        public DbSet<Vacancy> Vacancy { get; set; }
+        public DbSet<Section> Sections { get; set; }
+        public DbSet<Structure> Structures { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderType> OrderTypes { get; set; }
+
+
         private readonly ICurrentUserService user;
         public DataContext(DbContextOptions<DataContext> options, ICurrentUserService user) : base(options) => this.user = user;
 

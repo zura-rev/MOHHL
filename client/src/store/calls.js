@@ -11,6 +11,60 @@ const filterState = {
   note: '',
 }
 
+// const labelKa = {
+//   fromDate: 'თარიღიდან',
+//   toDate: 'თარიღამდე',
+//   privateNumber: 'პირადი N',
+//   callAuthor: 'ზარის ავტორი',
+//   callNumber: 'ზარის ნომერი',
+//   phone: 'ტელეფონი',
+//   category: 'კატეგორია',
+//   note: 'ზარის შინაარსი',
+// }
+
+export const filterControls = [
+  {
+    field: 'fromDate',
+    type: 'CALENDAR',
+    placeholder: 'თარიღიდან'
+  },
+  {
+    field: 'toDate',
+    type: 'CALENDAR',
+    placeholder: 'თარიღამდე'
+  },
+  {
+    field: 'privateNumber',
+    type: 'TEXT',
+    placeholder: 'პირადი N'
+  },
+  {
+    field: 'callAuthor',
+    type: 'TEXT',
+    placeholder: 'ზარის ავტორი'
+  },
+  {
+    field: 'callNumber',
+    type: 'TEXT',
+    placeholder: 'ზარის ნომერი'
+  },
+  {
+    field: 'phone',
+    type: 'TEXT',
+    placeholder: 'ტელეფონი'
+  },
+  {
+    field: 'category',
+    type: 'SELECT',
+    placeholder: 'კატეგორია'
+  },
+  {
+    field: 'note',
+    type: 'TEXT',
+    placeholder: 'ზარის შინაარსი'
+  }
+]
+
 export class CallsState {
 
   _calls = []
@@ -52,7 +106,19 @@ export class CallsState {
   }
 
   setHasNextPage = (hasNextPage) => {
-    this._hasNextPage = hasNextPage
+    this._hasNextPage = (hasNextPage === 'True')
+  }
+
+  changeFilter = (filter) => {
+    this._filter = filter
+  }
+
+  clearFilter = () => {
+    this._filter = filterState
+  }
+
+  setSubmit = (value) => {
+    this._submit = value
   }
 
   get calls() {
@@ -85,19 +151,6 @@ export class CallsState {
 
   get hasNextPage() {
     return this._hasNextPage
-  }
-
-
-  changeFilter = (filter) => {
-    this._filter = filter
-  }
-
-  clearFilter = () => {
-    this._filter = filterState
-  }
-
-  setSubmit = (value) => {
-    this._submit = value
   }
 
   get filter() {

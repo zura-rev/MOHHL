@@ -1,0 +1,41 @@
+.create-call {
+  display: flex;
+}
+
+.create-call-form {
+  flex: 1;
+  margin-right: 600px;
+}
+
+.match-calls-container {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #eff3f5;
+  width: 600px;
+  padding: 20px 15px 10px 15px;
+  margin-top: 45px;
+  overflow-y: auto;
+}
+
+.match-call {
+  display: flex;
+  padding: 10px 10px 10px 0;
+  font-size: 11px;
+}
+
+.match-call > h6 {
+  border-right: 3px solid #e9e9e9;
+  min-width: 40px;
+  margin: 0 10px;
+}
+
+.match-call > div {
+  width: 100%;
+}
+
+.call-note {
+  border-top: 1px solid #e9e9e9;
+  margin: 5px 0;
+}

@@ -10,6 +10,7 @@ import { Button, Modal, Form } from 'react-bootstrap'
 import { faSave } from '@fortawesome/fontawesome-free-solid'
 
 
+
 export const CallPage = () => {
 
   const { user } = useContext(AuthContext)
@@ -45,7 +46,7 @@ export const CallPage = () => {
     } else {
       try {
         const response = await request(
-          '/api/card',
+          `api/card`,
           'PUT',
           { id: callId, note },
           {
@@ -81,30 +82,28 @@ export const CallPage = () => {
             className='btn btn-sm btn-outline-dark'
             onClick={() => history.goBack()}
           >
-            <FontAwesomeIcon icon={faChevronLeft} className='me-1' />
-            უკან
+            <FontAwesomeIcon icon={faChevronLeft} />
           </button>
         </div>
         <div
           className='col-md-8'
           style={{ display: 'flex', justifyContent: 'flex-end' }}
         >
-          <button
-            className='btn btn-sm btn-outline-primary me-2'
-            //onClick={() => history.push('/contracts')}
-            type='button'
-          >
-            <FontAwesomeIcon icon={faPrint} className='me-1' />
-            ბეჭდვა
-          </button>
-          {user && user.resources === 'ROLE.SUPERVAISER' && user.userId === call?.card?.user.id && call?.card?.status === 0 ?
+
+          {user && user.resources === 'ROLE.SUPERVAISER' && user.userId === call?.card?.user.id && call?.card?.status === -1 ?
             <button
               className='btn  btn-sm btn-outline-success me-2'
               onClick={handleShow}
             >
-              <FontAwesomeIcon icon={faCheck} className='me-1' />
-              შესრულება
+              <FontAwesomeIcon icon={faCheck} />
             </button> : null}
+          <button
+            className='btn btn-sm btn-outline-primary'
+            //onClick={() => history.push('/contracts')}
+            type='button'
+          >
+            <FontAwesomeIcon icon={faPrint} />
+          </button>
           {/* {user && user.resources === 'ROLE.ADMIN' ? */}
           {/* <button
             className='btn  btn-sm btn-outline-warning me-2'

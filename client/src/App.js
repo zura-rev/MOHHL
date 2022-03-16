@@ -1,9 +1,15 @@
 import React, { useContext } from 'react'
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import {
+  BrowserRouter as Routes,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import { routes } from './routes'
 import { AuthPage } from './pages/AuthPage'
 import { Layout } from './layout'
 import { AuthContext } from './context/AuthProvider'
+import { url } from './constants'
 
 function PrivateRoute({ user, ...route }) {
   if (route.permissons.includes(user.resources)) {
@@ -22,7 +28,7 @@ function PrivateRoute({ user, ...route }) {
 const App = () => {
   const { user } = useContext(AuthContext)
   return (
-    <Router>
+    <Routes>
       {
         (user) ?
           (<Layout>
@@ -30,16 +36,16 @@ const App = () => {
               {
                 routes.map(route => <PrivateRoute key={route.id} user={user} {...route} />)
               }
-              <Redirect to='/calls' />
+              <Redirect to={`${url}/calls`} />
             </Switch>
           </Layout>) : (<>
-            <Route path='/login' exact>
+            <Route path={`${url}/login`} exact>
               <AuthPage />
             </Route>
-            <Redirect to='/login' />
+            <Redirect to={`${url}/login`} />
           </>)
       }
-    </Router>
+    </Routes>
   )
 }
 

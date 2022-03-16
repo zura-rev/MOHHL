@@ -11,8 +11,8 @@ namespace HR.Core.Application.Features.Positions.Commands
 {
     public class CreatePositionRequest : IRequest
     {
-        public string Name { get; set; }
-        public double Salary { get; set; }       
+        public string PositionName { get; set; }
+        public int SortId { get; set; }       
     }
 
     public class CreatePositionHandler : IRequestHandler<CreatePositionRequest>
@@ -24,10 +24,11 @@ namespace HR.Core.Application.Features.Positions.Commands
         {
             this.unit = unit;
             this.mapper = mapper;
-        }   
+        }
+        
         public Task<Unit> Handle(CreatePositionRequest request, CancellationToken cancellationToken)
         {
-            var poxition = mapper.Map<Position>(request);
+            var position = mapper.Map<Position>(request);
             throw new NotImplementedException();
         }
     }
@@ -36,8 +37,7 @@ namespace HR.Core.Application.Features.Positions.Commands
     {
         public SetPositionDtoValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
-            RuleFor(x => x.Salary).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
+            RuleFor(x => x.PositionName).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
         }
     }
 

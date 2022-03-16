@@ -6,6 +6,7 @@ import { SettingsPage } from './pages/SettingsPage'
 import { TasksPage } from './pages/TasksPage'
 import { faCheck, faBars, faUsersCog, faPlus, } from '@fortawesome/fontawesome-free-solid'
 import { faHeadset } from '@fortawesome/free-solid-svg-icons'
+import { url } from './constants'
 
 
 // export const user = {
@@ -16,10 +17,11 @@ import { faHeadset } from '@fortawesome/free-solid-svg-icons'
 //   userName: "admin"
 // }
 
+
 export const routes = [
   {
     id: 1,
-    path: '/calls',
+    path: `${url}/calls`,
     component: CallsPage,
     exact: 'exact',
     name: 'ყველა ზარი',
@@ -28,14 +30,14 @@ export const routes = [
   },
   {
     id: 2,
-    path: '/calls/:id',
+    path: `${url}/calls/:id`,
     component: CallPage,
     exact: 'exact',
     permissons: ['ROLE.ADMIN', 'ROLE.SUPERVAISER', 'ROLE.OPERATOR']
   },
   {
     id: 3,
-    path: '/createCall',
+    path: `${url}/createCall`,
     component: CreateCallPage,
     exact: 'exact',
     name: 'ზარის დამატება',
@@ -44,7 +46,7 @@ export const routes = [
   },
   {
     id: 4,
-    path: '/tasks',
+    path: `${url}/tasks`,
     component: TasksPage,
     exact: 'exact',
     name: 'დავალებები',
@@ -53,20 +55,20 @@ export const routes = [
   },
   {
     id: 5,
-    path: '/categories',
+    path: `${url}/categories`,
     component: CategoriesPage,
     exact: 'exact',
     name: 'კატეგორიები',
     icon: faBars,
     permissons: ['ROLE.ADMIN']
   },
-  // {
-  //   id: 6,
-  //   path: '/settings',
-  //   component: SettingsPage,
-  //   exact: 'exact',
-  //   name: 'თვისებები',
-  //   icon: faUsersCog,
-  //   permissons: ['ROLE.ADMIN']
-  // },
+  {
+    id: 6,
+    path: `${url}/settings`,
+    component: SettingsPage,
+    exact: 'exact',
+    name: 'თვისებები',
+    icon: faUsersCog,
+    permissons: ['ROLE.ADMIN']
+  },
 ]

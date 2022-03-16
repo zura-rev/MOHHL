@@ -15,7 +15,7 @@ export const Navbar = () => {
   const logoutHandler = async (event) => {
     event.preventDefault()
     try {
-      await request(`api/Accounts/logOut?userName=${userName}`, 'POST')
+      await request(`/api/Accounts/logOut?userName=${userName}`, 'POST')
     } catch (error) { }
     logout()
   }
@@ -35,8 +35,7 @@ export const Navbar = () => {
           href='/'
           onClick={logoutHandler}
         >
-          <FontAwesomeIcon icon={faSignOutAlt} className='me-1' />
-          გასვლა
+          <FontAwesomeIcon icon={faSignOutAlt} />
         </a>
       </div>
     </nav>
