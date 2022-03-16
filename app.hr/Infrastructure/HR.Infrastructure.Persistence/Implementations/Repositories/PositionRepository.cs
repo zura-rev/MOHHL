@@ -15,8 +15,7 @@ namespace HR.Infrastructure.Persistence.Implementations.Repositories
 
         public IQueryable<Position> Filter(int id, string positionName, int sortId)
         {
-            var positions = context.Positions.Where(x => (id == 0 || x.Id == id) && (string.IsNullOrWhiteSpace(positionName) || x.PositionName == positionName));
-            return positions;
+            return context.Positions.Where(x => (id == 0 || x.Id == id) && (string.IsNullOrWhiteSpace(positionName) || x.PositionName == positionName));
         }
 
         public Position Read(int id)
@@ -42,7 +41,17 @@ namespace HR.Infrastructure.Persistence.Implementations.Repositories
 
         public Position Update(Position position)
         {
-            throw new NotImplementedException();
+            var result = context.Positions.FirstOrDefault(x => x.Id == position.Id);
+            if (result != null) 
+            { 
+                result.Id = position.Id;    
+                result.PositionName = position.PositionName;    
+                result.SortId = position.SortId;
+                context.Positions.Update(result);
+                context.SaveChanges();  
+                return result;
+            } 
+            return null;
         }
     }
 }

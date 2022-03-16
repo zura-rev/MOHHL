@@ -58,16 +58,20 @@ namespace HR.Infrastructure.Persistence.Implementations.Repositories
         public Employee Update(Employee employee)
         {
             var result = context.Employees.FirstOrDefault(x => x.Id == employee.Id);
-            result.Id = employee.Id;    
-            result.Gender = employee.Gender;
-            result.FirstName = employee.FirstName;
-            result.LastName = employee.LastName;    
-            result.BirthDate = employee.BirthDate;
-            result.PrivateNumber = employee.PrivateNumber;
-            result.Image = employee.Image;
-            context.Employees.Update(result);   
-            context.SaveChanges();
-            return result;
+            if (result!=null)
+            {
+                result.Id = employee.Id;
+                result.Gender = employee.Gender;
+                result.FirstName = employee.FirstName;
+                result.LastName = employee.LastName;
+                result.BirthDate = employee.BirthDate;
+                result.PrivateNumber = employee.PrivateNumber;
+                result.Image = employee.Image;
+                context.Employees.Update(result);
+                context.SaveChanges();
+                return result;
+            }
+            return null;
         }
 
         public int Delete(int id)
