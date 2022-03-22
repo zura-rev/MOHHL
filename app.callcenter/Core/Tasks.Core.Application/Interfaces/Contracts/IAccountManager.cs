@@ -1,7 +1,0 @@
-﻿namespace Tasks.Core.Application.Interfaces.Contracts
-{
-    public interface IAccountManager
-    {
-        public bool LogIn(string userName, string password);
-    }
-}

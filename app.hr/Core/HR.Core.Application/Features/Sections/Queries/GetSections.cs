@@ -1,28 +1,19 @@
 ﻿using AutoMapper;
-using CleanSolution.Core.Application.DTOs;
 using FluentValidation;
-using HR.Core.Application.Commons;
 using HR.Core.Application.DTOs;
 using HR.Core.Application.Interfaces;
 using HR.Core.Domain.Models;
 using MediatR;
-using System;
-using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace HR.Core.Application.Features.Employees.Queries
 {
-    public class GetSectionRequest : IRequest<GetPaginationDto<GetSectionDto>>
-    {
-        public int Id { get; set; }
-        public string SectionName { get; set; }
-        public int ParentId { get; set; }
-        public int PageIndex { get; set; }
-        public int PageSize { get; set; }
-    }
+    public class GetSectionRequest : IRequest<IEnumerable<GetSectionDto>>{}
 
-    public class GetSectionHandler : IRequestHandler<GetSectionRequest, GetPaginationDto<GetSectionDto>>
+    public class GetSectionHandler : IRequestHandler<GetSectionRequest, IEnumerable<GetSectionDto>>
     {
         private readonly IUnitOfWork unit;
         private readonly IMapper mapper;
@@ -33,27 +24,17 @@ namespace HR.Core.Application.Features.Employees.Queries
             this.mapper = mapper;
         }
 
-        public async Task<GetPaginationDto<GetSectionDto>> Handle(GetSectionRequest request, CancellationToken cancellationToken)
+        public Task<IEnumerable<GetSectionDto>> Handle(GetSectionRequest request, CancellationToken cancellationToken)
         {
-            var result = unit.SectionRepository.Filter(
-                request.Id,
-                request.SectionName,
-                request.ParentId
-            );
-
-            var sections = await Pagination<Section>.CreateAsync(result, request.PageIndex, request.PageSize);
-            return mapper.Map<GetPaginationDto<GetSectionDto>>(sections);
+            var result = unit.SectionRepository.Read();
+            var sections = mapper.Map<IEnumerable<GetSectionDto>>(result);
+            return Task.FromResult(sections);
         }
-
     }
 
     public class GetSectionValidator : AbstractValidator<GetSectionRequest>
     {
-        public GetSectionValidator()
-        {
-            RuleFor(x => x.PageIndex).GreaterThanOrEqualTo(1).WithMessage("მიუთითეთ გვერდის ნომერი");
-            RuleFor(x => x.PageSize).GreaterThan(0).WithMessage("მიუთითეთ გვერდის ზომა");
-        }
+        public GetSectionValidator(){}
     }
 
 }

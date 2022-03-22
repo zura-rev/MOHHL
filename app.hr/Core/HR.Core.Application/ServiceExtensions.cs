@@ -16,7 +16,6 @@ namespace HR.Core.Application
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-
             //services.AddScoped<CreateEmployee>();
         }
     }

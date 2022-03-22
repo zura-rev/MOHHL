@@ -1,9 +1,9 @@
 ﻿using HR.Core.Application.DTOs;
 using HR.Core.Application.Features.Employees.Queries;
+using HR.Core.Application.Features.Sections.Commands;
+using HR.Core.Application.Features.Sections.Queries;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -21,45 +21,40 @@ namespace HR.Presentation.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetSectionDto>>> Get([FromQuery] GetSectionRequest request)
+        public async Task<ActionResult<IEnumerable<GetSectionDto>>> Get()
         {
-            try
-            {
-                var result = await mediator.Send(request);
-                Response.Headers.Add("PageIndex", result.PageIndex.ToString());
-                Response.Headers.Add("PageSize", result.PageSize.ToString());
-                Response.Headers.Add("TotalPages", result.TotalPages.ToString());
-                Response.Headers.Add("TotalCount", result.TotalCount.ToString());
-                Response.Headers.Add("HasPreviousPage", result.HasPreviousPage.ToString());
-                Response.Headers.Add("HasNextPage", result.HasNextPage.ToString());
-                return Ok(result.Items);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            var result = await mediator.Send(new GetSectionRequest());
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public GetSectionDto Get(int id)
+        public async Task<ActionResult<GetSectionDto>> Get(int id)
         {
-            return null;
+            var resuest = new GetSectionByIdRequest(id);
+            var result = await mediator.Send(resuest);
+            return Ok(result);
         }
 
         [HttpPost]
-        public void Post([FromBody] SetSectionDto value)
+        public async Task<ActionResult<GetSectionDto>> Post([FromBody] UpsertSectionRequest request)
         {
-
+            var result = await mediator.Send(request);
+            return Ok(result);
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id)
+        [HttpPut]
+        public async Task<ActionResult<GetSectionDto>> Put([FromBody] UpsertSectionRequest request)
         {
+            var result = await mediator.Send(request);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult<int>> Delete(int id)
         {
+            var result = await mediator.Send(id);
+            return Ok(result);
         }
+
     }
 }

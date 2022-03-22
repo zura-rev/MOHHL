@@ -50,7 +50,7 @@ namespace HR.Presentation.WebApi.Controllers
 
         // POST api/<PositionsController>
         [HttpPost]
-        public void Post([FromBody] CreatePositionRequest request)
+        public void Post([FromBody] CreatePosition request)
         {
             mediator.Send(request);    
         }
@@ -65,7 +65,7 @@ namespace HR.Presentation.WebApi.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            mediator.Send(new DeletePositionRequest { Id = id});
+            mediator.Send(new DeletePosition { Id = id});
         }
     }
 }

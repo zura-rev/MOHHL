@@ -6,12 +6,13 @@ using System.Text;
 
 namespace HR.Core.Application.Interfaces.Repositories
 {
-    public  interface ISectionRepository
+    public interface ISectionRepository
     {
         IQueryable<Section> Filter(int id, string sectionName, int parentId);
+        IQueryable<Section> Read();
         Section Read(int id);
-        int Create(Section position);
-        Section Update(Section position);
+        Section Create(Section section);
+        Section Update(Section section);
         int Delete(int Id);
     }
 }

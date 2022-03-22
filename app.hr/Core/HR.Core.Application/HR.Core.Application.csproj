@@ -21,8 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Enums\" />
-    <Folder Include="Features\Positions\Commands\" />
-    <Folder Include="Features\Sections\Commands\" />
     <Folder Include="Features\Orders\Commands\" />
     <Folder Include="Features\OrderTypes\Commands\" />
     <Folder Include="Features\Structures\Commands\" />

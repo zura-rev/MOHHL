@@ -6,6 +6,7 @@ using System;
 using HR.Core.Application.Features.Positions.Commands;
 using CleanSolution.Core.Application.DTOs;
 using HR.Core.Application.Commons;
+using HR.Core.Application.Features.Sections.Commands;
 
 namespace HR.Core.Application.Mappings
 {
@@ -14,10 +15,11 @@ namespace HR.Core.Application.Mappings
         public AutoMapperProfile()
         {
             CreateMap(typeof(Pagination<>), typeof(GetPaginationDto<>));
-            CreateMap<CreatePositionRequest, Position>();
+            CreateMap<CreatePosition, Position>();
             CreateMap<SetPositionDto, Position>();
             CreateMap<Position, GetPositionDto>();
-
+            CreateMap<Section, GetSectionDto>();
+            CreateMap<UpsertSectionRequest, Section>();
             CreateMap<SetEmployeeDto, Employee>();
             CreateMap<Employee, GetEmployeeDto>()
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == Gender.Male ? "კაცი" : "ქალი"));

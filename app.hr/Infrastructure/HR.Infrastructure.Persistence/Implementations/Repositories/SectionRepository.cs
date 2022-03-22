@@ -1,6 +1,7 @@
 ﻿using HR.Core.Application.Interfaces.Repositories;
 using HR.Core.Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HR.Infrastructure.Persistence.Implementations.Repositories
@@ -11,16 +12,6 @@ namespace HR.Infrastructure.Persistence.Implementations.Repositories
         public SectionRepository(DataContext context)
         {
             this.context = context; 
-        }
-
-        public int Create(Section position)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Delete(int Id)
-        {
-            throw new NotImplementedException();
         }
 
         public IQueryable<Section> Filter(int id, string sectionName, int parentId)
@@ -39,15 +30,50 @@ namespace HR.Infrastructure.Persistence.Implementations.Repositories
             }
         }
 
-        public Section Read(int id)
+        public Section Create(Section section)
         {
-            throw new NotImplementedException();
+            context.Sections.Add(section);  
+            context.SaveChanges();  
+            return section;  
         }
 
-        public Section Update(Section position)
+        public IQueryable<Section> Read()
         {
-            throw new NotImplementedException();
+            return context.Sections;
         }
+
+        public Section Read(int id)
+        {
+            return context.Sections.FirstOrDefault(x=>x.Id==id);
+        }
+
+        public Section Update(Section section)
+        {
+            var result = context.Sections.FirstOrDefault(x => x.Id == section.Id);
+            if (result != null) 
+            {
+                result.Id = section.Id;  
+                result.SectionName = section.SectionName;
+                result.ParentId = section.ParentId;
+                context.Sections.Update(result);    
+                context.SaveChanges();  
+                return result;
+            }
+            return null;    
+        }
+
+        public int Delete(int id)
+        {
+            var result = context.Sections.FirstOrDefault(x => x.Id == id);
+            if (result != null) 
+            {
+                context.Sections.Remove(result);
+                context.SaveChanges();
+                return result.Id;   
+            }
+            return -1;
+        }
+        
     }
     
 }

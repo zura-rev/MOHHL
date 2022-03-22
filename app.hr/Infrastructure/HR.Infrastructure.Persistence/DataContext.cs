@@ -67,8 +67,6 @@ namespace HR.Infrastructure.Persistence
                     break;
             };
         }
-
-
         #endregion
     }
 }
