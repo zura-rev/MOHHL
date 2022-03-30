@@ -14,7 +14,7 @@ export const Users = () => {
     const { user: { token } } = useContext(AuthContext)
     const [modalShow, setModalShow] = useState(false)
     const [state, dispatch] = useReducer(userReducer, userState)
-
+    
     return <div style={{ marginTop: 110 }}>
         <Button size='sm' variant='outline-primary' onClick={() => setModalShow(true)}>
             <FontAwesomeIcon icon={faPlus} />

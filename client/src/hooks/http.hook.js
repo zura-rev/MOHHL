@@ -19,7 +19,7 @@ export const useHttp = () => {
       try {
         const response = await axios({
           method,
-          url: `${apiurl}${url}`,
+          url: `${apiurl}${url}`.trim(),
           headers,
           data: { ...body },
         })

@@ -1,7 +1,7 @@
 import React, { createContext } from 'react'
 import { CallsState } from '../store/calls'
 import { CategoriesState } from '../store/categories'
-import { TasksState } from '../store/tasks'
+import { CardsState } from '../store/cards'
 import { UsersState } from '../store/users'
 
 export const StoreContext = createContext(null)
@@ -13,7 +13,7 @@ export const StoreProvider = ({ children }) => {
       value={{
         callsState: new CallsState(),
         categoriesState: new CategoriesState(),
-        tasksState: new TasksState(),
+        cardsState: new CardsState(),
         usersState: new UsersState()
       }}
     >

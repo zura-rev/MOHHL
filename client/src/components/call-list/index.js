@@ -57,12 +57,11 @@ export const CallList = observer(() => {
 
     setCalls(data)
     setSubmit(false)
-    setTotalCount(Number(totalcount))
-    setTotalPages(Number(totalpages))
-    setPageIndex(Number(pageindex))
-    setPageSize(Number(pagesize))
+    setTotalCount(totalcount)
+    setTotalPages(totalpages)
+    setPageIndex(pageindex)
+    setPageSize(pagesize)
     setHasNextPage(hasnextpage)
-
   }, [pageIndex, pageSize, submit])
 
   useEffect(() => {
@@ -90,7 +89,7 @@ export const CallList = observer(() => {
     }
     return null
   }
-  
+
   return (
     <div className={myclass}>
       <table className='table table-hover'>
@@ -114,8 +113,8 @@ export const CallList = observer(() => {
                 {getCallStatus(call)}
               </td>
               <td>{call.id}</td>
-              <td>{call.privateNumber}</td>
-              <td>{call.callAuthor}</td>
+              <td>{call.privateNumber ? call.privateNumber : '-'}</td>
+              <td>{call.callAuthor ? call.callAuthor : '-'}</td>
               <td>{call.phone}</td>
               <td>{moment(call.createDate).format('LLLL')}</td>
               <td>{call.category?.categoryName}</td>

@@ -16,11 +16,11 @@ export const CallCard = ({ call }) => {
               <tbody>
                 <tr>
                   <th>პირადი ნომერი  </th>
-                  <td>{call.privateNumber}</td>
+                  <td>{call.privateNumber ? call.privateNumber : '-'}</td>
                 </tr>
                 <tr>
                   <th>სახელი გვარი  </th>
-                  <td>{call.callAuthor}</td>
+                  <td>{call.callAuthor ? call.callAuthor : '-'}</td>
                 </tr>
                 <tr>
                   <th>თარიღი  </th>

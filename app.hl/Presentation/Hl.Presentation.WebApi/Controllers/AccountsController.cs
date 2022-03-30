@@ -46,19 +46,19 @@ namespace Hl.Presentation.WebApi.Controllers
                 var permissions = user.Resources.Select(x => x.Name).ToArray();
 
                 var token = JwtAuthenticationExtensions.GenerateJwtToken(
-                    configuration,
-                    user.Id.ToString(),
-                    user.UserName,
-                    user.FirstName,
-                    user.LastName,
-                    user.PrivateNumber,
-                    permissions
+                        configuration,
+                        user.Id.ToString(),
+                        user.UserName,
+                        user.FirstName,
+                        user.LastName,
+                        user.PrivateNumber,
+                        permissions
                     );
 
                 Response.Headers.Add("AccessToken", token);
                 if (permissions.Contains("ROLE.SUPERVAISER"))
                 {
-                    usersCaching.AddOrProlong(user.UserName);
+                    usersCaching.AddOrProlong(user.UserName, DateTime.Now);
                 }
                 return user;
             }
@@ -66,7 +66,6 @@ namespace Hl.Presentation.WebApi.Controllers
             {
                 throw;
             }
-            
         }
 
         [HttpPost("logOut")]

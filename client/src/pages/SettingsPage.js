@@ -7,12 +7,14 @@ import { filterControls } from '../store/users'
 
 export function SettingsPage() {
     const { usersState } = useContext(StoreContext)
-    return (<>
-        <div className='top-header'>
-            <Filter filterProps={usersState} filterControls={filterControls} />
-            <Paging pagerProps={usersState} />
-        </div>
-        <Users />
-    </>
+    console.log('usersState', usersState)
+    return (
+        <>
+            <div className='top-header'>
+                <Filter filterProps={usersState} filterControls={filterControls} />
+                <Paging pagerProps={usersState} />
+            </div>
+            <Users />
+        </>
     )
 }

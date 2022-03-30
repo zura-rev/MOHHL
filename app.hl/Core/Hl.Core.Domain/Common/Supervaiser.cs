@@ -8,6 +8,7 @@ namespace Hl.Core.Domain.Common
     {
         public string Name { get; set; }
         public int Count { get; set; }
-        public DateTime Expiration { get; set; }
+        public DateTime? Expiration { get; set; }
+        public bool IsActive { get; set; } 
     }
 }

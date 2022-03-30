@@ -9,7 +9,7 @@ import { StoreContext } from '../../context/StoreProvider'
 import { CategorySelect } from '../category-select'
 import classNames from 'classnames'
 //import { createCallFrom } from './style.module.css'
-import { faSave } from '@fortawesome/fontawesome-free-solid'
+import { faSave, faSearch } from '@fortawesome/fontawesome-free-solid'
 import { useCreateCallReducer } from './reducer'
 import { url } from '../../constants'
 
@@ -71,10 +71,16 @@ export function CreateCallFrom() {
         })
     }
 
-    const handleCheck = async () => {
+    const handleCheck = async (key, value, top = 5) => {
+        // `/api/calls/matchcalls?phone=${state.phone}&privateNumber=${state.privateNumber}&topValue=10`,
+        if (!value) {
+            alert('შეავსეთ აღნიშნული ველი!')
+            return
+        }
+        const url = `/api/calls/matchcalls?${(key === 'PHONE') ? `phone=${value}` : (key === 'PN') ? `privateNumber=${state.privateNumber}` : null}&topValue=${top}`
         try {
             const response = await request(
-                `/api/calls/matchcalls?phone=${state.phone}&privateNumber=${state.privateNumber}`,
+                url,
                 'GET',
                 null,
                 {
@@ -109,9 +115,9 @@ export function CreateCallFrom() {
                         <Button
                             variant='outline-secondary'
                             size='sm'
-                            onClick={handleCheck}
+                            onClick={() => handleCheck('PHONE', state.phone)}
                         >
-                            შემოწმება
+                            <FontAwesomeIcon icon={faSearch} />
                         </Button>
                     </InputGroup>
                 </Form.Group>
@@ -119,23 +125,29 @@ export function CreateCallFrom() {
                     <Form.Label>
                         <strong>პირადი ნომერი</strong>
                     </Form.Label>
-                    <Form.Control
-                        required
-                        type='text'
-                        placeholder='პირადი ნომერი'
-                        id='privateNumber'
-                        name='privateNumber'
-                        value={state.privateNumber}
-                        onChange={handleChange}
-                    />
-                    <Form.Text className='text-muted'></Form.Text>
+                    <InputGroup>
+                        <Form.Control
+                            type='text'
+                            placeholder='პირადი ნომერი'
+                            id='privateNumber'
+                            name='privateNumber'
+                            value={state.privateNumber}
+                            onChange={handleChange}
+                        />
+                        <Button
+                            variant='outline-secondary'
+                            size='sm'
+                            onClick={() => handleCheck('PN', state.privateNumber)}
+                        >
+                            <FontAwesomeIcon icon={faSearch} />
+                        </Button>
+                    </InputGroup>
                 </Form.Group>
                 <Form.Group className='mb-3'>
                     <Form.Label>
                         <strong>სახელი, გვარი</strong>
                     </Form.Label>
                     <Form.Control
-                        required
                         type='text'
                         placeholder='სახელი, გვარი'
                         id='callAuthor'
@@ -143,7 +155,6 @@ export function CreateCallFrom() {
                         value={state.callAuthor}
                         onChange={handleChange}
                     />
-                    <Form.Text className='text-muted'></Form.Text>
                 </Form.Group>
                 <Form.Group className='mb-3'>
                     <Form.Label>

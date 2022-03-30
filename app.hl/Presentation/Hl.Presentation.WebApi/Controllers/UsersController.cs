@@ -26,16 +26,12 @@ namespace Hl.Presentation.WebApi.Controllers
         public async Task<ActionResult<IEnumerable<GetUserDto>>> Get([FromQuery] GetUsersRequest request)
         {
             var result = await mediator.Send(request);
-
             Response.Headers.Add("PageIndex", result.PageIndex.ToString());
             Response.Headers.Add("PageSize", result.PageSize.ToString());
-
             Response.Headers.Add("TotalPages", result.TotalPages.ToString());
             Response.Headers.Add("TotalCount", result.TotalCount.ToString());
-
             Response.Headers.Add("HasPreviousPage", result.HasPreviousPage.ToString());
             Response.Headers.Add("HasNextPage", result.HasNextPage.ToString());
-
             return result.Items;
         }
 

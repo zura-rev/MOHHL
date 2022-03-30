@@ -43,7 +43,7 @@ namespace Hl.Presentation.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex.InnerException;
             }
         }
 

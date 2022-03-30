@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Hl.Core.Application.Interfaces.Contracts;
 using Hl.Core.Domain.Common;
+using MediatR;
 
 namespace Hl.Presentation.WebApi.Extensions.Services
 {
-    public class ActiveObjectsService: IActiveObjectsService
+    public class ActiveObjectsService : IActiveObjectsService
     {
         private readonly object synchronize = new();
         /// <summary>
@@ -29,7 +30,7 @@ namespace Hl.Presentation.WebApi.Extensions.Services
         }
 
         //action and middleware
-        public void AddOrProlong(string name)
+        public void AddOrProlong(string name, DateTime dayOfEntry) // DateTime departureDay
         {
             if (!string.IsNullOrWhiteSpace(name))
             {
@@ -39,7 +40,9 @@ namespace Hl.Presentation.WebApi.Extensions.Services
 
                     if (activeObject != null)
                     {
+                        activeObject.Count = dayOfEntry.Date == DateTime.Now.Date ? activeObject.Count : 0;
                         activeObject.Expiration = ExpirationTime();
+                        activeObject.IsActive = true;   
                     }
                     else
                     {
@@ -47,7 +50,8 @@ namespace Hl.Presentation.WebApi.Extensions.Services
                         {
                             Name = name,
                             Count = 0,
-                            Expiration = ExpirationTime()
+                            Expiration = ExpirationTime(),
+                            IsActive = true
                         });
                     }
                 }
@@ -60,22 +64,34 @@ namespace Hl.Presentation.WebApi.Extensions.Services
             if (!string.IsNullOrWhiteSpace(name))
             {
                 var activeObject = _activeObjects.FirstOrDefault(x => x.Name == name);
-                lock (synchronize) _activeObjects.Remove(activeObject);
+                //lock (synchronize) _activeObjects.Remove(activeObject);
+                lock (synchronize)
+                {
+                    activeObject.Expiration = null;
+                    activeObject.IsActive = false;
+                }
             }
-               
         }
 
         //action
         public IList<Supervaiser> GetActiveRecords()
         {
-            return _activeObjects.Where(x => x.Expiration > DateTime.Now).ToList();
+            //return _activeObjects.Where(x => x.Expiration > DateTime.Now).ToList();
+            return _activeObjects.ToList();
         }
 
         //action
         public string GetCandidate()
         {
-            var res =  _activeObjects.OrderBy(x => x.Count).First();
-            return res.Name;
+            try
+            {
+                var res = _activeObjects.Where(x => x.IsActive == true).OrderBy(x => x.Count).First();
+                return res?.Name;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //action
@@ -87,57 +103,5 @@ namespace Hl.Presentation.WebApi.Extensions.Services
 
     }
 
-    //public class ActiveObjectsService
-    //{
-    //    private readonly object synchronize = new();
-    //    /// <summary>
-    //    /// ონლაინში დარჩენის დრო
-    //    /// </summary>
-    //    private readonly long _expirationInterval;
-    //    /// <summary>
-    //    /// ობიექტები მათი სიცოცხლის ხანგრძლივობით
-    //    /// </summary>
-    //    private readonly IDictionary<string, DateTime> _activeObjects;
-    //    /// <summary>
-    //    /// ვადის გასვლის დრო
-    //    /// </summary>
-    //    private DateTime ExpirationTime() => DateTime.Now.AddSeconds(_expirationInterval);
-
-    //    public ActiveObjectsService(long expirationInterval = 60)
-    //    {
-    //        this._expirationInterval = expirationInterval;
-    //        this._activeObjects = new Dictionary<string, DateTime>();
-    //    }
-
-    //    // action and middleware
-    //    public void AddOrProlong(string name)
-    //    {
-    //        if (!string.IsNullOrWhiteSpace(name))
-    //        {
-    //            lock (synchronize)
-    //            {
-    //                if (_activeObjects.ContainsKey(name))
-    //                { 
-    //                    _activeObjects[name] = ExpirationTime(); 
-    //                }
-    //                else _activeObjects.TryAdd(name, ExpirationTime());
-    //            }
-    //        }
-    //    }
-
-    //    // action
-    //    public void Remove(string name)
-    //    {
-    //        if (!string.IsNullOrWhiteSpace(name))
-    //            lock (synchronize) _activeObjects.Remove(name);
-    //    }
-
-    //    // action
-    //    public IList<string> GetActiveRecords()
-    //    {
-    //        return _activeObjects.Where(x => x.Value > DateTime.Now).Select(x => x.Key).ToList();
-    //    }
-
-    //}
 
 }

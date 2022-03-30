@@ -1,18 +1,18 @@
-.taskItem {
+.cardItem {
   text-decoration: none;
   color: #494949;
 }
 
-.taskItem:hover {
+.cardItem:hover {
   color: #585858;
   background-color: #f7f7f7;
 }
 
-.taskItem ul {
+.cardItem ul {
   list-style: none;
 }
 
-.taskList {
+.cardList {
   margin-top: 110px;
 }
 

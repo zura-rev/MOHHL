@@ -42,8 +42,8 @@ export const filterControls = [
   }
 ]
 
-export class TasksState {
-  _tasks = []
+export class CardsState {
+  _cards = []
   _totalCount = null
   _totalPages = null
   _pageIndex = 1
@@ -56,8 +56,8 @@ export class TasksState {
     makeAutoObservable(this)
   }
 
-  setTasks = (tasks) => {
-    this._tasks = tasks
+  setCards = (cards) => {
+    this._cards = cards
   }
 
   setTotalCount = (totalCount) => {
@@ -92,8 +92,8 @@ export class TasksState {
     this._submit = value
   }
 
-  get tasks() {
-    return this._tasks
+  get cards() {
+    return this._cards
   }
 
   get totalCount() {

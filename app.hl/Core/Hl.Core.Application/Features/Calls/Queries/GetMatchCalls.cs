@@ -12,11 +12,15 @@ namespace Hl.Core.Application.Features.Calls.Queries
     {
         public string Phone { get; set; }
         public string PrivateNumber { get; set; }
-        public GetMatchCallRequest(string phone, string privateNumber)
+        public int TopValue { get; set; }
+
+        public GetMatchCallRequest(string phone, string privateNumber, int topValue)
         {
             Phone = phone;
             PrivateNumber = privateNumber;
+            TopValue = topValue;    
         }
+
     }
 
     public class GetMatchCallHandler : IRequestHandler<GetMatchCallRequest, IEnumerable<GetCallDto>>
@@ -31,7 +35,7 @@ namespace Hl.Core.Application.Features.Calls.Queries
 
         public Task<IEnumerable<GetCallDto>> Handle(GetMatchCallRequest request, CancellationToken cancellationToken)
         {
-            var callList = unit.CallRepository.GetMatchCalls(request.Phone, request.PrivateNumber);
+            var callList = unit.CallRepository.GetMatchCalls(request.Phone, request.PrivateNumber, request.TopValue);
             return Task.FromResult(mapper.Map<IEnumerable<GetCallDto>>(callList));
         }
     }

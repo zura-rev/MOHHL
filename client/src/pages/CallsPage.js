@@ -8,6 +8,7 @@ import { filterControls } from '../store/calls'
 
 export const CallsPage = () => {
   const { callsState } = useContext(StoreContext)
+  console.log('callsState', callsState)
   return (
     <>
       <div className='top-header'>

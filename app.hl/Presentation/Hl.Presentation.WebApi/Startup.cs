@@ -1,4 +1,4 @@
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using Hl.Core.Application;
 using Hl.Core.Application.Interfaces.Contracts;
 using Hl.Infrastructure.Persistence;
@@ -39,6 +39,15 @@ namespace Hl.Presentation.WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HL API", Version = "v1" });
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "_myPolicy", builder => builder
+                    .AllowAnyMethod() // დაშვებას იძლევა HTTP ყველა მეთოდზე
+                    .AllowAnyHeader()
+                    .AllowAnyOrigin() // დაშვება ეძლევა მოთხოვნას ნებისმიერი წყაროდან
+                    .WithExposedHeaders("Authorization", "AccessToken", "PageIndex", "PageSize", "TotalPages", "TotalCount", "HasPreviousPage", "HasNextPage"));
+            });
+
             services.AddApplicatonLayer(Configuration);
             services.AddPersistenceLayer(Configuration);
             services.AddScoped<ICurrentUserService, CurrentUserService>();
@@ -63,9 +72,11 @@ namespace Hl.Presentation.WebApi
             app.UseHttpsRedirection();
             app.UseRouting();
 
+            app.UseCors("_myPolicy");
+           
             app.UseAuthorization();
             app.UseAuthentication();
-
+            
             app.UseMiddleware<ExceptionHandler>();
             app.UseMiddleware<UserCachingMiddlewares>();
 

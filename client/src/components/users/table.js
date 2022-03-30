@@ -35,12 +35,15 @@ export const UserTable = observer(({ setModalShow, dispatch, token }) => {
             headers: { totalcount, totalpages, pagesize, pageindex, hasnextpage },
         } = await request(url, 'GET', null, { Authorization: `Bearer ${token}` })
 
+        console.log('data', data);
+        console.log('headers', totalcount);
+
         setUsers(data)
         setSubmit(false)
-        setTotalCount(Number(totalcount))
-        setTotalPages(Number(totalpages))
-        setPageIndex(Number(pageindex))
-        setPageSize(Number(pagesize))
+        setTotalCount(totalcount)
+        setTotalPages(totalpages)
+        setPageIndex(pageindex)
+        setPageSize(pagesize)
         setHasNextPage(hasnextpage)
     }, [pageIndex, pageSize, submit])
 

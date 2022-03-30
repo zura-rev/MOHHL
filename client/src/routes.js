@@ -3,7 +3,7 @@ import { CallPage } from './pages/CallPage'
 import { CreateCallPage } from './pages/CreateCallPage'
 import { CategoriesPage } from './pages/CategoriesPage'
 import { SettingsPage } from './pages/SettingsPage'
-import { TasksPage } from './pages/TasksPage'
+import { CardsPage } from './pages/CardsPage'
 import { faCheck, faBars, faUsersCog, faPlus, } from '@fortawesome/fontawesome-free-solid'
 import { faHeadset } from '@fortawesome/free-solid-svg-icons'
 import { url } from './constants'
@@ -46,8 +46,8 @@ export const routes = [
   },
   {
     id: 4,
-    path: `${url}/tasks`,
-    component: TasksPage,
+    path: `${url}/cards`,
+    component: CardsPage,
     exact: 'exact',
     name: 'დავალებები',
     icon: faCheck,

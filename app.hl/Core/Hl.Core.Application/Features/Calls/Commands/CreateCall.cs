@@ -78,8 +78,8 @@ namespace Hl.Core.Application.Features.Calls.Commands
     {
         public SetCallDtoValidator()
         {
-            RuleFor(x => x.PrivateNumber).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
-            RuleFor(x => x.CallAuthor).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
+            //RuleFor(x => x.PrivateNumber).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
+            //RuleFor(x => x.CallAuthor).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
             RuleFor(x => x.Category.Id).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
             RuleFor(x => x.Note).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
         }

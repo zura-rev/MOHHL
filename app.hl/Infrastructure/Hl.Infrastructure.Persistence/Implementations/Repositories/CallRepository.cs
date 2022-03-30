@@ -67,7 +67,7 @@ namespace Hl.Infrastructure.Persistence.Implementations.Repositories
             return call.Id;
         }
 
-        IEnumerable<Call> ICallRepository.GetMatchCalls(string phone, string privateNumber)
+        IEnumerable<Call> ICallRepository.GetMatchCalls(string phone, string privateNumber, int topValue )
         {
             try
             {
@@ -78,7 +78,7 @@ namespace Hl.Infrastructure.Persistence.Implementations.Repositories
                    .Where(x =>
                         (string.IsNullOrWhiteSpace(phone) || x.Phone == phone) &&
                         (string.IsNullOrWhiteSpace(privateNumber) || x.PrivateNumber == privateNumber))
-                    .OrderByDescending(x => x.Id).Take(5);
+                    .OrderByDescending(x => x.Id).Take(topValue);
                     return res;
             }
             catch (Exception ex)

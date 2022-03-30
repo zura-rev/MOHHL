@@ -10,7 +10,6 @@ import { Button, Modal, Form } from 'react-bootstrap'
 import { faSave } from '@fortawesome/fontawesome-free-solid'
 
 
-
 export const CallPage = () => {
 
   const { user } = useContext(AuthContext)
@@ -46,7 +45,7 @@ export const CallPage = () => {
     } else {
       try {
         const response = await request(
-          `api/card`,
+          `/api/card`,
           'PUT',
           { id: callId, note },
           {

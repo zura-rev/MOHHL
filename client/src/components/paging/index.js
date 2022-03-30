@@ -3,10 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackward, faForward, faFileExcel } from '@fortawesome/fontawesome-free-solid'
 import { observer } from 'mobx-react-lite'
 
-
-export const Paging = observer(({
-  pagerProps,
-}) => {
+export const Paging = observer(({ pagerProps }) => {
   const {
     totalCount,
     totalPages,
@@ -17,8 +14,10 @@ export const Paging = observer(({
     setPageIndex,
   } = pagerProps
 
+  console.log('hasNextPage', hasNextPage)
+
   return (
-    <div className='d-flex justify-content-between '>
+    <div className='d-flex justify-content-between'>
       <div
         className='input-group input-group-sm mt-3'
         disabled

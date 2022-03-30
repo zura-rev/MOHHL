@@ -9,8 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hl.Core.Application.Exceptions;
-using Hl.Presentation.WebApi.Extensions.Services;
-using Hl.Core.Application.Interfaces.Contracts;
 
 namespace Hl.Presentation.WebApi.Controllers
 {
@@ -22,7 +20,7 @@ namespace Hl.Presentation.WebApi.Controllers
         private readonly IMediator mediator;
         //private readonly IActiveObjectsService usersCaching;
 
-        public CallsController(IMediator mediator)//, IActiveObjectsService usersCaching)
+        public CallsController(IMediator mediator) //, IActiveObjectsService usersCaching)
         {
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             //this.usersCaching = usersCaching;
@@ -56,12 +54,12 @@ namespace Hl.Presentation.WebApi.Controllers
         }
 
         [HttpGet("matchcalls")]
-        public async Task<ActionResult<IEnumerable<GetCallDto>>> Get([FromQuery] string phone, [FromQuery] string privateNumber)
+        public async Task<ActionResult<IEnumerable<GetCallDto>>> Get([FromQuery] string phone, [FromQuery] string privateNumber, [FromQuery] int topValue = 10)
         {
-            if (string.IsNullOrEmpty(phone))
-                throw new BadRequestException("შეავსეთ ტელეფონი!");
+            if (string.IsNullOrEmpty(phone) && string.IsNullOrEmpty(privateNumber))
+                throw new BadRequestException("შეავსეთ ტელეფონი ან პირადი ნომერი!");
 
-            var req = new GetMatchCallRequest(phone, privateNumber);
+            var req = new GetMatchCallRequest(phone, privateNumber, topValue);
             var res = await mediator.Send(req);
             return Ok(res);
         }

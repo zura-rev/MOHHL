@@ -2,6 +2,7 @@
 using Hl.Core.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Linq;
 
 namespace Hl.Infrastructure.Persistence.Implementations.Repositories
@@ -9,6 +10,7 @@ namespace Hl.Infrastructure.Persistence.Implementations.Repositories
     public class CardRepository : Repository<Card>, ICardRepository
     {
         public CardRepository(DataContext context) : base(context) { }
+
         IQueryable<Card> ICardRepository.Filter(int id, int callId, int userId, int userType, 
             int status, string note, DateTime performDate, int? categoryId)
         {
@@ -54,6 +56,6 @@ namespace Hl.Infrastructure.Persistence.Implementations.Repositories
                 throw;
             }
         }
-        
+      
     }
 }
