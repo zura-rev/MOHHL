@@ -9,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hl.Core.Application.Exceptions;
+using Hl.Core.Application.Interfaces.Contracts;
+using System.IO;
+using System.Linq;
 
 namespace Hl.Presentation.WebApi.Controllers
 {
@@ -18,12 +21,12 @@ namespace Hl.Presentation.WebApi.Controllers
     public class CallsController : ControllerBase
     {
         private readonly IMediator mediator;
-        //private readonly IActiveObjectsService usersCaching;
+        private readonly IActiveObjectsService usersCaching;
 
-        public CallsController(IMediator mediator) //, IActiveObjectsService usersCaching)
+        public CallsController(IMediator mediator, IActiveObjectsService usersCaching)
         {
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            //this.usersCaching = usersCaching;
+            this.usersCaching = usersCaching;
         }
 
         [HttpGet]
@@ -64,15 +67,13 @@ namespace Hl.Presentation.WebApi.Controllers
             return Ok(res);
         }
 
-        //[HttpPost]
-        //public async void Post([FromBody] CreateCallRequest request)
-        //{
-        //    await mediator.Send(request);
-        //}
-
         [HttpPost]
         public async Task<ActionResult<int>> Post([FromBody] CreateCallRequest request)
         {
+            if (request.CallType==2 && usersCaching.GetActiveRecords().Count == 0)
+            {
+                throw new BadRequestException("ამ მომენტისთვის არცერთი სუპერვაიზერი არ არის სისტემაში შემოსული, სამწუხაროდ ვერ შეძლებთ ბარათის რეგისტრაციას! ");
+            }
             var res = await mediator.Send(request);
             return Ok(res);
         }
@@ -85,6 +86,17 @@ namespace Hl.Presentation.WebApi.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [HttpPost("excel")]
+        [Authorize(Policy = "ExportExcelGermanyPolicy")]
+        public async Task<IActionResult> Export([FromBody] GetCallRequest request, [FromServices] IExcelManager excelManager)
+        {
+            var result = await mediator.Send(request);
+
+            (string mimeType, MemoryStream stream) = excelManager.GenerateExcel(result.Items.ToList());
+
+            return File(stream, mimeType, string.Format("hl_app({0:yyyy_MM_dd_HH_mm_ss}).xlsx", DateTime.Now));
         }
 
 

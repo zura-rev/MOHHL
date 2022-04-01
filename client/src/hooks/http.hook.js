@@ -34,6 +34,7 @@ export const useHttp = () => {
         }
       } finally {
         setLoading(false)
+        setError('')
       }
     },
     []

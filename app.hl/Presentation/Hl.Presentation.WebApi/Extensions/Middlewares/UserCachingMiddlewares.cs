@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Hl.Presentation.WebApi.Extensions.Services;
 using System.Linq;
 using Hl.Core.Application.Interfaces.Contracts;
 using System;

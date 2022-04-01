@@ -34,7 +34,6 @@ export function CreateCallFrom() {
     const { setMatchCalls } = callsState
     const [validated, setValidated] = useState(false)
 
-    //const mystyles = classNames('p-3', 'mr-2', 'card', 'col-md-6', createCallFrom)
 
     useEffect(() => {
         message(error)
@@ -74,7 +73,8 @@ export function CreateCallFrom() {
     const handleCheck = async (key, value, top = 5) => {
         // `/api/calls/matchcalls?phone=${state.phone}&privateNumber=${state.privateNumber}&topValue=10`,
         if (!value) {
-            alert('შეავსეთ აღნიშნული ველი!')
+            //alert('შეავსეთ აღნიშნული ველი!')
+            message('შეავსეთ აღნიშნული ველი!')
             return
         }
         const url = `/api/calls/matchcalls?${(key === 'PHONE') ? `phone=${value}` : (key === 'PN') ? `privateNumber=${state.privateNumber}` : null}&topValue=${top}`

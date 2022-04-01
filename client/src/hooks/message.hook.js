@@ -1,12 +1,18 @@
 import { useCallback } from 'react'
+import Swal from 'sweetalert2'
 
 export const useMessage = () => {
-  return useCallback((text) => {
+  const message = useCallback((text) => {
     if (text) {
-      //window.M.toast({ html: text })
-      return alert(text)
+      Swal.fire({
+        icon: 'error',
+        text,
+        confirmButtonText: 'დახურვა',
+      })
     }
   }, [])
+  return message
 }
+
 
 

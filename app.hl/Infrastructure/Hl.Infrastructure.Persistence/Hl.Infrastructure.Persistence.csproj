@@ -18,4 +18,10 @@
     <ProjectReference Include="..\..\Core\Hl.Core.Domain\Hl.Core.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Hmis.Tools">
+      <HintPath>bin\Hmis.Tools.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

@@ -55,11 +55,10 @@ namespace Hl.Core.Application.Features.Calls.Commands
 
             if (request.CallType == 2)// && supervaiser != null)
             {
+              
                 var candidate = usersCaching.GetCandidate();
-                //request.Supervaiser = candidate;
                 var supervaiser = unit.UserRepository.GetUserByUserName(candidate);
                 usersCaching.IncrementTask(candidate);
-
                 call.Card = new Card
                 {
                     User = supervaiser,
@@ -80,8 +79,17 @@ namespace Hl.Core.Application.Features.Calls.Commands
         {
             //RuleFor(x => x.PrivateNumber).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
             //RuleFor(x => x.CallAuthor).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
-            RuleFor(x => x.Category.Id).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
-            RuleFor(x => x.Note).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
+            RuleFor(x => x.Category).NotEmpty().WithMessage("კატეგორიის მითითება აუცილებელია!");
+            RuleFor(x => x.Note).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია!");
         }
     }
+
+    //public class SetCallDtoValidator1 : AbstractValidator<IActiveObjectsService>
+    //{
+    //    public SetCallDtoValidator1()
+    //    {
+    //        RuleFor(x=>x.GetActiveRecords()).NotEmpty().WithMessage("ამ მომენტისთვის არცერთი სუპერვაიზერი არ არის სისტემაში შემოსული, სამწუხაროდ ვერ შეძლებთ ბარათის რეგისტრაციას!");
+    //    }
+    //}
+
 }
