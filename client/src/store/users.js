@@ -13,6 +13,11 @@ export const filterControls = [
     placeholder: 'პირადი N'
   },
   {
+    field: 'userName',
+    type: 'TEXT',
+    placeholder: 'მომხმარებლის სახელი'
+  },
+  {
     field: 'firstName',
     type: 'TEXT',
     placeholder: 'სახელი'

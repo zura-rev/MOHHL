@@ -25,7 +25,7 @@ namespace Hl.Core.Application.Features.Users.Commands
             return new User
             {
                 Id = Id,
-                UserName = UserName,
+                UserName = UserName.ToLower(),
                 Password = Functions.GetPasswordHash(UserName, Password),
                 PrivateNumber = PrivateNumber,
                 FirstName = FirstName,

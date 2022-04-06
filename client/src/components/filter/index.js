@@ -5,8 +5,8 @@ import { format } from 'date-fns'
 import ka from 'date-fns/locale/ka'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes, faSearch, faBroom } from '@fortawesome/fontawesome-free-solid'
-import { CategorySelect } from '../category-select'
-
+import { CustomSelect } from '../category-select'
+import { FilterSelect } from '../filter-select'
 import 'react-datepicker/dist/react-datepicker.css'
 import {
     searchInput,
@@ -32,9 +32,11 @@ export const Filter = observer(({ filterProps, filterControls }) => {
     }
 
     const handleSelectChange = (selected, nameOfComponent) => {
+        console.log('selected', selected)
+        console.log('nameOfComponent', nameOfComponent)
         changeFilter({
             ...filter,
-            category: { id: selected.value, label: selected.label },
+            [nameOfComponent.name]: { id: selected.value, label: selected.label },
         })
     }
 
@@ -68,11 +70,14 @@ export const Filter = observer(({ filterProps, filterControls }) => {
 
         const controlType = filterControls.find(x => x.field === label).type
 
+        //console.log('controlType', controlType)
+
         if (controlType === 'CALENDAR') {
             value = format(new Date(value), 'dd/MM/yyyy')
         }
 
         if (controlType === 'SELECT') {
+
             value = item[1].label
         }
 
@@ -152,11 +157,13 @@ export const Filter = observer(({ filterProps, filterControls }) => {
 
     const createSearchSelectInput = (item) => {
         return (
-            <CategorySelect
-                required
+            <FilterSelect
+                id={item.field}
                 name={item.field}
-                onChange={handleSelectChange}
                 value={filter[item.field]}
+                url={item.url}
+                onChange={handleSelectChange}
+                placeholder={item.placeholder}
             />
         )
     }

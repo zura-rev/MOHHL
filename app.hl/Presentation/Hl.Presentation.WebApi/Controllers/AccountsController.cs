@@ -27,7 +27,7 @@ namespace Hl.Presentation.WebApi.Controllers
             this.usersCaching = usersCaching;
         }
 
-
+        
         [HttpGet("activeSupervaisers")]
         public IEnumerable<Supervaiser> GetActiveSupervaisers()
         {

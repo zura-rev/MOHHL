@@ -5,7 +5,7 @@ import { Paging } from '../components/paging'
 import { StoreContext } from '../context/StoreProvider'
 import { filterControls } from '../store/users'
 
-export function SettingsPage() {
+export function UsersPage() {
     const { usersState } = useContext(StoreContext)
     console.log('usersState', usersState)
     return (

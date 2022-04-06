@@ -36,6 +36,11 @@ namespace Hl.Infrastructure.Persistence.Implementations.Repositories
             return Including.FirstOrDefault(x => x.Id == userId);
         }
 
+        public async Task<IQueryable<User>> GetOperators()
+        {
+            return await Task.FromResult(Including.Where(x=>x.Resources.Select(x=>x.Name).Contains("ROLE.OPERATOR")));
+        }
+
         public override async Task<User> ReadAsync(int id)
         {
             return await Including.FirstAsync(x => x.Id == id);

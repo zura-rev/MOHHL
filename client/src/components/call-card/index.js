@@ -1,6 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import 'moment/locale/ka'
+import './style.css'
 
 export const CallCard = ({ call }) => {
   return (
@@ -12,7 +13,7 @@ export const CallCard = ({ call }) => {
               {`N ${call.id}`}
             </h5>
             <hr />
-            <table className='table'>
+            <table className='table detail-table'>
               <tbody>
                 <tr>
                   <th>პირადი ნომერი  </th>

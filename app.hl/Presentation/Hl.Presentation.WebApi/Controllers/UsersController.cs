@@ -12,6 +12,7 @@ namespace Hl.Presentation.WebApi.Controllers
 {
     //[Authorize(Policy = "ViewUsersPolicy")]
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -21,6 +22,8 @@ namespace Hl.Presentation.WebApi.Controllers
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
+        [HttpGet("operators")]
+        public async Task<IEnumerable<GetOperatorDto>> Get() => await mediator.Send(new GetOperatorsRequest());
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetUserDto>>> Get([FromQuery] GetUsersRequest request)

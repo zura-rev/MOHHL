@@ -45,7 +45,7 @@ namespace Hl.Presentation.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex.InnerException;
             }
         }
 
@@ -98,7 +98,6 @@ namespace Hl.Presentation.WebApi.Controllers
 
             return File(stream, mimeType, string.Format("hl_app({0:yyyy_MM_dd_HH_mm_ss}).xlsx", DateTime.Now));
         }
-
 
         //[HttpGet("executable")]
         //public async Task<ActionResult<IEnumerable<GetCallDto>>> Get([FromQuery] string user)

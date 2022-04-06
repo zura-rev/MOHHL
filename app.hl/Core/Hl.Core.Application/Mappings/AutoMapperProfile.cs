@@ -14,6 +14,7 @@ namespace Hl.Core.Application.Mappings
             CreateMap<Card, GetCardDto>();
             CreateMap<Category, GetCategoryDto>();
             CreateMap<User,GetUserDto>();
+            CreateMap<User, GetOperatorDto>().ForMember(dest => dest.Name, opt => opt.MapFrom(src=>$"{src.FirstName} {src.LastName}"));
             CreateMap(typeof(Pagination<>), typeof(GetPaginationDto<>));
         }
     }

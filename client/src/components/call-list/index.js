@@ -45,6 +45,7 @@ export const CallList = observer(() => {
       ${filter.privateNumber ? `&privateNumber=${filter.privateNumber}` : ''}
       ${filter.callAuthor ? `&callAuthor=${filter.callAuthor}` : ''}
       ${filter.category ? `&categoryId=${filter.category.id}` : ''}
+      ${filter.user ? `&userId=${filter.user.id}` : ''}
       ${filter.note ? `&note=${filter.note}` : ''}
       ${filter.fromDate ? `&fromDate=${moment(filter.fromDate).format('YYYY-MM-DD')}` : ''}
       ${filter.toDate ? `&toDate=${moment(filter.toDate).format('YYYY-MM-DD')}` : ''}`
@@ -53,7 +54,7 @@ export const CallList = observer(() => {
     const {
       data,
       headers: { totalcount, totalpages, pagesize, pageindex, hasnextpage },
-    } = await request(uri, 'GET', null, { Authorization: `Bearer ${user.token}` })
+    } = await request(uri.trim(), 'GET', null, { Authorization: `Bearer ${user.token}` })
 
     setCalls(data)
     setSubmit(false)

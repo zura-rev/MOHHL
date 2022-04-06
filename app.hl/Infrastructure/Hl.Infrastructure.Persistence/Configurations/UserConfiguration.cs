@@ -13,14 +13,14 @@ namespace Hl.Infrastructure.Persistence.Configurations
             builder.ToTable("Users", "dbo");
 
             builder.Property(x => x.Id);
-            builder.Property(x => x.UserName).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.UserName).HasMaxLength(250).IsRequired();
             builder.Property(x => x.Password).HasMaxLength(1000).IsRequired();
 
             builder.Property(x => x.PrivateNumber).HasMaxLength(11).IsRequired();
-            builder.Property(x => x.FirstName).HasMaxLength(50);
-            builder.Property(x => x.LastName).HasMaxLength(50);
+            builder.Property(x => x.FirstName).HasMaxLength(250);
+            builder.Property(x => x.LastName).HasMaxLength(250);
 
-            builder.Property(x => x.Description).HasMaxLength(1000);
+            builder.Property(x => x.Description);
 
             #region აღწერილია: უნიკალური და არაკლასტერიზებული ინდექსები
             builder.HasIndex(x => x.UserName).IsUnique();

@@ -23,14 +23,14 @@ namespace Hl.Core.Application.Features.Calls.Queries
         public string PrivateNumber { get; set; }
         public string Phone { get; set; }
         public int? CategoryId { get; set; }
-        public Category Category { get; set; }
+        //public Category Category { get; set; }
         public string Note { get; set; }
         public DateTime CreateDate { get; set; }
         public int CallType { get; set; }
-        public int UserId { get; set; }
-        public User user { get; set; }
-        public DateTime FromDate { get; set; } = DateTime.Now.AddDays(-360);
-        public DateTime ToDate { get; set; } = DateTime.Now;
+        public int? UserId { get; set; }
+        public User User { get; set; }
+        public DateTime FromDate { get; set; } = DateTime.Now.AddDays(-180);
+        public DateTime ToDate { get; set; } = DateTime.Now.AddDays(1);
     }
 
     public class GetCallsHandler : IRequestHandler<GetCallRequest, GetPaginationDto<GetCallDto>>
@@ -51,7 +51,7 @@ namespace Hl.Core.Application.Features.Calls.Queries
                 request.PrivateNumber,
                 request.Phone,
                 request.CategoryId,
-                request.Category,
+                //request.Category,
                 request.Note,
                 request.CreateDate,
                 request.CallType,

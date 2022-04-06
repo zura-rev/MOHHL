@@ -13,10 +13,10 @@ namespace Hl.Infrastructure.Persistence.Configurations
             builder.ToTable("Calls", "dbo");
             //builder.Ignore(x => x.Applications);
             builder.Property(x => x.Id);
-            builder.Property(x => x.CallAuthor).HasMaxLength(20).IsRequired();
+            builder.Property(x => x.CallAuthor).HasMaxLength(512).IsRequired();
             builder.Property(x => x.PrivateNumber).HasMaxLength(50).IsRequired();
             builder.Property(x => x.Phone).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.Note).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.Note).IsRequired();
             builder.Property(x => x.CreateDate);
             builder.Property(x => x.CallType).HasMaxLength(100);
 

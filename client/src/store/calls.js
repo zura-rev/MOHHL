@@ -7,8 +7,9 @@ const filterState = {
   callAuthor: '',
   callNumber: '',
   phone: '',
-  category: '',
-  note: '',
+  categories: '',
+  users: '',
+  note: ''
 }
 
 // const labelKa = {
@@ -56,13 +57,21 @@ export const filterControls = [
   {
     field: 'category',
     type: 'SELECT',
-    placeholder: 'კატეგორია'
+    placeholder: 'კატეგორია',
+    url: '/api/categories',
+  },
+  {
+    field: 'user',
+    type: 'SELECT',
+    placeholder: 'ოპერატორი',
+    url: '/api/users/operators',
   },
   {
     field: 'note',
     type: 'TEXT',
     placeholder: 'ზარის შინაარსი'
-  }
+  },
+
 ]
 
 export class CallsState {

@@ -17,15 +17,9 @@ namespace Hl.Core.Application.Features.Users.Queries
         public string PrivateNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
         public int pageIndex { get; set; }
         public int pageSize { get; set; }
-
-        //public DateTime fromDate { get; set; } = DateTime.Now.AddDays(-10);
-        //public DateTime toDate { get; set; } = DateTime.Now;
-
     }
-
 
     public class GetUsersHandler : IRequestHandler<GetUsersRequest, Pagination<GetUserDto>>
     {
@@ -37,13 +31,11 @@ namespace Hl.Core.Application.Features.Users.Queries
             this.mapper = mapper;
         }
 
-
         public async Task<Pagination<GetUserDto>> Handle(GetUsersRequest request, CancellationToken cancellationToken)
         {
             var users = await unit.UserRepository.Filter(request.UserName, request.PrivateNumber, request.FirstName, request.LastName);
 
             var userData = await Pagination<User>.CreateAsync(users, request.pageIndex, request.pageSize);
-
 
             var user = new List<GetUserDto>();
             foreach (var item in userData.Items)

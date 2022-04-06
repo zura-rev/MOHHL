@@ -37,10 +37,6 @@ export const CategorySelect = observer(
     const { user } = useContext(AuthContext)
     const { categoriesState: { groupedCategories, setCategories } } = useContext(StoreContext)
 
-    // if (!value && required) {
-    //   console.log('value', value)
-    // }
-
     const handleChange = (selected, nameOfComponent) => {
       onChange(selected, nameOfComponent)
     }
@@ -61,17 +57,15 @@ export const CategorySelect = observer(
     }, [])
 
     return (
-      <>
-        <Select
-          formatGroupLabel={formatGroupLabel}
-          options={groupedCategories}
-          placeholder='აირჩიეთ კატეგორია ...'
-          name={name}
-          onChange={handleChange}
-          isSearchable={true}
-          value={value}
-        />
-      </>
+      <Select
+        formatGroupLabel={formatGroupLabel}
+        options={groupedCategories}
+        placeholder='აირჩიეთ კატეგორია...'
+        name={name}
+        onChange={handleChange}
+        isSearchable={true}
+        value={value}
+      />
     )
   }
 )

@@ -17,11 +17,11 @@ namespace Hl.Infrastructure.Persistence.Implementations.Repositories
             string privateNumber,
             string phone,
             int? categoryId,
-            Category category,
+            //Category category,
             string note,
             DateTime createDate,
             int callType,
-            int userId,
+            int? userId,
             DateTime fromDate,
             DateTime toDate
             )
@@ -40,6 +40,7 @@ namespace Hl.Infrastructure.Persistence.Implementations.Repositories
                          (string.IsNullOrWhiteSpace(callAuthor) || x.CallAuthor == callAuthor) &&
                          (string.IsNullOrWhiteSpace(phone) || x.Phone == phone) &&
                          (categoryId == null || x.Category.Id == categoryId) &&
+                         (userId == null || x.User.Id == userId) &&
                          (string.IsNullOrWhiteSpace(note) || x.Note.Contains(note)))
                      .OrderByDescending(x => x.Id);
                 return res;

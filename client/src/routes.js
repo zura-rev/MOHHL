@@ -2,7 +2,7 @@ import { CallsPage } from './pages/CallsPage'
 import { CallPage } from './pages/CallPage'
 import { CreateCallPage } from './pages/CreateCallPage'
 import { CategoriesPage } from './pages/CategoriesPage'
-import { SettingsPage } from './pages/SettingsPage'
+import { UsersPage } from './pages/UsersPage'
 import { CardsPage } from './pages/CardsPage'
 import { faCheck, faBars, faUsersCog, faPlus, } from '@fortawesome/fontawesome-free-solid'
 import { faHeadset } from '@fortawesome/free-solid-svg-icons'
@@ -64,10 +64,10 @@ export const routes = [
   },
   {
     id: 6,
-    path: `${url}/settings`,
-    component: SettingsPage,
+    path: `${url}/users`,
+    component: UsersPage,
     exact: 'exact',
-    name: 'თვისებები',
+    name: 'მომხმარებლები',
     icon: faUsersCog,
     permissons: ['ROLE.ADMIN']
   },
