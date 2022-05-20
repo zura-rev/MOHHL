@@ -95,7 +95,7 @@ export const Cards = observer(() => {
                                             <td>{card.call.callAuthor}</td>
                                         </tr>
                                         <tr>
-                                            <th>კარეგორია</th>
+                                            <th>კატეგორია</th>
                                             <td>{card.call.category.categoryName}</td>
                                         </tr>
 

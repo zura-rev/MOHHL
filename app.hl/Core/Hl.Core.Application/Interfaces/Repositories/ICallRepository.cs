@@ -8,6 +8,7 @@ namespace Hl.Core.Application.Interfaces.Repositories
     public interface ICallRepository : IRepository<Call>
     {
         int CreateCall(Call call);
+        int UpdateCall(int id, Call call);
         Call GetById(int id);
         IEnumerable<Call> GetMatchCalls(string phone, string privateNumber, int topValue);
         IQueryable<Call> Filter(
@@ -16,7 +17,6 @@ namespace Hl.Core.Application.Interfaces.Repositories
             string privateNumber, 
             string phone, 
             int? categoryId,  
-            //Category category, 
             string note, 
             DateTime createDate, 
             int callStatus, 

@@ -33,12 +33,4 @@ namespace Hl.Core.Application.Features.Users.Commands
         }
     }
 
-    //public class UpdateCardValidator : AbstractValidator<UpdateCardRequest>
-    //{
-    //    private readonly IUnitOfWork unit;
-    //    public UpdateCardValidator(IUnitOfWork unit)
-    //    {
-    //        this.unit = unit;
-    //    }
-    //}
 }

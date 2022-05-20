@@ -20,20 +20,18 @@ export const filterControls = [
     type: 'TEXT',
     placeholder: 'ზარის ნომერი'
   },
-  {
-    field: 'userId',
-    type: 'TEXT',
-    placeholder: 'მომხმარებელი'
-  },
-  {
-    field: 'status',
-    type: 'TEXT',
-    placeholder: 'სტატუსი'
-  },
+  
   {
     field: 'category',
     type: 'SELECT',
-    placeholder: 'კატეგორია'
+    placeholder: 'კატეგორია',
+    url: '/api/categories',
+  },
+  {
+    field: 'status',
+    type: 'DROPDOWN',
+    placeholder: 'სტატუსი',
+    data: [{ id: -1, name: 'დამუშავების პროცესში' },{ id: 1, name: 'შესრულებული' }],
   },
   {
     field: 'note',

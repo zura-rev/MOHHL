@@ -6,10 +6,11 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Hl.Core.Application.Interfaces.Contracts;
+using AutoMapper;
 
 namespace Hl.Core.Application.Features.Calls.Commands
 {
-    public class CreateCallRequest : IRequest<int>
+    public class UpsertCallRequest : IRequest<int>
     {
         public int Id { get; set; }
         public string CallAuthor { get; set; }
@@ -21,23 +22,25 @@ namespace Hl.Core.Application.Features.Calls.Commands
         public string Supervaiser { get; set; }
     }
 
-    public class CreateCallHandler : IRequestHandler<CreateCallRequest, int>
+    public class UpsertCallHandler : IRequestHandler<UpsertCallRequest, int>
     {
         private readonly IUnitOfWork unit;
         private readonly ICurrentUserService user;
         private readonly IActiveObjectsService usersCaching;
+        private readonly IMapper mapper;
 
-        public CreateCallHandler(IUnitOfWork unit, ICurrentUserService user, IActiveObjectsService usersCaching)
+        public UpsertCallHandler(IUnitOfWork unit, ICurrentUserService user, IActiveObjectsService usersCaching, IMapper mapper)
         {
             this.unit = unit;
             this.user = user;
             this.usersCaching = usersCaching;
+            this.mapper = mapper;   
         }
 
-        public Task<int> Handle(CreateCallRequest request, CancellationToken cancellationToken)
+        public Task<int> Handle(UpsertCallRequest request, CancellationToken cancellationToken)
         {
             var category = unit.CategoryRepository.Read(request.Category.Id);
-            
+            var card = unit.CardRepository.GetByCallId(request.Id);
             var currentUser = unit.UserRepository.GetUserById(user.AccountId);
 
             var call = new Call
@@ -50,12 +53,17 @@ namespace Hl.Core.Application.Features.Calls.Commands
                 Note = request.Note,
                 CreateDate = DateTime.Now,
                 CallType = request.CallType,
-                User = currentUser
+                User = currentUser,
+                Card = card
             };
 
-            if (request.CallType == 2)// && supervaiser != null)
+            if (request.CallType == 1 && card != null)
             {
-              
+                call.Card = null;
+            }
+
+            if (request.CallType == 2 && card == null)
+            {
                 var candidate = usersCaching.GetCandidate();
                 var supervaiser = unit.UserRepository.GetUserByUserName(candidate);
                 usersCaching.IncrementTask(candidate);
@@ -63,33 +71,28 @@ namespace Hl.Core.Application.Features.Calls.Commands
                 {
                     User = supervaiser,
                     Status = -1,
-                    UserType = 2
-                };                
+                    UserType = 2,
+                    CallId = request.Id,    
+                };
+            }
+           
+            if (request.Id == default)
+            {
+                return Task.FromResult(unit.CallRepository.CreateCall(call));
             }
 
-            int id = unit.CallRepository.CreateCall(call);
-
-            return Task.FromResult(id);
+            return Task.FromResult(unit.CallRepository.UpdateCall(request.Id, call));
+            
         }
     }
 
-    public class SetCallDtoValidator : AbstractValidator<CreateCallRequest>
+    public class UpsertCallDtoValidator : AbstractValidator<UpsertCallRequest>
     {
-        public SetCallDtoValidator()
+        public UpsertCallDtoValidator()
         {
-            //RuleFor(x => x.PrivateNumber).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
-            //RuleFor(x => x.CallAuthor).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია");
             RuleFor(x => x.Category).NotEmpty().WithMessage("კატეგორიის მითითება აუცილებელია!");
             RuleFor(x => x.Note).NotEmpty().WithMessage("{PropertyName} მითითება აუცილებელია!");
         }
     }
-
-    //public class SetCallDtoValidator1 : AbstractValidator<IActiveObjectsService>
-    //{
-    //    public SetCallDtoValidator1()
-    //    {
-    //        RuleFor(x=>x.GetActiveRecords()).NotEmpty().WithMessage("ამ მომენტისთვის არცერთი სუპერვაიზერი არ არის სისტემაში შემოსული, სამწუხაროდ ვერ შეძლებთ ბარათის რეგისტრაციას!");
-    //    }
-    //}
 
 }

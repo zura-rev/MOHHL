@@ -12,17 +12,6 @@ const filterState = {
   note: ''
 }
 
-// const labelKa = {
-//   fromDate: 'თარიღიდან',
-//   toDate: 'თარიღამდე',
-//   privateNumber: 'პირადი N',
-//   callAuthor: 'ზარის ავტორი',
-//   callNumber: 'ზარის ნომერი',
-//   phone: 'ტელეფონი',
-//   category: 'კატეგორია',
-//   note: 'ზარის შინაარსი',
-// }
-
 export const filterControls = [
   {
     field: 'fromDate',
@@ -71,12 +60,22 @@ export const filterControls = [
     type: 'TEXT',
     placeholder: 'ზარის შინაარსი'
   },
-
 ]
+
+const callState = {
+  id: 0,
+  privateNumber: '',
+  callAuthor: '',
+  category: null,
+  phone: '',
+  note: '',
+  callType: null,
+}
 
 export class CallsState {
 
   _calls = []
+  _call = callState
   _totalCount = null
   _totalPages = null
   _pageIndex = 1

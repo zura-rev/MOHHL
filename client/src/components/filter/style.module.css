@@ -43,10 +43,12 @@
 .searchPanel input {
   padding: 9px;
 }
+.searchPanel select {
+  padding: 8px;
+}
 
 .dateControl {
   padding: 9px !important;
-  /* margin-left: 5px; */
 }
 
 .searchBadge {

@@ -38,10 +38,6 @@ namespace Hl.Presentation.WebApi.Controllers
             return result.Items;
         }
 
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<GetUserDto>> Get([FromRoute] int id) =>
-        //    await mediator.Send(new GetUserByIdRequest(id));
-
         [HttpPut]
         //[Authorize(Policy = "EditUsersPolicy")]
         //[AllowAnonymous]

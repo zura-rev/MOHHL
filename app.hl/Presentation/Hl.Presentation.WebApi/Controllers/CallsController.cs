@@ -67,8 +67,8 @@ namespace Hl.Presentation.WebApi.Controllers
             return Ok(res);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<int>> Post([FromBody] CreateCallRequest request)
+        [HttpPut]
+        public async Task<ActionResult<GetCallDto>> Put([FromBody] UpsertCallRequest request)
         {
             if (request.CallType==2 && usersCaching.GetActiveRecords().Count == 0)
             {
@@ -78,14 +78,10 @@ namespace Hl.Presentation.WebApi.Controllers
             return Ok(res);
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] SetCallDto value)
-        {
-        }
-
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+
         }
 
         [HttpPost("excel")]
@@ -98,15 +94,6 @@ namespace Hl.Presentation.WebApi.Controllers
 
             return File(stream, mimeType, string.Format("hl_app({0:yyyy_MM_dd_HH_mm_ss}).xlsx", DateTime.Now));
         }
-
-        //[HttpGet("executable")]
-        //public async Task<ActionResult<IEnumerable<GetCallDto>>> Get([FromQuery] string user)
-        //{
-        //    if (string.IsNullOrEmpty(user))
-        //        throw new BadRequestException("მომხმარებელი ვერ მოიძებნა!");
-        //    var request = new GetExecutableCallsRequest(user);
-        //    return Ok(await mediator.Send(request));
-        //}
 
     }
 }

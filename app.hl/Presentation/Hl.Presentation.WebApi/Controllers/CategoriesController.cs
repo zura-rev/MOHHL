@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using MediatR;
 using System;
 using Hl.Core.Application.Features.Calls.Queries;
-using Hl.Core.Domain.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Hl.Core.Application.DTOs;
@@ -24,9 +23,8 @@ namespace Hl.Presentation.WebApi.Controllers
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        // GET: api/<CategoriesController>
         [HttpGet]
-        public async Task<IEnumerable<GetCategoryDto>> Get([FromQuery] GetCategoriesRequest request)
+        public async Task<IEnumerable<GetCategoryDto>> Get([FromQuery] GetCategoryRequest request)
         {
             try
             {
@@ -35,36 +33,17 @@ namespace Hl.Presentation.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex.InnerException;
             }
         }
 
-        // GET api/<CategoriesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+
+        [HttpPut]
+        public async Task<GetCategoryDto> Put([FromBody] UpsertCategoryRequest request)
         {
-            return "value";
+            return await mediator.Send(request);
         }
 
-        // POST api/<CategoriesController>
-        [HttpPost]
-        public GetCategoryDto Post([FromBody] CreateCategoryRequest request)
-        {
-            var res = mediator.Send(request);
-            return res.Result;
-        }
-
-        // PUT api/<CategoriesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<CategoriesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
 
     }
 }

@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
+import { observer } from 'mobx-react-lite'
 import { Button, Form, InputGroup } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,31 +9,20 @@ import { AuthContext } from '../../context/AuthProvider'
 import { StoreContext } from '../../context/StoreProvider'
 import { CategorySelect } from '../category-select'
 import { faSave, faSearch } from '@fortawesome/fontawesome-free-solid'
-import { useCreateCallReducer } from './reducer'
 import { url } from '../../constants'
-import classNames from 'classnames'
-//import { createCallFrom } from './style.module.css'
 
 
-export function CreateCallFrom() {
+export const CreateCallFrom = observer(() => {
+
     const { user: { token } } = useContext(AuthContext)
-    const { callsState } = useContext(StoreContext)
+    const { callsState, callState } = useContext(StoreContext)
     const history = useHistory()
-    //const [state, dispatch] = useReducer(createCallReducer, initialState)
-    const [state, dispatch] = useCreateCallReducer({
-        privateNumber: '',
-        callAuthor: '',
-        category: null,
-        phone: '',
-        note: '',
-        callType: null,
-        //userId: 1
-    })
+
+    const [validated, setValidated] = useState(false)
     const { request, error, clearError } = useHttp()
     const message = useMessage()
     const { setMatchCalls } = callsState
-    const [validated, setValidated] = useState(false)
-
+    const { call, setCall } = callState
 
     useEffect(() => {
         message(error)
@@ -47,8 +37,8 @@ export function CreateCallFrom() {
         } else {
             const response = await request(
                 `/api/calls`,
-                'POST',
-                { ...state },
+                'PUT',
+                { ...call },
                 {
                     Authorization: `Bearer ${token}`,
                 }
@@ -59,24 +49,22 @@ export function CreateCallFrom() {
     }
 
     const handleChange = (event) => {
-        changeDispatch(event.target.name, event.target.value)
+        const { name, value } = event.target
+        changeCall(name, value)
     }
 
-    const changeDispatch = (name, value) => {
-        dispatch({
-            type: 'CHANGE',
-            payload: { ...state, [name]: value },
-        })
+    const changeCall = (name, value) => {
+        setCall({ ...call, [name]: value })
     }
+
 
     const handleCheck = async (key, value, top = 5) => {
         // `/api/calls/matchcalls?phone=${state.phone}&privateNumber=${state.privateNumber}&topValue=10`,
         if (!value) {
-            //alert('შეავსეთ აღნიშნული ველი!')
             message('შეავსეთ აღნიშნული ველი!')
             return
         }
-        const url = `/api/calls/matchcalls?${(key === 'PHONE') ? `phone=${value}` : (key === 'PN') ? `privateNumber=${state.privateNumber}` : null}&topValue=${top}`
+        const url = `/api/calls/matchcalls?${(key === 'PHONE') ? `phone=${value}` : (key === 'PN') ? `privateNumber=${call.privateNumber}` : null}&topValue=${top}`
         try {
             const response = await request(
                 url,
@@ -108,13 +96,13 @@ export function CreateCallFrom() {
                             placeholder='ტელეფონი'
                             id='phone'
                             name='phone'
-                            value={state.phone}
+                            value={call.phone}
                             onChange={handleChange}
                         />
                         <Button
                             variant='outline-secondary'
                             size='sm'
-                            onClick={() => handleCheck('PHONE', state.phone)}
+                            onClick={() => handleCheck('PHONE', call.phone)}
                         >
                             <FontAwesomeIcon icon={faSearch} />
                         </Button>
@@ -130,13 +118,13 @@ export function CreateCallFrom() {
                             placeholder='პირადი ნომერი'
                             id='privateNumber'
                             name='privateNumber'
-                            value={state.privateNumber}
+                            value={call.privateNumber}
                             onChange={handleChange}
                         />
                         <Button
                             variant='outline-secondary'
                             size='sm'
-                            onClick={() => handleCheck('PN', state.privateNumber)}
+                            onClick={() => handleCheck('PN', call.privateNumber)}
                         >
                             <FontAwesomeIcon icon={faSearch} />
                         </Button>
@@ -151,7 +139,7 @@ export function CreateCallFrom() {
                         placeholder='სახელი, გვარი'
                         id='callAuthor'
                         name='callAuthor'
-                        value={state.callAuthor}
+                        value={call.callAuthor}
                         onChange={handleChange}
                     />
                 </Form.Group>
@@ -163,8 +151,9 @@ export function CreateCallFrom() {
                         required
                         name='category'
                         onChange={(selected, nameOfComponent) => {
-                            changeDispatch(nameOfComponent.name, { id: selected.value })
+                            changeCall(nameOfComponent.name, { id: selected.value, categoryName: selected.label })
                         }}
+                        value={call.category ? { value: call.category?.id, label: call.category?.categoryName } : null}
                     />
                 </Form.Group>
                 <Form.Group className='mb-3'>
@@ -176,7 +165,7 @@ export function CreateCallFrom() {
                         as='select'
                         id='callType'
                         name='callType'
-                        value={state.callType || ''}
+                        value={call.callType || ''}
                         onChange={handleChange}
                     >
                         <option value=''>აირჩეთ ...</option>
@@ -196,7 +185,7 @@ export function CreateCallFrom() {
                         placeholder='აღწერა'
                         id='note'
                         name='note'
-                        value={state.note}
+                        value={call.note}
                         onChange={handleChange}
                     />
                     <Form.Text className='text-muted'></Form.Text>
@@ -210,4 +199,4 @@ export function CreateCallFrom() {
             </Form>
         </div>
     )
-}
+})

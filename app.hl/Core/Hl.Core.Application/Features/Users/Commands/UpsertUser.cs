@@ -48,21 +48,19 @@ namespace Hl.Core.Application.Features.Users.Commands
         {
             var resourceIds = request.Resources.Select(x => x.Id).ToList();
             var resources = await unit.ResourceRepository.ReadAsync(x => resourceIds.Contains(x.Id));
-
             request.Resources = resources.ToList();
+            User _user;
 
             if (request.Id == default)
             {
-                var user = unit.UserRepository.CreateUser(request.GetUser());
-                return await Task.FromResult(user);
+                _user = unit.UserRepository.CreateUser(request.GetUser());
             }
             else
             {
-                var user = unit.UserRepository.UpdateUser(request.Id, request.GetUser());
-                return await Task.FromResult(user);
+                _user = unit.UserRepository.UpdateUser(request.Id, request.GetUser());
             }
 
-            //return await Task.FromResult(Unit.Value);
+            return await Task.FromResult(_user);
 
         }
     }

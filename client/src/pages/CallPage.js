@@ -53,7 +53,6 @@ export const CallPage = () => {
           }
         )
         if (response.status === 200) {
-          //console.log('_response-exec_', response.data)
           const card = { ...call.card, ...response.data }
           setCall({ ...call, card })
           handleClose()
@@ -63,7 +62,6 @@ export const CallPage = () => {
   }
 
   const handleClose = () => {
-    //dispatch({ type: 'CLEAR' })
     setValidated(false)
     setShow(false)
   }
@@ -71,7 +69,7 @@ export const CallPage = () => {
   if (loading) {
     return <Loader />
   }
-  //console.log(user && user.userId, call && call.card.user.id)
+
 
   return (
     <>
@@ -88,7 +86,6 @@ export const CallPage = () => {
           className='col-md-8'
           style={{ display: 'flex', justifyContent: 'flex-end' }}
         >
-
           {user && user.resources === 'ROLE.SUPERVAISER' && user.userId === call?.card?.user.id && call?.card?.status === -1 ?
             <button
               className='btn  btn-sm btn-outline-success me-2'
@@ -96,6 +93,14 @@ export const CallPage = () => {
             >
               <FontAwesomeIcon icon={faCheck} />
             </button> : null}
+          {user && user.resources === 'ROLE.ADMIN' ?
+            <button
+              className='btn  btn-sm btn-outline-warning me-2'
+              onClick={() => history.push('/createCall', call)}
+            >
+              <FontAwesomeIcon icon={faEdit} />
+            </button> : null
+          }
           <button
             className='btn btn-sm btn-outline-primary'
             //onClick={() => history.push('/contracts')}
@@ -103,14 +108,8 @@ export const CallPage = () => {
           >
             <FontAwesomeIcon icon={faPrint} />
           </button>
-          {/* {user && user.resources === 'ROLE.ADMIN' ? */}
-          {/* <button
-            className='btn  btn-sm btn-outline-warning me-2'
-            onClick={() => history.push('/createCall')}
-          >
-            <FontAwesomeIcon icon={faEdit} className='me-1' />
-            რედაქტირება
-          </button>
+
+          {/* 
           <button
             className='btn  btn-sm btn-outline-danger '
             onClick={() => history.push('/contracts')}

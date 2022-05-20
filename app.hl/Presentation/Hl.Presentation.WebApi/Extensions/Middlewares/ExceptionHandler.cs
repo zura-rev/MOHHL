@@ -7,7 +7,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Hl.Core.Application.Commons;
 using Hl.Core.Application.Exceptions;
-using Hl.Core.Domain.Enums;
 
 namespace Hl.Presentation.Admin.Extensions.Middlewares
 {

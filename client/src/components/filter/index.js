@@ -5,8 +5,8 @@ import { format } from 'date-fns'
 import ka from 'date-fns/locale/ka'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes, faSearch, faBroom } from '@fortawesome/fontawesome-free-solid'
-import { CustomSelect } from '../category-select'
-import { FilterSelect } from '../filter-select'
+import { FilterDropdown } from './filter-dropdown'
+import { FilterSelect } from './filter-select'
 import 'react-datepicker/dist/react-datepicker.css'
 import {
     searchInput,
@@ -32,8 +32,6 @@ export const Filter = observer(({ filterProps, filterControls }) => {
     }
 
     const handleSelectChange = (selected, nameOfComponent) => {
-        console.log('selected', selected)
-        console.log('nameOfComponent', nameOfComponent)
         changeFilter({
             ...filter,
             [nameOfComponent.name]: { id: selected.value, label: selected.label },
@@ -68,17 +66,18 @@ export const Filter = observer(({ filterProps, filterControls }) => {
         let label = item[0]
         let value = item[1]
 
-        const controlType = filterControls.find(x => x.field === label).type
-
-        //console.log('controlType', controlType)
+        const controlType = filterControls.find(x => x.field === label)?.type
 
         if (controlType === 'CALENDAR') {
             value = format(new Date(value), 'dd/MM/yyyy')
         }
 
         if (controlType === 'SELECT') {
-
             value = item[1].label
+        }
+
+        if (controlType === 'DROPDOWN') {
+            value = filterControls.find(x => x.field === label).data.find(x => x.id === Number(item[1]))?.name
         }
 
         return (
@@ -111,18 +110,6 @@ export const Filter = observer(({ filterProps, filterControls }) => {
         )
     }
 
-    const renderSearchBar = (item) => {
-        switch (item.type) {
-            case 'TEXT':
-                return createSearchTextInput(item)
-            case 'SELECT':
-                return createSearchSelectInput(item)
-            case 'CALENDAR':
-                return createSearchCalendarInput(item)
-            default:
-        }
-    }
-
     const createSearchTextInput = (item) => {
         return (
             <input
@@ -133,6 +120,7 @@ export const Filter = observer(({ filterProps, filterControls }) => {
                 value={filter[item.field]}
                 onChange={handleFilterChange}
                 placeholder={item.placeholder}
+                autoComplete="off"
             />
         )
     }
@@ -166,6 +154,33 @@ export const Filter = observer(({ filterProps, filterControls }) => {
                 placeholder={item.placeholder}
             />
         )
+    }
+
+    const createSearchDropdownInput = (item) => {
+        return (
+            <FilterDropdown
+                id={item.field}
+                name={item.field}
+                value={filter[item.field]}
+                data={item.data}
+                onChange={handleFilterChange}
+                placeholder={item.placeholder}
+            />
+        )
+    }
+
+    const renderSearchBar = (item) => {
+        switch (item.type) {
+            case 'TEXT':
+                return createSearchTextInput(item)
+            case 'SELECT':
+                return createSearchSelectInput(item)
+            case 'DROPDOWN':
+                return createSearchDropdownInput(item)
+            case 'CALENDAR':
+                return createSearchCalendarInput(item)
+            default:
+        }
     }
 
     return (

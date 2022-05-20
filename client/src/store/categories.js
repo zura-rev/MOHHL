@@ -1,35 +1,44 @@
 import { makeAutoObservable } from 'mobx'
 
+
+const initialState = {
+  id: 0,
+  categoryName: '',
+  parentId: 0,
+  status: 0,
+  note: '',
+}
+
 export class CategoriesState {
   _categories = []
   _groupedCategories = []
   _parentCategories = []
   _selectedCategory = null
+  _categoryModalShow = false
+  _category = initialState
+  _isCategoryEdit = false
 
   constructor() {
     makeAutoObservable(this)
   }
 
-  _groupBy = (items, key) =>
-    items
-      .filter((x) => x.parentId !== 0)
+  _groupBy = (items, key) => {
+    return items.filter((x) => x.parentId !== 0)
       .reduce((result, item) => {
-        let k = this._parentCategories.find(
-          (x) => x.id === item[key]
-        ).categoryName
+
+        let _key = this._parentCategories.find(x => x.id === item[key])?.categoryName
+
         return {
           ...result,
-          [k]: [...(result[k] || []), item],
+          [_key]: [...(result[_key] || []), item],
         }
+
       }, {})
+  }
 
   setCategories = (categories) => {
-    this._parentCategories = categories.filter(
-      (category) => category.parentId === 0
-    )
-
+    this._parentCategories = categories.filter(category => category.parentId === 0)
     this._categories = categories
-
     const obj = this._groupBy(categories, 'parentId')
     const keys = Object.keys(obj)
     this._groupedCategories = keys.map((item) => ({
@@ -38,16 +47,37 @@ export class CategoriesState {
         label: item.categoryName,
         option: item.parentId,
         value: item.id,
+        checked: item.status === 1
       })),
     }))
   }
 
-  // setSelectedCategory = (category) => {
-  //   this._selectedCategory = category
-  // }
+  setCategoryModalShow = (show) => {
+    this._categoryModalShow = show
+  }
+
+  setCategory = (category) => {
+    this._category = category
+  }
+
+  setCategoryEdit = (isCategoryEdit) => {
+    this._isCategoryEdit = isCategoryEdit
+  }
+
+  clearCategory = () => {
+    this._category = initialState
+  }
 
   get categories() {
     return this._categories
+  }
+
+  get category() {
+    return this._category
+  }
+
+  get categoryModalShow() {
+    return this._categoryModalShow
   }
 
   get groupedCategories() {
@@ -58,9 +88,10 @@ export class CategoriesState {
     return this._parentCategories
   }
 
-  // get selectedCategory() {
-  //   return this._selectedCategory
-  // }
+  get isCategoryEdit() {
+    return this._isCategoryEdit
+  }
+
 }
 
 

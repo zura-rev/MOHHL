@@ -1,15 +1,11 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react'
 import Select from 'react-select'
-import { useHttp } from '../../hooks/http.hook'
-import { AuthContext } from '../../context/AuthProvider'
-//import { StoreContext } from '../../context/StoreProvider'
-//import { observer } from 'mobx-react-lite'
-
-
+import { useHttp } from '../../../hooks/http.hook'
+import { AuthContext } from '../../../context/AuthProvider'
 
 export const FilterSelect = ({ name, onChange, value, url, placeholder }) => {
 
-  const { loading, request } = useHttp()
+  const { request } = useHttp()
   const { user } = useContext(AuthContext)
   const [data, setData] = useState()
 
@@ -31,16 +27,11 @@ export const FilterSelect = ({ name, onChange, value, url, placeholder }) => {
     fetchData()
   }, [])
 
-  // const handleChange = (event) => {
-  //   onChange(event)
-  // }
-
   const handleChange = (selected, nameOfComponent) => {
     onChange(selected, nameOfComponent)
   }
 
   return (
-
     <Select
       id={name}
       options={data}
@@ -48,15 +39,9 @@ export const FilterSelect = ({ name, onChange, value, url, placeholder }) => {
       name={name}
       onChange={handleChange}
       value={value}
-      isClearable={false}
-      isDisabled={false}
-      isLoading={false}
-      isRtl={false}
       isSearchable={true}
     />
-
-
   )
 }
 
-//)
+

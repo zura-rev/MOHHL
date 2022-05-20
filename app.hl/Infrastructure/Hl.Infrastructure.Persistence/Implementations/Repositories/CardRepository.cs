@@ -40,6 +40,19 @@ namespace Hl.Infrastructure.Persistence.Implementations.Repositories
             }
         }
 
+        Card ICardRepository.GetByCallId(int callId) 
+        {
+            try
+            {
+                var res = context.Cards.FirstOrDefault(x => x.CallId == callId);
+                return res;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         Card ICardRepository.UpdateCard(int id, string note) 
         {
             try

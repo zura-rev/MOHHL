@@ -32,7 +32,7 @@ const formatGroupLabel = (data) => (
 )
 
 export const CategorySelect = observer(
-  ({ name, onChange, required, value }) => {
+  ({ required, name, onChange, value }) => {
     const { loading, request } = useHttp()
     const { user } = useContext(AuthContext)
     const { categoriesState: { groupedCategories, setCategories } } = useContext(StoreContext)
@@ -43,9 +43,8 @@ export const CategorySelect = observer(
 
     const fetchCategories = useCallback(async () => {
       try {
-        const response = await request(`/api/Categories`, 'GET', null, {
-          Authorization: `Bearer ${user.token}`,
-        })
+        const url = '/api/Categories?status=1'
+        const response = await request(url, 'GET', null, { Authorization: `Bearer ${user.token}` })
         setCategories(response && response.data)
       } catch (error) {
         throw error

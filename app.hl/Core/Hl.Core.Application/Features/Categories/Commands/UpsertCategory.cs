@@ -9,14 +9,16 @@ using Hl.Core.Application.DTOs;
 
 namespace Hl.Core.Application.Features.Categories.Commands
 {
-    public class CreateCategoryRequest : IRequest<GetCategoryDto>
+    public class UpsertCategoryRequest : IRequest<GetCategoryDto>
     {
         public int Id { get; set; }
         public string CategoryName { get; set; }
         public int? ParentId { get; set; }
+        public int Status { get; set; }
+        public string Note { get; set; }
     }
 
-    public class CreateCaregoryHandler : IRequestHandler<CreateCategoryRequest, GetCategoryDto>
+    public class CreateCaregoryHandler : IRequestHandler<UpsertCategoryRequest, GetCategoryDto>
     {
         private readonly IUnitOfWork unit;
         private readonly IMapper mapper;
@@ -27,21 +29,34 @@ namespace Hl.Core.Application.Features.Categories.Commands
             this.mapper = mapper;
         }
 
-        public Task<GetCategoryDto> Handle(CreateCategoryRequest request, CancellationToken cancellationToken)
+        public Task<GetCategoryDto> Handle(UpsertCategoryRequest request, CancellationToken cancellationToken)
         {
-            var  category = unit.CategoryRepository.CreateCategory(new Category { 
+
+            var category = new Category
+            {
                 Id = request.Id,
                 CategoryName = request.CategoryName,
                 ParentId = (int)request.ParentId,
-            });
+                Status = request.Status,
+                Note = request.Note
+            };
 
-            var result = mapper.Map<GetCategoryDto>(category);
+            Category _category;
 
-            return Task.FromResult(result);
+            if (request.Id == default)
+            {
+                _category = unit.CategoryRepository.CreateCategory(category);
+            }
+            else
+            {
+                _category = unit.CategoryRepository.UpdateCategory(request.Id, category);
+            }
+
+            return Task.FromResult(mapper.Map<GetCategoryDto>(_category));
         }
     }
 
-    public class SetCaregoryDtoValidator : AbstractValidator<CreateCategoryRequest>
+    public class SetCaregoryDtoValidator : AbstractValidator<UpsertCategoryRequest>
     {
         public SetCaregoryDtoValidator()
         {

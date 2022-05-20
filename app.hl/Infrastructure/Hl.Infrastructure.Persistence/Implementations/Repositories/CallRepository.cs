@@ -17,7 +17,6 @@ namespace Hl.Infrastructure.Persistence.Implementations.Repositories
             string privateNumber,
             string phone,
             int? categoryId,
-            //Category category,
             string note,
             DateTime createDate,
             int callType,
@@ -68,6 +67,25 @@ namespace Hl.Infrastructure.Persistence.Implementations.Repositories
             return call.Id;
         }
 
+        int ICallRepository.UpdateCall(int id, Call call)
+        {
+            var _call = context.Calls.FirstOrDefault(x => x.Id == id);
+            _call.Id = call.Id;
+            _call.Phone = call.Phone;
+            _call.PrivateNumber = call.PrivateNumber;
+            _call.Note = call.Note;
+            _call.Category = call.Category;
+            _call.CreateDate = call.CreateDate;
+            _call.CallAuthor = call.CallAuthor;
+            _call.CallType = call.CallType;
+            _call.Card = call.Card;
+            _call.User = call.User;
+            //context.Entry(_call).CurrentValues.SetValues(call);
+            context.Update(_call);
+            context.SaveChanges();
+            return call.Id;
+        }
+
         IEnumerable<Call> ICallRepository.GetMatchCalls(string phone, string privateNumber, int topValue )
         {
             try
@@ -93,8 +111,6 @@ namespace Hl.Infrastructure.Persistence.Implementations.Repositories
         //    context.Calls.Add(call);
         //    context.SaveChanges();
         //}
-
-
 
     }
 }
