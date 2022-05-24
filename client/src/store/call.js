@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx'
+import apiClient from '../apiClient'
 
 const callState = {
     id: 0,
@@ -13,9 +14,19 @@ const callState = {
 export class CallState {
 
     _call = callState
+    _error = null
 
     constructor() {
         makeAutoObservable(this)
+    }
+
+    upsertCall = async (token, call) => {
+        try {
+            const callId = await apiClient.call.upsert(token, call)
+            return callId
+        } catch (error) {
+            this._error = error
+        }
     }
 
     setCall = (call) => {

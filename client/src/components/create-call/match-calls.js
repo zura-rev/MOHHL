@@ -10,12 +10,8 @@ export const MatchCalls = observer(() => {
         setMatchCalls([])
     }, [])
 
-    const renderMatchItems = () => {
-        return <div>
-            {matchCalls.length > 0 ? matchCalls.map((call) => <MatchCallItem call={call} />) : <div className='text-center'>ჩანაწერი ვერ მოიძებნა!</div>}
-        </div>
-    }
-
-    return <div>{renderMatchItems()}</div>
+    return <div className='match-calls-container'>
+        {matchCalls.length > 0 ? matchCalls.map((call) => <MatchCallItem key={call.id} call={call} />) : <div className='text-center'>ჩანაწერი ვერ მოიძებნა!</div>}
+    </div>
 })
 

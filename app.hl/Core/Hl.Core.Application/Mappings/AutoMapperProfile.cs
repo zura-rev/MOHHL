@@ -10,8 +10,8 @@ namespace Hl.Core.Application.Mappings
     {
         public AutoMapperProfile()
         {
-            CreateMap<Call, GetCallDto>()
-                .ForMember(dest => dest.Card, opt => opt.MapFrom(src => src.Card != null ? src.Card : new Card()));
+            CreateMap<Call, GetCallDto>();
+                //.ForMember(dest => dest.Card, opt => opt.MapFrom(src => src.Card != null ? src.Card : new Card()));
             CreateMap<Card, GetCardDto>();
             CreateMap<Category, GetCategoryDto>();
             CreateMap<User,GetUserDto>();

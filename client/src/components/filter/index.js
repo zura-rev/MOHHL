@@ -20,9 +20,9 @@ import {
 
 registerLocale('ka', ka)
 
-export const Filter = observer(({ filterProps, filterControls }) => {
+export const Filter = observer(({ filterProps }) => {
 
-    const { filter, changeFilter, setSubmit, clearFilter } = filterProps
+    const { filter, changeFilter, setPageIndex, setSubmit, clearFilter, filterControls } = filterProps
 
     const [showSearchBar, setShowSearchBar] = useState(false)
 
@@ -52,7 +52,8 @@ export const Filter = observer(({ filterProps, filterControls }) => {
 
     const search = () => {
         setShowSearchBar(false)
-        setSubmit(true)
+        //setSubmit(true)
+        setPageIndex(1)
     }
 
     const removeSearchItem = (event, filter) => {

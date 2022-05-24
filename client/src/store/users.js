@@ -6,7 +6,7 @@ const filterState = {
   lastName: '',
 }
 
-export const filterControls = [
+const filterControls = [
   {
     field: 'privateNumber',
     type: 'TEXT',
@@ -37,6 +37,7 @@ export class UsersState {
   _pageSize = 10
   _hasNextPage = false
   _filter = filterState
+  _filterControls = filterControls
   _submit = false
 
   constructor() {
@@ -115,6 +116,10 @@ export class UsersState {
 
   get filter() {
     return this._filter
+  }
+
+  get filterControls() {
+    return this._filterControls
   }
 
   get submit() {

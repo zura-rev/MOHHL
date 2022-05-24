@@ -1,9 +1,9 @@
-import React, { useCallback, useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import { AuthContext } from '../../context/AuthProvider'
 import { StoreContext } from '../../context/StoreProvider'
 import moment from 'moment'
-import { useHttp } from '../../hooks/http.hook'
+//import { useHttp } from '../../hooks/http.hook'
 import { Loader } from '../loader'
 import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,63 +11,29 @@ import { useMessage } from '../../hooks/message.hook'
 import classNames from 'classnames'
 import { callList, noRecord } from './style.module.css'
 import { url } from '../../constants'
+//import { user } from '../../store/users'
 
 
 export const CallList = observer(() => {
 
   const { user } = useContext(AuthContext)
-  const { callsState } = useContext(StoreContext)
+  const { callsState: {
+    calls,
+    submit,
+    getCalls,
+    loading
+  } } = useContext(StoreContext)
   const history = useHistory()
   const message = useMessage()
-
   const myclass = classNames(callList)
 
-  const {
-    calls,
-    pageIndex,
-    pageSize,
-    setCalls,
-    setTotalCount,
-    setTotalPages,
-    setPageIndex,
-    setPageSize,
-    setHasNextPage,
-    filter,
-    submit,
-    setSubmit,
-  } = callsState
 
-  const { loading, request } = useHttp()
-
-  const uri = `/api/calls?pageIndex=${pageIndex}&pageSize=${pageSize}
-      ${filter.callNumber ? `&id=${filter.callNumber}` : ''}
-      ${filter.phone ? `&phone=${filter.phone}` : ''}
-      ${filter.privateNumber ? `&privateNumber=${filter.privateNumber}` : ''}
-      ${filter.callAuthor ? `&callAuthor=${filter.callAuthor}` : ''}
-      ${filter.category ? `&categoryId=${filter.category.id}` : ''}
-      ${filter.user ? `&userId=${filter.user.id}` : ''}
-      ${filter.note ? `&note=${filter.note}` : ''}
-      ${filter.fromDate ? `&fromDate=${moment(filter.fromDate).format('YYYY-MM-DD')}` : ''}
-      ${filter.toDate ? `&toDate=${moment(filter.toDate).format('YYYY-MM-DD')}` : ''}`
-
-  const fetchCalls = useCallback(async () => {
-    const {
-      data,
-      headers: { totalcount, totalpages, pagesize, pageindex, hasnextpage },
-    } = await request(uri.trim(), 'GET', null, { Authorization: `Bearer ${user.token}` })
-
-    setCalls(data)
-    setSubmit(false)
-    setTotalCount(totalcount)
-    setTotalPages(totalpages)
-    setPageIndex(pageindex)
-    setPageSize(pagesize)
-    setHasNextPage(hasnextpage)
-  }, [pageIndex, pageSize, submit])
 
   useEffect(() => {
-    fetchCalls()
-  }, [pageIndex, pageSize, submit])
+    if (submit) {
+      getCalls(user.token)
+    }
+  }, [submit])
 
   if (loading) {
     return <Loader />

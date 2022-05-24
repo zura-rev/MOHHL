@@ -6,8 +6,6 @@ import './style.css'
 export function CreateCall() {
   return <div className='create-call'>
     <CreateCallFrom />
-    <div className='match-calls-container'>
-      <MatchCalls />
-    </div>
+    <MatchCalls />
   </div>
 }

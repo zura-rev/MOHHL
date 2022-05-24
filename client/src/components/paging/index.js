@@ -14,7 +14,7 @@ export const Paging = observer(({ pagerProps }) => {
     setPageIndex,
   } = pagerProps
 
-  console.log('hasNextPage', hasNextPage)
+  //console.log('hasNextPage', hasNextPage)
 
   return (
     <div className='d-flex justify-content-between'>
@@ -30,14 +30,13 @@ export const Paging = observer(({ pagerProps }) => {
           className='form-select'
           value={pageSize}
           onChange={(event) => setPageSize(event.target.value)}
-          //onChange={(event) => setPager({ ...pager, pageSize: event.target.value })}
           style={{ width: '60px' }}
         >
-          <option value='5'>5</option>
-          <option value='10'>10</option>
-          <option value='20'>20</option>
-          <option value='50'>50</option>
-          <option value='100'>100</option>
+          {
+            [5, 10, 20, 50, 100, 200].map(item => {
+              return <option key={item} value={item}>{item}</option>
+            })
+          }
         </select>
         {pageIndex > 1 ? (
           <button

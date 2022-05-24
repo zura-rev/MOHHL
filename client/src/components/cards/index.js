@@ -1,10 +1,10 @@
-import React, { useEffect, useCallback, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { AuthContext } from '../../context/AuthProvider'
 import { StoreContext } from '../../context/StoreProvider'
-import { useHttp } from '../../hooks/http.hook'
+//import { useHttp } from '../../hooks/http.hook'
 import { Loader } from '../loader'
 import classNames from 'classnames'
 import { cardItem, cardList, border, numberArea, noRecord } from './style.module.css'
@@ -14,54 +14,57 @@ export const Cards = observer(() => {
 
     const cardItemClasses = classNames('card-body', cardItem)
     const { user } = useContext(AuthContext)
-    const { cardsState } = useContext(StoreContext)
-    const {
-        cards,
-        filter,
-        submit,
-        setSubmit,
-        setCards,
-        setTotalCount,
-        setTotalPages,
-        setPageIndex,
-        setPageSize,
-        setHasNextPage,
-        pageIndex,
-        pageSize
-    } = cardsState
+    const { cardsState: { cards, getCards, loading, submit } } = useContext(StoreContext)
+    //const {
+        //cards,
+        //filter,
+        //submit, 
+        //loading,
+        //getCards
+        // setSubmit,
+        // setCards,
+        // setTotalCount,
+        // setTotalPages,
+        // setPageIndex,
+        // setPageSize,
+        // setHasNextPage,
+        // pageIndex,
+        // pageSize
+    //} = cardsState
 
-    const { loading, request } = useHttp()
+    // const { loading, request } = useHttp()
 
+    // const uri = `/api/card?pageIndex=${pageIndex}&pageSize=${pageSize}
+    //     ${filter.id ? `&id=${filter.id}` : ''}
+    //     ${filter.callId ? `&callId=${filter.callId}` : ''}
+    //     ${filter.userId ? `&userId=${filter.userId}` : ''}
+    //     ${filter.status ? `&status=${filter.status}` : ''}
+    //     ${filter.note ? `&note=${filter.note}` : ''}
+    //     ${filter.category ? `&categoryId=${filter.category.id}` : ''}`
 
-    const uri = `/api/card?pageIndex=${pageIndex}&pageSize=${pageSize}
-        ${filter.id ? `&id=${filter.id}` : ''}
-        ${filter.callId ? `&callId=${filter.callId}` : ''}
-        ${filter.userId ? `&userId=${filter.userId}` : ''}
-        ${filter.status ? `&status=${filter.status}` : ''}
-        ${filter.note ? `&note=${filter.note}` : ''}
-        ${filter.category ? `&categoryId=${filter.category.id}` : ''}`
-
-    const fetchCalls = useCallback(async () => {
-        try {
-            const {
-                data,
-                headers: { totalcount, totalpages, pagesize, pageindex, hasnextpage },
-            } = await request(uri, 'GET', null, {
-                Authorization: `Bearer ${user.token}`,
-            })
-            setCards(data)
-            setTotalCount(totalcount)
-            setTotalPages(totalpages)
-            setPageIndex(pageindex)
-            setPageSize(pagesize)
-            setHasNextPage(hasnextpage)
-            setSubmit(false)
-        } catch (error) { }
-    }, [pageIndex, pageSize, submit])
+    // const fetchCalls = useCallback(async () => {
+    //     try {
+    //         const {
+    //             data,
+    //             headers: { totalcount, totalpages, pagesize, pageindex, hasnextpage },
+    //         } = await request(uri, 'GET', null, {
+    //             Authorization: `Bearer ${user.token}`,
+    //         })
+    //         setCards(data)
+    //         setTotalCount(totalcount)
+    //         setTotalPages(totalpages)
+    //         setPageIndex(pageindex)
+    //         setPageSize(pagesize)
+    //         setHasNextPage(hasnextpage)
+    //         setSubmit(false)
+    //     } catch (error) { }
+    // }, [pageIndex, pageSize, submit])
 
     useEffect(() => {
-        fetchCalls()
-    }, [pageIndex, pageSize, submit])
+        if (submit) {
+            getCards(user.token)
+        }
+    }, [submit])
 
     if (loading) {
         return <Loader />

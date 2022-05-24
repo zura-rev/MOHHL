@@ -41,7 +41,6 @@ export const AuthPage = () => {
           <h3 className='text-center'>ავტორიზაცია</h3>
           <hr />
           <div className='input-group pt-3 pb-3'>
-            {/* <label htmlFor='userName'>მომხმარებელი</label> */}
             <span className="input-group-text" id="basic-addon1">
               <FontAwesomeIcon icon={faUser} />
             </span>

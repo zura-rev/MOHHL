@@ -13,5 +13,9 @@
   position: absolute;
   top: 35%;
   left: 50%;
-  z-index: 100001;
+  z-index: 100000000;
 }
+/* 
+.main-loader {
+  z-index: 100000000;
+} */

@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite'
 import { Button, Form, InputGroup } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useHttp } from '../../hooks/http.hook'
 import { useMessage } from '../../hooks/message.hook'
 import { AuthContext } from '../../context/AuthProvider'
 import { StoreContext } from '../../context/StoreProvider'
@@ -15,18 +14,15 @@ import { url } from '../../constants'
 export const CreateCallFrom = observer(() => {
 
     const { user: { token } } = useContext(AuthContext)
-    const { callsState, callState } = useContext(StoreContext)
+    const { callsState: { getMatchCalls }, callState: { call, setCall, upsertCall, error } } = useContext(StoreContext)
     const history = useHistory()
 
     const [validated, setValidated] = useState(false)
-    const { request, error, clearError } = useHttp()
     const message = useMessage()
-    const { setMatchCalls } = callsState
-    const { call, setCall } = callState
+
 
     useEffect(() => {
         message(error)
-        clearError()
     }, [error])
 
     const saveCall = async (event) => {
@@ -35,15 +31,8 @@ export const CreateCallFrom = observer(() => {
         if (!form.checkValidity()) {
             event.stopPropagation()
         } else {
-            const response = await request(
-                `/api/calls`,
-                'PUT',
-                { ...call },
-                {
-                    Authorization: `Bearer ${token}`,
-                }
-            )
-            response && history.push(`${url}/calls/${response.data}`)
+            const callId = await upsertCall(token, call)
+            callId && history.push(`${url}/calls/${callId}`)
         }
         setValidated(true)
     }
@@ -57,32 +46,19 @@ export const CreateCallFrom = observer(() => {
         setCall({ ...call, [name]: value })
     }
 
-
-    const handleCheck = async (key, value, top = 5) => {
-        // `/api/calls/matchcalls?phone=${state.phone}&privateNumber=${state.privateNumber}&topValue=10`,
+    const handleCheck = async (key, value) => {
         if (!value) {
             message('შეავსეთ აღნიშნული ველი!')
             return
         }
-        const url = `/api/calls/matchcalls?${(key === 'PHONE') ? `phone=${value}` : (key === 'PN') ? `privateNumber=${call.privateNumber}` : null}&topValue=${top}`
         try {
-            const response = await request(
-                url,
-                'GET',
-                null,
-                {
-                    Authorization: `Bearer ${token}`,
-                }
-            )
-            setMatchCalls(response ? response.data : [])
+            await getMatchCalls(token, key, value)
         } catch (error) { }
     }
 
     return (
         <div className='create-call-form'>
-            <h5>
-                ზარის დამატება
-            </h5>
+            <h5>ზარის დამატება</h5>
             <hr />
             <Form onSubmit={saveCall} noValidate validated={validated}>
                 <Form.Group className='mb-3'>

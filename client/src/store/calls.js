@@ -1,4 +1,5 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable} from 'mobx'
+import apiClient from '../apiClient'
 
 const filterState = {
   fromDate: '',
@@ -12,7 +13,7 @@ const filterState = {
   note: ''
 }
 
-export const filterControls = [
+const filterControls = [
   {
     field: 'fromDate',
     type: 'CALENDAR',
@@ -62,59 +63,74 @@ export const filterControls = [
   },
 ]
 
-const callState = {
-  id: 0,
-  privateNumber: '',
-  callAuthor: '',
-  category: null,
-  phone: '',
-  note: '',
-  callType: null,
-}
-
 export class CallsState {
 
+  _filter = filterState
+  _filterControls = filterControls
   _calls = []
-  _call = callState
   _totalCount = null
   _totalPages = null
   _pageIndex = 1
   _pageSize = 10
   _hasNextPage = false
   _matchCalls = []
-  _filter = filterState
-  _submit = false
+  _submit = true
+  _loading = false
+  _error = null
 
   constructor() {
     makeAutoObservable(this)
   }
 
-  setCalls = (calls) => {
-    this._calls = calls
+  getCalls = async (token) => {
+    try {
+      this._loading = true
+      const calls = await apiClient.calls.get(token, this._filter, this._pageIndex, this._pageSize)
+      this._calls = calls.data
+      this._totalCount = Number(calls.headers.totalcount)
+      this._totalPages = Number(calls.headers.totalpages)
+      this._pageIndex = Number(calls.headers.pageindex)
+      this._pageSize = Number(calls.headers.pagesize)
+      this._hasNextPage = calls.headers.hasnextpage === 'True'
+    } catch (error) {
+      this._error = error
+    } finally {
+      this._loading = false
+      this._submit = false
+    }
   }
 
-  setMatchCalls = (matchCalls) => {
-    this._matchCalls = matchCalls
+  //getByPhoneOrPN = async (token, key, phone, privateNumber, top)
+  getMatchCalls = async (token, key, value) => {
+    try {
+      const data = await apiClient.calls.getByPhoneOrPN(token, key, value)
+      this._matchCalls = data
+    } catch (error) {
+      this._error = error
+    }
   }
 
-  setTotalCount = (totalCount) => {
-    this._totalCount = totalCount
-  }
-
-  setTotalPages = (totalPages) => {
-    this._totalPages = totalPages
+  setMatchCalls = (calls) => {
+    this._matchCalls = calls
   }
 
   setPageIndex = (pageIndex) => {
     this._pageIndex = pageIndex
+    this._submit = true
   }
 
   setPageSize = (pageSize) => {
     this._pageSize = pageSize
+    this._submit = true
+    this._pageIndex = 1
   }
 
-  setHasNextPage = (hasNextPage) => {
-    this._hasNextPage = (hasNextPage === 'True')
+  // setHasNextPage = (hasNextPage) => {
+  //   this._hasNextPage = (hasNextPage === 'True')
+  // }
+
+  setSubmit = (value) => {
+    this._submit = value
   }
 
   changeFilter = (filter) => {
@@ -125,16 +141,16 @@ export class CallsState {
     this._filter = filterState
   }
 
-  setSubmit = (value) => {
-    this._submit = value
-  }
-
   get calls() {
     return this._calls
   }
 
-  get pager() {
-    return this._pager
+  get filter() {
+    return this._filter
+  }
+
+  get filterControls() {
+    return this._filterControls
   }
 
   get matchCalls() {
@@ -161,12 +177,12 @@ export class CallsState {
     return this._hasNextPage
   }
 
-  get filter() {
-    return this._filter
-  }
-
   get submit() {
     return this._submit
+  }
+
+  get loading() {
+    return this._loading
   }
 
 }
