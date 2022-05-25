@@ -61,7 +61,6 @@ export class CardsState {
     try {
       this._loading = true
       const cards = await apiClient.cards.get(token, this._filter, this._pageIndex, this._pageSize)
-      console.log('cards', cards)
       this._cards = cards.data
       this._totalCount = Number(cards.headers.totalcount)
       this._totalPages = Number(cards.headers.totalpages)
